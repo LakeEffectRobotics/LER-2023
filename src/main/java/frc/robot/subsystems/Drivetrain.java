@@ -11,14 +11,23 @@ public class Drivetrain extends SubsystemBase{
      * @param left [-1, 1]
      * @param right [-1, 1]
      */
+
+     CANSparkMax leftLeadController;
+     CANSparkMax rightLeadController;
+
+    public Drivetrain(CANSparkMax leftLeadController, CANSparkMax rightLeadController) {
+        this.leftLeadController = leftLeadController;
+        this.rightLeadController = rightLeadController;
+    }
+
     public void setOutput(double left, double right) {
         // Other controllers are followers
-        RobotMap.leftController1.set(-left);
-        RobotMap.rightController1.set(right);
+        leftLeadController.set(-left);
+        rightLeadController.set(right);
     }
 
     public void stop() {
-        RobotMap.leftController1.set(0);
-        RobotMap.rightController1.set(0);
+        leftLeadController.set(0);
+        rightLeadController.set(0);
     }
 }
