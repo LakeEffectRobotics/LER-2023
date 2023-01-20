@@ -24,21 +24,19 @@ public class RobotMap {
     }
 
     // Left drive controllers
-    private static final CANSparkMax leftController1 = new CANSparkMax(CAN.LEFT_CONTROLLER_1, MotorType.kBrushless);
-    private static final CANSparkMax leftController2 = new CANSparkMax(CAN.LEFT_CONTROLLER_2, MotorType.kBrushless);
-    private static final CANSparkMax leftController3 = new CANSparkMax(CAN.LEFT_CONTROLLER_3, MotorType.kBrushless);
+    public static final CANSparkMax leftController1 = new CANSparkMax(CAN.LEFT_CONTROLLER_1, MotorType.kBrushless);
+    public static final CANSparkMax leftController2 = new CANSparkMax(CAN.LEFT_CONTROLLER_2, MotorType.kBrushless);
+    public static final CANSparkMax leftController3 = new CANSparkMax(CAN.LEFT_CONTROLLER_3, MotorType.kBrushless);
     // Right drive controllers
-    private static final CANSparkMax rightController1 = new CANSparkMax(CAN.RIGHT_CONTROLLER_1, MotorType.kBrushless);
-    private static final CANSparkMax rightController2 = new CANSparkMax(CAN.RIGHT_CONTROLLER_2, MotorType.kBrushless);
-    private static final CANSparkMax rightController3 = new CANSparkMax(CAN.RIGHT_CONTROLLER_3, MotorType.kBrushless);
-
-    // Group left and right controllers
-    public static final MotorControllerGroup leftDriveControllers = new MotorControllerGroup(leftController1, leftController2, leftController3);
-    public static final MotorControllerGroup rightDriveControllers = new MotorControllerGroup(rightController1, rightController2,rightController3);
+    public static final CANSparkMax rightController1 = new CANSparkMax(CAN.RIGHT_CONTROLLER_1, MotorType.kBrushless);
+    public static final CANSparkMax rightController2 = new CANSparkMax(CAN.RIGHT_CONTROLLER_2, MotorType.kBrushless);
+    public static final CANSparkMax rightController3 = new CANSparkMax(CAN.RIGHT_CONTROLLER_3, MotorType.kBrushless);
 
     // Static initializer will be run on first reference to RobotMap
     static {
-        // It's a bit ambiguous what config belongs here vs elsewhere, but a good rule of thumb is that anything that 
-        // isn't implicitly part of a motor's name (so PID constants, ramp settings, etc) belong in subsystems
+        leftController2.follow(leftController1);
+        leftController3.follow(leftController1);
+        rightController2.follow(rightController1);
+        rightController3.follow(rightController1);
     }
 }

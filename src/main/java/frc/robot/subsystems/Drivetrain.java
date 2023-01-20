@@ -1,30 +1,24 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotMap;
 
 public class Drivetrain extends SubsystemBase{
-    
-    MotorControllerGroup leftControllers;
-    MotorControllerGroup rightControllers;
-
-    public Drivetrain(MotorControllerGroup leftControllers, MotorControllerGroup rightControllers) {
-        this.leftControllers = leftControllers;
-        this.rightControllers = rightControllers;
-    }
-
     /**
      * Sset drivetrain output
      * @param left [-1, 1]
      * @param right [-1, 1]
      */
     public void setOutput(double left, double right) {
-        leftControllers.set(-left);
-        rightControllers.set(right);
+        // Other controllers are followers
+        RobotMap.leftController1.set(-left);
+        RobotMap.rightController1.set(right);
     }
 
     public void stop() {
-        leftControllers.set(0);
-        rightControllers.set(0);
+        RobotMap.leftController1.set(0);
+        RobotMap.rightController1.set(0);
     }
 }
