@@ -22,7 +22,7 @@ public class Drivetrain extends SubsystemBase{
 
     public void setOutput(double left, double right) {
         // Other controllers are followers
-        leftLeadController.set(-left);
+        leftLeadController.set(left);
         rightLeadController.set(right);
     }
 
