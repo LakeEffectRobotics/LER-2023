@@ -36,6 +36,7 @@ public class RobotMap {
     static {
         leftController2.follow(leftController1);
         leftController3.follow(leftController1);
+        
         rightController2.follow(rightController1);
         rightController3.follow(rightController1);
     }
