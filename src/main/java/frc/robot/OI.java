@@ -3,12 +3,15 @@ package frc.robot;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
- * This class holds configurations for the Operator Interface (so joysticks/controllers)
+ * This class holds configurations for the Operator Interface (so
+ * joysticks/controllers)
  */
 public class OI {
-    
+
     /** Driver Station ports controllers are attached to */
     private static class PORTS {
         private static final int LEFT_STICK = 0;
@@ -17,16 +20,18 @@ public class OI {
 
     /** Buttons on the driver sticks/controller */
     private static class DRIVER_MAP {
-
+        private static final int AIM_BUTTON = 1;
     }
 
     /** Buttons on the operator controller */
     private static class OPERATOR_MAP {
-        
+
     }
 
     private static final Joystick leftJoystick = new Joystick(PORTS.LEFT_STICK);
     private static final Joystick rightJoystick = new Joystick(PORTS.RIGHT_STICK);
+
+    public static final Trigger aimButton = new JoystickButton(rightJoystick, DRIVER_MAP.AIM_BUTTON);
 
     // Supply processed drivetrain inputs
     public static DoubleSupplier leftDriveSupplier = () -> {
@@ -42,9 +47,10 @@ public class OI {
         return processDriveInput(raw);
     };
 
-    private static double processDriveInput(double raw){
+    private static double processDriveInput(double raw) {
         // TODO: Configure input processing to suit your liking
-        if(Math.abs(raw) < 0.1) raw = 0;
+        if (Math.abs(raw) < 0.1)
+            raw = 0;
         // raw = Math.pow(raw, [EXPONENT]);
         // raw *= [INPUT_SCALING];
         return raw;
