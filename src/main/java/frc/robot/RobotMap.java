@@ -41,8 +41,8 @@ public class RobotMap {
         rightController3.follow(rightController1);
 
         leftController1.setInverted(true);
-        leftController1.setOpenLoopRampRate(0.25);
-        rightController1.setOpenLoopRampRate(0.25);
+        leftController1.setOpenLoopRampRate(0.15);
+        rightController1.setOpenLoopRampRate(0.15);
 
     }
 }

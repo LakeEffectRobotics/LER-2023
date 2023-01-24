@@ -32,13 +32,21 @@ public class OI {
     public static DoubleSupplier leftDriveSupplier = () -> {
         double raw = leftJoystick.getY();
         // Todo: process raw input ?
-        return raw;
+        return processDriveInput(raw);
     };
 
     // Supply processed drivetrain inputs
     public static DoubleSupplier rightDriveSupplier = () -> {
         double raw = rightJoystick.getY();
         // Todo: process raw input ?
-        return raw;
+        return processDriveInput(raw);
     };
+
+    private static double processDriveInput(double raw){
+        // TODO: Configure input processing to suit your liking
+        if(Math.abs(raw) < 0.1) raw = 0;
+        // raw = Math.pow(raw, [EXPONENT]);
+        // raw *= [INPUT_SCALING];
+        return raw;
+    }
 }
