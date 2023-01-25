@@ -6,25 +6,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Limelight extends SubsystemBase {
-    private NetworkTable table;
+  private NetworkTable table;
 
-    public Limelight() {
+  public Limelight() {
 
-    }
+  }
 
-    @Override
-    public void periodic() {
-        table = NetworkTableInstance.getDefault().getTable("limelight");
+  @Override
+  public void periodic() {
+    table = NetworkTableInstance.getDefault().getTable("limelight");
 
-        SmartDashboard.putNumber("limelightX", getX());
-        SmartDashboard.putNumber("LimelightY", getY());
-    }
+    SmartDashboard.putNumber("limelightX", getX());
+    SmartDashboard.putNumber("LimelightY", getY());
+  }
 
-    public double getX(){
-        return(table.getEntry("tx").getDouble(0.0));
-      }
+  public double getX() {
+    return (table.getEntry("tx").getDouble(0.0));
+  }
 
-      public double getY(){
-        return(table.getEntry("ty").getDouble(0.0));
-      }
-    }
+  public double getY() {
+    return (table.getEntry("ty").getDouble(0.0));
+  }
+}
