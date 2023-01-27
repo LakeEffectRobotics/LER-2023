@@ -49,10 +49,14 @@ public class OI {
 
     private static double processDriveInput(double raw) {
         // TODO: Configure input processing to suit your liking
-        if (Math.abs(raw) < 0.1)
+        if (Math.abs(raw) < 0.2) {
             raw = 0;
+        }
+
+        // slow down for now
+        raw *= 0.6;
         // raw = Math.pow(raw, [EXPONENT]);
         // raw *= [INPUT_SCALING];
-        return raw;
+        return -raw;
     }
 }

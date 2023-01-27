@@ -5,9 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.autonomous.DriveForwardCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 
@@ -23,11 +23,11 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    OI.aimButton.onTrue(new AimCommand(limelight, drivetrain));
+    OI.aimButton.whileTrue(new AimCommand(limelight, drivetrain));
 
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return new DriveForwardCommand(drivetrain, 3);
   }
 }
