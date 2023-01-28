@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class holds configurations for the Operator Interface (so
@@ -35,6 +34,9 @@ public class OI {
     /** Buttons on the operator controller */
     private static class OPERATOR_MAP {
         private static final int RESET_POSE_BUTTON = XboxController.Button.kA.value;
+        private static final int OPEN_CLAW_BUTTON = XboxController.Button.kA.value;
+        private static final int CLOSE_CLAW_BUTTON = XboxController.Button.kB.value;
+        private static final int SPIN_INTAKE_BUTTON = XboxController.Button.kX.value;
     }
 
     private static final XboxController xboxController = new XboxController(PORTS.XBOX_CONTROLLER);
@@ -47,6 +49,13 @@ public class OI {
             DRIVER_MAP.RIGHT_LEFT_BUTTON);
     public static final JoystickButton curtisRightButton = new JoystickButton(rightJoystick,
             DRIVER_MAP.RIGHT_RIGHT_BUTTON);
+
+    // Buttons
+    public static final Trigger openClawButton = new JoystickButton(xboxController, OPERATOR_MAP.OPEN_CLAW_BUTTON);
+    public static final Trigger closeClawButton = new JoystickButton(xboxController,
+            OPERATOR_MAP.CLOSE_CLAW_BUTTON);
+    public static final Trigger spinIntakeButton = new JoystickButton(xboxController,
+            OPERATOR_MAP.SPIN_INTAKE_BUTTON);
 
     // Supply processed drivetrain inputs
     public static DoubleSupplier leftDriveSupplier = () -> {

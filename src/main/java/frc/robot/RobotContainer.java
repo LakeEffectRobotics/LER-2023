@@ -21,6 +21,10 @@ import frc.robot.commands.ApriltagPoseCommand;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.CurtisDriveCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.SpinIntakeCommand;
+import frc.robot.commands.instant.CloseClawCommand;
+import frc.robot.commands.instant.OpenClawCommand;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 
@@ -39,6 +43,7 @@ public class RobotContainer {
   // Create path planner auto builder
   RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(drivetrain::getPose, drivetrain::resetPose,
       new RamseteController(), drivetrain.kinematics, drivetrain::velocityTankDrive, eventMap, drivetrain);
+  private Claw claw = new Claw(RobotMap.leftClawController, RobotMap.rightClawController, RobotMap.clawSolenoid);
 
   // Create path command
   Command autoFollowPathCommand = autoBuilder.fullAuto(pathGroup);
@@ -59,7 +64,9 @@ public class RobotContainer {
     OI.aimButton.whileTrue(new ApriltagAimCommand(limelight, drivetrain));
     OI.resetPoseButton.whileTrue(new ApriltagPoseCommand(limelight, drivetrain));
     OI.curtisStraightButton.whileTrue(new CurtisDriveCommand(drivetrain));
-
+    OI.openClawButton.onTrue(new OpenClawCommand(claw));
+    OI.closeClawButton.onTrue(new CloseClawCommand(claw));
+    OI.spinIntakeButton.whileTrue(new SpinIntakeCommand(claw));
   }
 
   // Set autonomous command from dashboard choice
