@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveCommand extends CommandBase {
-    
+
     Drivetrain drivetrain;
 
     DoubleSupplier leftSupplier;
@@ -26,7 +26,7 @@ public class DriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        drivetrain.setOutput(leftSupplier.getAsDouble(), rightSupplier.getAsDouble());
+        drivetrain.tankDrive(leftSupplier.getAsDouble(), rightSupplier.getAsDouble());
     }
 
     @Override
@@ -35,7 +35,7 @@ public class DriveCommand extends CommandBase {
     }
 
     @Override
-	public boolean isFinished() {
-		return false;
-	}
+    public boolean isFinished() {
+        return false;
+    }
 }

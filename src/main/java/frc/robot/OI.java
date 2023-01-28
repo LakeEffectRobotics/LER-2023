@@ -54,7 +54,7 @@ public class OI {
         }
 
         // slow down for now
-        raw *= 0.6;
+        raw *= 0.9;
         // raw = Math.pow(raw, [EXPONENT]);
         // raw *= [INPUT_SCALING];
         return -raw;

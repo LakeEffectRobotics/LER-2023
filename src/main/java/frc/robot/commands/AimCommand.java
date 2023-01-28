@@ -27,7 +27,7 @@ public class AimCommand extends CommandBase {
 
         SmartDashboard.putNumber("aim command steering adjust", steering_adjust);
 
-        drivetrain.setOutput(steering_adjust, -steering_adjust);
+        drivetrain.tankDrive(steering_adjust, -steering_adjust);
     }
 
     @Override

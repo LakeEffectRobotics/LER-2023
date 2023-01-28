@@ -1,16 +1,13 @@
 package frc.robot.commands.autonomous;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class DriveForwardCommand extends CommandBase {
+public class FollowPathCommand extends CommandBase {
     Drivetrain drivetrain;
-    int target;
 
-    public DriveForwardCommand(Drivetrain drivetrain, int target) {
+    public FollowPathCommand(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        this.target = target;
         addRequirements(drivetrain);
     }
 
@@ -22,7 +19,6 @@ public class DriveForwardCommand extends CommandBase {
 
     @Override
     public void execute() {
-        drivetrain.drive(0.5, Math.PI / 2);
     }
 
     @Override
