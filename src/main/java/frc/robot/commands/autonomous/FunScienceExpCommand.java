@@ -1,15 +1,16 @@
 package frc.robot.commands.autonomous;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class FollowPathCommand extends CommandBase {
+public class FunScienceExpCommand extends CommandBase {
     Drivetrain drivetrain;
-    double voltage;
+    double volts;
 
-    public FollowPathCommand(Drivetrain drivetrain, double voltage) {
+    public FunScienceExpCommand(Drivetrain drivetrain, double volts) {
+        this.volts = volts;
         this.drivetrain = drivetrain;
-        this.voltage = voltage;
         addRequirements(drivetrain);
     }
 
@@ -21,6 +22,9 @@ public class FollowPathCommand extends CommandBase {
 
     @Override
     public void execute() {
+        drivetrain.leftLeadController.setVoltage(volts);
+        drivetrain.rightLeadController.setVoltage(volts);
+
     }
 
     @Override
@@ -32,4 +36,5 @@ public class FollowPathCommand extends CommandBase {
     public boolean isFinished() {
         return false;
     }
+
 }

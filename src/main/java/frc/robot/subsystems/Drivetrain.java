@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -18,8 +19,8 @@ import frc.robot.RobotMap;
 
 public class Drivetrain extends SubsystemBase {
 
-    CANSparkMax leftLeadController;
-    CANSparkMax rightLeadController;
+    public final CANSparkMax leftLeadController;
+    public final CANSparkMax rightLeadController;
 
     // Wheel size 6.25"
     // Gearing
@@ -34,6 +35,13 @@ public class Drivetrain extends SubsystemBase {
 
     RelativeEncoder leftEncoder;
     RelativeEncoder rightEncoder;
+
+    private static final double kF = 2.44;
+    private static final double kP = 0;
+    private static final double kI = 0;
+    private static final double kD = 0;
+
+    private static final double MAX_SPEED = 4;
 
     public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(0.19);
 
@@ -53,9 +61,20 @@ public class Drivetrain extends SubsystemBase {
 
         // Setup unit conversions to get meters and meters/second
         leftLeadController.getEncoder().setPositionConversionFactor(METERS_PER_REV);
-        leftLeadController.getEncoder().setVelocityConversionFactor(METERS_PER_REV);
+        // MUST CONVERT FROM MINUTES to seconds
+        leftLeadController.getEncoder().setVelocityConversionFactor(METERS_PER_REV * 1 / 60.0);
         rightLeadController.getEncoder().setPositionConversionFactor(METERS_PER_REV);
-        leftLeadController.getEncoder().setVelocityConversionFactor(METERS_PER_REV);
+        rightLeadController.getEncoder().setVelocityConversionFactor(METERS_PER_REV * 1 / 60.0);
+
+        leftLeadController.getPIDController().setFF(kF);
+        leftLeadController.getPIDController().setD(kD);
+        leftLeadController.getPIDController().setI(kI);
+        leftLeadController.getPIDController().setP(kP);
+
+        rightLeadController.getPIDController().setFF(kF);
+        rightLeadController.getPIDController().setD(kD);
+        rightLeadController.getPIDController().setI(kI);
+        rightLeadController.getPIDController().setP(kP);
 
         SmartDashboard.putData("Field View", field);
         resetPose(new Pose2d(0, 0, new Rotation2d(0)));
@@ -110,18 +129,22 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void setSpeedOutput(DifferentialDriveWheelSpeeds wheelSpeeds) {
-        final double leftOutput = wheelSpeeds.leftMetersPerSecond;
-        final double rightOutput = wheelSpeeds.rightMetersPerSecond;
-        // todo? add pid stuff ?
-
-        tankDrive(leftOutput, rightOutput);
+        final double leftSpeed = wheelSpeeds.leftMetersPerSecond;
+        final double rightSpeed = wheelSpeeds.rightMetersPerSecond;
+        leftLeadController.getPIDController().setReference(leftSpeed, ControlType.kVelocity);
+        rightLeadController.getPIDController().setReference(rightSpeed, ControlType.kVelocity);
     }
 
     // Human driving
     public void tankDrive(double left, double right) {
         // Other controllers are followers
-        leftLeadController.set(left);
-        rightLeadController.set(right);
+        double leftOutput = left * MAX_SPEED;
+        double rightOutput = right * MAX_SPEED;
+        SmartDashboard.putNumber("LEFT TARGET", leftOutput);
+        SmartDashboard.putNumber("right target", rightOutput);
+
+        leftLeadController.getPIDController().setReference(leftOutput, ControlType.kVelocity);
+        rightLeadController.getPIDController().setReference(rightOutput, ControlType.kVelocity);
     }
 
     public void stop() {
@@ -133,9 +156,9 @@ public class Drivetrain extends SubsystemBase {
     @Override
     public void periodic() {
         field.setRobotPose(getPose());
+        SmartDashboard.putNumber("Right velocity", rightEncoder.getVelocity());
+        SmartDashboard.putNumber("Left velocity", leftEncoder.getVelocity());
 
-        SmartDashboard.putNumber("odometry thing", gyro.getAngle());
-        SmartDashboard.putString("pose", getPose().toString());
         SmartDashboard.putNumber("left encoder", leftEncoder.getPosition());
         SmartDashboard.putNumber("right encoder", rightEncoder.getPosition());
         odometry.update(
