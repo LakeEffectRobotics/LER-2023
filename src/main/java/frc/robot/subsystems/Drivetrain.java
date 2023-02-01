@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -43,7 +44,8 @@ public class Drivetrain extends SubsystemBase {
     // Max speed in m/s
     private static final double MAX_SPEED = 4;
 
-    public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(0.19);
+    // Robot track width 19"
+    public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(19));
 
     // Create new Drivetrain
     public Drivetrain(CANSparkMax leftLeadController, CANSparkMax rightLeadController) {
