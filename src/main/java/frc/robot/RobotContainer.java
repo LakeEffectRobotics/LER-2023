@@ -29,7 +29,7 @@ public class RobotContainer {
   private Drivetrain drivetrain = new Drivetrain(RobotMap.leftController1, RobotMap.rightController1);
   public final Limelight limelight = new Limelight();
 
-  // autonomous chooser
+  // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   // Path planner
@@ -38,7 +38,7 @@ public class RobotContainer {
 
   // Create path planner auto builder
   RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(drivetrain::getPose, drivetrain::resetPose,
-      new RamseteController(), drivetrain.kinematics, drivetrain::tankDrive, eventMap, drivetrain);
+      new RamseteController(), drivetrain.kinematics, drivetrain::velocityTankDrive, eventMap, drivetrain);
 
   // Create path command
   Command autoFollowPathCommand = autoBuilder.fullAuto(pathGroup);
@@ -46,8 +46,9 @@ public class RobotContainer {
   // Create robotContainer
   public RobotContainer() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
-    autoChooser.addOption("driveforward", new DriveForwardCommand(drivetrain));
 
+    // Put autonomous chooser on dashboard
+    autoChooser.addOption("driveforward", new DriveForwardCommand(drivetrain));
     SmartDashboard.putData(autoChooser);
     configureBindings();
   }
@@ -57,7 +58,7 @@ public class RobotContainer {
     OI.aimButton.whileTrue(new AimCommand(limelight, drivetrain));
   }
 
-  // Set autonomous command
+  // Set autonomous command from dashboard choice
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }

@@ -22,7 +22,7 @@ public class DriveForwardCommand extends CommandBase {
 
     @Override
     public void execute() {
-        drivetrain.setSpeedOutput(drivetrain.kinematics.toWheelSpeeds(new ChassisSpeeds(1, 0, 0)));
+        drivetrain.velocityTankDrive(0.5, 0.5);
     }
 
     @Override

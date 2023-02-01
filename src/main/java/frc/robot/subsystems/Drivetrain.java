@@ -15,7 +15,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotMap;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -41,6 +40,7 @@ public class Drivetrain extends SubsystemBase {
     private static final double kI = 0;
     private static final double kD = 0;
 
+    // Max speed in m/s
     private static final double MAX_SPEED = 4;
 
     public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(0.19);
@@ -57,7 +57,7 @@ public class Drivetrain extends SubsystemBase {
 
         odometry = new DifferentialDriveOdometry(
                 gyro.getRotation2d(),
-                leftEncoder.getPosition(), this.getRightEncoder().getPosition());
+                leftEncoder.getPosition(), rightEncoder.getPosition());
 
         // Setup unit conversions to get meters and meters/second
         leftLeadController.getEncoder().setPositionConversionFactor(METERS_PER_REV);
@@ -83,15 +83,7 @@ public class Drivetrain extends SubsystemBase {
     // Odometry methods
     public void updateOdometry() {
         odometry.update(
-                gyro.getRotation2d(), this.getLeftEncoder().getPosition(), this.getRightEncoder().getPosition());
-    }
-
-    public RelativeEncoder getLeftEncoder() {
-        return (leftEncoder);
-    }
-
-    public RelativeEncoder getRightEncoder() {
-        return (rightEncoder);
+                gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition());
     }
 
     public void resetEncoderPosition() {
@@ -116,7 +108,7 @@ public class Drivetrain extends SubsystemBase {
     public void resetPose(Pose2d pose) {
         resetEncoderPosition();
         odometry.resetPosition(
-                gyro.getRotation2d(), getLeftEncoder().getPosition(), getRightEncoder().getPosition(), pose);
+                gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition(), pose);
     }
 
     // Arcade drive
@@ -124,27 +116,31 @@ public class Drivetrain extends SubsystemBase {
      * @param speed    linear velocity (m/s)
      * @param rotation angular velocity (rad/s)
      */
-    public void drive(double speed, double rotation) {
-        setSpeedOutput(kinematics.toWheelSpeeds(new ChassisSpeeds(speed, 0, rotation)));
+    public void arcadeDrive(double speed, double rotation) {
+        DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(speed, 0, rotation));
+        velocityTankDrive(wheelSpeeds.leftMetersPerSecond, wheelSpeeds.rightMetersPerSecond);
     }
 
-    public void setSpeedOutput(DifferentialDriveWheelSpeeds wheelSpeeds) {
-        final double leftSpeed = wheelSpeeds.leftMetersPerSecond;
-        final double rightSpeed = wheelSpeeds.rightMetersPerSecond;
-        leftLeadController.getPIDController().setReference(leftSpeed, ControlType.kVelocity);
-        rightLeadController.getPIDController().setReference(rightSpeed, ControlType.kVelocity);
-    }
-
-    // Human driving
-    public void tankDrive(double left, double right) {
+    /**
+     * 
+     * @param leftSpeed  left wheel velocity (m/s)
+     * @param rightSpeed right wheel velocity (m/s)
+     */
+    public void velocityTankDrive(double leftSpeed, double rightSpeed) {
         // Other controllers are followers
-        double leftOutput = left * MAX_SPEED;
-        double rightOutput = right * MAX_SPEED;
+        double leftOutput = leftSpeed * MAX_SPEED;
+        double rightOutput = rightSpeed * MAX_SPEED;
         SmartDashboard.putNumber("LEFT TARGET", leftOutput);
         SmartDashboard.putNumber("right target", rightOutput);
 
         leftLeadController.getPIDController().setReference(leftOutput, ControlType.kVelocity);
         rightLeadController.getPIDController().setReference(rightOutput, ControlType.kVelocity);
+    }
+
+    // Percent tank drive for regular joystik driving
+    public void tankDrive(double left, double right) {
+        leftLeadController.set(left);
+        rightLeadController.set(right);
     }
 
     public void stop() {
@@ -162,6 +158,6 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("left encoder", leftEncoder.getPosition());
         SmartDashboard.putNumber("right encoder", rightEncoder.getPosition());
         odometry.update(
-                gyro.getRotation2d(), getLeftEncoder().getPosition(), getRightEncoder().getPosition());
+                gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition());
     }
 }
