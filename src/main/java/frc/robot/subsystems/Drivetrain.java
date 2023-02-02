@@ -151,13 +151,6 @@ public class Drivetrain extends SubsystemBase {
         rightLeadController.getPIDController().setReference(rightOutput, ControlType.kVelocity);
     }
 
-    public void setSpeeds(double leftSpeed, double rightSpeed) {
-        final double leftFF = m_feedforward.calculate(leftSpeed);
-        final double rightFF = m_feedforward.calculate(rightSpeed);
-        leftLeadController.setVoltage(leftFF);
-        rightLeadController.setVoltage(rightFF);
-    }
-
     // Percent tank drive for regular joystik driving
     public void tankDrive(double left, double right) {
         leftLeadController.set(left);
