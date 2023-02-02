@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -7,9 +8,10 @@ import com.revrobotics.CANSparkMax.ControlType;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -30,19 +32,26 @@ public class Drivetrain extends SubsystemBase {
 
     private final DifferentialDriveOdometry odometry;
     private final Field2d field = new Field2d();
-    // Temporary fake gyro
-    final ADXRS450_Gyro gyro = new ADXRS450_Gyro(Port.kOnboardCS0);
+
+    // Temporary gyro
+    // final ADXRS450_Gyro gyro = new ADXRS450_Gyro(Port.kOnboardCS0);
+    AHRS gyro = new AHRS(SPI.Port.kMXP);
 
     RelativeEncoder leftEncoder;
     RelativeEncoder rightEncoder;
 
-    private static final double kF = 2.44;
+    // kV from characterization tool -> units of meters
+    private static final double kF = 1.24 * METERS_PER_REV;
+    // PID
     private static final double kP = 0;
     private static final double kI = 0;
     private static final double kD = 0;
 
+    // Feedforward
+    private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(1, 3);
+
     // Max speed in m/s
-    private static final double MAX_SPEED = 4;
+    public static final double MAX_SPEED = 4;
 
     // Robot track width 19"
     public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(19));
@@ -79,7 +88,9 @@ public class Drivetrain extends SubsystemBase {
         rightLeadController.getPIDController().setP(kP);
 
         SmartDashboard.putData("Field View", field);
+
         resetPose(new Pose2d(0, 0, new Rotation2d(0)));
+        gyro.reset();
     }
 
     // Odometry methods
@@ -99,6 +110,7 @@ public class Drivetrain extends SubsystemBase {
      * @return The pose.
      */
     public Pose2d getPose() {
+
         return odometry.getPoseMeters();
     }
 
@@ -132,11 +144,18 @@ public class Drivetrain extends SubsystemBase {
         // Other controllers are followers
         double leftOutput = leftSpeed * MAX_SPEED;
         double rightOutput = rightSpeed * MAX_SPEED;
-        SmartDashboard.putNumber("LEFT TARGET", leftOutput);
-        SmartDashboard.putNumber("right target", rightOutput);
+        SmartDashboard.putNumber("LEFT TARGET VELOCITY", leftOutput);
+        SmartDashboard.putNumber("right target VELOCITY", rightOutput);
 
         leftLeadController.getPIDController().setReference(leftOutput, ControlType.kVelocity);
         rightLeadController.getPIDController().setReference(rightOutput, ControlType.kVelocity);
+    }
+
+    public void setSpeeds(double leftSpeed, double rightSpeed) {
+        final double leftFF = m_feedforward.calculate(leftSpeed);
+        final double rightFF = m_feedforward.calculate(rightSpeed);
+        leftLeadController.setVoltage(leftFF);
+        rightLeadController.setVoltage(rightFF);
     }
 
     // Percent tank drive for regular joystik driving

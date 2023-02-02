@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,8 +18,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.autonomous.DriveForwardCommand;
-import frc.robot.commands.autonomous.FunScienceExpCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 
@@ -33,7 +30,7 @@ public class RobotContainer {
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   // Path planner
-  List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("New Path", new PathConstraints(0.2, 0.2));
+  List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("drivearound", new PathConstraints(2, 1));
   HashMap<String, Command> eventMap = new HashMap<>();
 
   // Create path planner auto builder
@@ -48,7 +45,8 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
 
     // Put autonomous chooser on dashboard
-    autoChooser.addOption("driveforward", new DriveForwardCommand(drivetrain));
+    autoChooser.addOption("new path", autoFollowPathCommand);
+
     SmartDashboard.putData(autoChooser);
     configureBindings();
   }
