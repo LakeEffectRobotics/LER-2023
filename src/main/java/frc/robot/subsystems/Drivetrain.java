@@ -40,10 +40,10 @@ public class Drivetrain extends SubsystemBase {
     RelativeEncoder leftEncoder;
     RelativeEncoder rightEncoder;
 
-    // kV from characterization tool -> units of meters
-    private static final double kF = 1.24 * METERS_PER_REV;
+    // kV from characterization tool , divide by 12 to get percentage
+    private static final double kF = 2.439 / 12;
     // PID
-    private static final double kP = 0;
+    private static final double kP = 0.16;
     private static final double kI = 0;
     private static final double kD = 0;
 
@@ -51,7 +51,7 @@ public class Drivetrain extends SubsystemBase {
     private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(1, 3);
 
     // Max speed in m/s
-    public final double MAX_SPEED = 4;
+    public final double MAX_SPEED = 4.5;
 
     // Robot track width 19"
     public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(19));
@@ -88,7 +88,7 @@ public class Drivetrain extends SubsystemBase {
         rightLeadController.getPIDController().setP(kP);
 
         SmartDashboard.putData("Field View", field);
-
+        SmartDashboard.putNumber("auto speed", 0);
         resetPose(new Pose2d(0, 0, new Rotation2d(0)));
         gyro.reset();
     }
@@ -170,8 +170,8 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Right velocity", rightEncoder.getVelocity());
         SmartDashboard.putNumber("Left velocity", leftEncoder.getVelocity());
 
-        SmartDashboard.putNumber("left encoder", leftEncoder.getPosition());
-        SmartDashboard.putNumber("right encoder", rightEncoder.getPosition());
+        SmartDashboard.putNumber("left position", leftEncoder.getPosition());
+        SmartDashboard.putNumber("right position", rightEncoder.getPosition());
         odometry.update(
                 gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition());
     }
