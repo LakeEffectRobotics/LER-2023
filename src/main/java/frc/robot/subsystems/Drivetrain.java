@@ -43,7 +43,7 @@ public class Drivetrain extends SubsystemBase {
     // kV from characterization tool , divide by 12 to get percentage
     private static final double kF = 2.439 / 12;
     // PID
-    private static final double kP = 0.16;
+    private static final double kP = 0.11;
     private static final double kI = 0;
     private static final double kD = 0;
 
@@ -51,7 +51,7 @@ public class Drivetrain extends SubsystemBase {
     private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(1, 3);
 
     // Max speed in m/s
-    public final double MAX_SPEED = 4.5;
+    public final double MAX_SPEED = 4;
 
     // Robot track width 19"
     public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(19));
