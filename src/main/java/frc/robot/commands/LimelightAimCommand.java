@@ -1,36 +1,30 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 
-public class AimCommand extends CommandBase {
+public class LimelightAimCommand extends CommandBase {
     Limelight limelight;
     Drivetrain drivetrain;
+    private PIDController pidController = new PIDController(0.01, 0.0, 0.0);
 
-    public AimCommand(Limelight limelight, Drivetrain drivetrain) {
+    public LimelightAimCommand(Limelight limelight, Drivetrain drivetrain) {
         this.limelight = limelight;
         this.drivetrain = drivetrain;
     }
 
     @Override
     public void initialize() {
+        pidController.setSetpoint(0);
     }
 
     @Override
     public void execute() {
-        double Kp = 0.06f;
         double heading_error = limelight.getX();
-        double steering_adjust = Kp * heading_error;
-        double min_command = 0.6f;
-
-        if (limelight.getX() > 1.0) {
-            steering_adjust = Kp * heading_error - min_command;
-        } else if (limelight.getX() < 1.0) {
-            steering_adjust = Kp * heading_error + min_command;
-        }
-
-        drivetrain.setOutput(steering_adjust, -steering_adjust);
+        double steering_adjust = pidController.calculate(heading_error);
+        drivetrain.tankDrive(-steering_adjust, steering_adjust);
     }
 
     @Override

@@ -6,7 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.commands.AimCommand;
+import frc.robot.commands.LimelightAimCommand;
+import frc.robot.commands.ApriltagAimCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
@@ -23,7 +24,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    OI.aimButton.onTrue(new AimCommand(limelight, drivetrain));
+    OI.aimButton.whileTrue(new ApriltagAimCommand(limelight, drivetrain));
 
   }
 
