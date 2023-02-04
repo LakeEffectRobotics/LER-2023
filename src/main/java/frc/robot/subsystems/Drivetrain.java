@@ -51,7 +51,7 @@ public class Drivetrain extends SubsystemBase {
     private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(1, 3);
 
     // Max speed in m/s
-    public static final double MAX_SPEED = 4;
+    public final double MAX_SPEED = 4;
 
     // Robot track width 19"
     public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(19));
@@ -141,14 +141,8 @@ public class Drivetrain extends SubsystemBase {
      * @param rightSpeed right wheel velocity (m/s)
      */
     public void velocityTankDrive(double leftSpeed, double rightSpeed) {
-        // Other controllers are followers
-        double leftOutput = leftSpeed * MAX_SPEED;
-        double rightOutput = rightSpeed * MAX_SPEED;
-        SmartDashboard.putNumber("LEFT TARGET VELOCITY", leftOutput);
-        SmartDashboard.putNumber("right target VELOCITY", rightOutput);
-
-        leftLeadController.getPIDController().setReference(leftOutput, ControlType.kVelocity);
-        rightLeadController.getPIDController().setReference(rightOutput, ControlType.kVelocity);
+        leftLeadController.getPIDController().setReference(leftSpeed, ControlType.kVelocity);
+        rightLeadController.getPIDController().setReference(rightSpeed, ControlType.kVelocity);
     }
 
     public void setSpeeds(double leftSpeed, double rightSpeed) {
