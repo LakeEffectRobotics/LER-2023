@@ -7,11 +7,9 @@ import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -46,9 +44,6 @@ public class Drivetrain extends SubsystemBase {
     private static final double kP = 0.11;
     private static final double kI = 0;
     private static final double kD = 0;
-
-    // Feedforward
-    private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(1, 3);
 
     // Max speed in m/s
     public final double MAX_SPEED = 4;
@@ -143,13 +138,6 @@ public class Drivetrain extends SubsystemBase {
     public void velocityTankDrive(double leftSpeed, double rightSpeed) {
         leftLeadController.getPIDController().setReference(leftSpeed, ControlType.kVelocity);
         rightLeadController.getPIDController().setReference(rightSpeed, ControlType.kVelocity);
-    }
-
-    public void setSpeeds(double leftSpeed, double rightSpeed) {
-        final double leftFF = m_feedforward.calculate(leftSpeed);
-        final double rightFF = m_feedforward.calculate(rightSpeed);
-        leftLeadController.setVoltage(leftFF);
-        rightLeadController.setVoltage(rightFF);
     }
 
     // Percent tank drive for regular joystik driving
