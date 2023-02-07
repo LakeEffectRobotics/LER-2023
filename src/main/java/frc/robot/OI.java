@@ -3,6 +3,7 @@ package frc.robot;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -16,6 +17,7 @@ public class OI {
     private static class PORTS {
         private static final int LEFT_STICK = 0;
         private static final int RIGHT_STICK = 1;
+        private static final int XBOX_CONTROLLER = 2;
     }
 
     /** Buttons on the driver sticks/controller */
@@ -25,13 +27,15 @@ public class OI {
 
     /** Buttons on the operator controller */
     private static class OPERATOR_MAP {
-
+        private static final int RESET_POSE_BUTTON = XboxController.Button.kA.value;
     }
 
     private static final Joystick leftJoystick = new Joystick(PORTS.LEFT_STICK);
     private static final Joystick rightJoystick = new Joystick(PORTS.RIGHT_STICK);
+    private static final XboxController xboxController = new XboxController(PORTS.XBOX_CONTROLLER);
 
     public static final Trigger aimButton = new JoystickButton(rightJoystick, DRIVER_MAP.AIM_BUTTON);
+    public static final Trigger resetPoseButton = new JoystickButton(xboxController, OPERATOR_MAP.RESET_POSE_BUTTON);
 
     // Supply processed drivetrain inputs
     public static DoubleSupplier leftDriveSupplier = () -> {

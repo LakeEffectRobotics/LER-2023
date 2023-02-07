@@ -16,9 +16,8 @@ import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.commands.LimelightAimCommand;
 import frc.robot.commands.ApriltagAimCommand;
+import frc.robot.commands.ApriltagPoseCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
@@ -56,7 +55,7 @@ public class RobotContainer {
   // Create button bindings
   private void configureBindings() {
     OI.aimButton.whileTrue(new ApriltagAimCommand(limelight, drivetrain));
-
+    OI.resetPoseButton.whileTrue(new ApriltagPoseCommand(limelight, drivetrain));
   }
 
   // Set autonomous command from dashboard choice
