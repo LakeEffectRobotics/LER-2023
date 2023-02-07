@@ -29,7 +29,7 @@ public class Drivetrain extends SubsystemBase {
     private static final double METERS_PER_REV = 0.15875 * Math.PI * (14 / 50.0) * (18 / 46.0);
 
     private final DifferentialDriveOdometry odometry;
-    private final Field2d field = new Field2d();
+    public final Field2d field = new Field2d();
 
     // Temporary gyro
     // final ADXRS450_Gyro gyro = new ADXRS450_Gyro(Port.kOnboardCS0);
@@ -105,7 +105,6 @@ public class Drivetrain extends SubsystemBase {
      * @return The pose.
      */
     public Pose2d getPose() {
-
         return odometry.getPoseMeters();
     }
 
@@ -118,16 +117,6 @@ public class Drivetrain extends SubsystemBase {
         resetEncoderPosition();
         odometry.resetPosition(
                 gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition(), pose);
-    }
-
-    // Arcade drive
-    /**
-     * @param speed    linear velocity (m/s)
-     * @param rotation angular velocity (rad/s)
-     */
-    public void arcadeDrive(double speed, double rotation) {
-        DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(speed, 0, rotation));
-        velocityTankDrive(wheelSpeeds.leftMetersPerSecond, wheelSpeeds.rightMetersPerSecond);
     }
 
     /**
