@@ -10,14 +10,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Limelight extends SubsystemBase {
   private NetworkTable table;
 
-  public Limelight() {
+  private static final int LIMELIGHT_PIPELINE = 0;
+  private static final int APRILTAG_PIPELINE = 1;
 
+  public Limelight() {
+    table = NetworkTableInstance.getDefault().getTable("limelight");
+    useApriltagPipeline();
   }
 
   @Override
   public void periodic() {
-    table = NetworkTableInstance.getDefault().getTable("limelight");
-
     SmartDashboard.putNumber("limelightX", getX());
     SmartDashboard.putNumber("LimelightY", getY());
   }
@@ -49,12 +51,19 @@ public class Limelight extends SubsystemBase {
   }
 
   /**
-   * Set the pipeline to use (apriltag or limelight)
+   * Make limelight look for apriltags
    * 
-   * @param pipeline
    */
-  public void setPipline(int pipeline) {
-    table.getEntry("pipeline").setInteger(pipeline);
+  public void useApriltagPipeline() {
+    table.getEntry("pipeline").setDouble(APRILTAG_PIPELINE);
+  }
+
+  /**
+   * Make limelight look for retroreflective
+   * 
+   */
+  public void useLimelightPipeline() {
+    table.getEntry("pipeline").setDouble(LIMELIGHT_PIPELINE);
   }
 
   /**
@@ -64,7 +73,7 @@ public class Limelight extends SubsystemBase {
   public Pose2d getPose() {
     if (isThereValidTarget()) {
       double[] pose = table.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
-      return new Pose2d(pose[0], pose[1], new Rotation2d(pose[2]));
+      return new Pose2d(pose[0], pose[1], new Rotation2d(pose[5]));
     } else {
       return null;
     }
