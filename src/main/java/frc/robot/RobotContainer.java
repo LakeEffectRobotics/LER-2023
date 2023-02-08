@@ -4,21 +4,13 @@
 
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.List;
-
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.auto.RamseteAutoBuilder;
-
-import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ApriltagAimCommand;
 import frc.robot.commands.ApriltagPoseCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.pathplannerUtils.CreatePathUtils;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 
@@ -27,26 +19,18 @@ public class RobotContainer {
   private Drivetrain drivetrain = new Drivetrain(RobotMap.leftController1, RobotMap.rightController1);
   public final Limelight limelight = new Limelight();
 
+  // path utils
+  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain);
+
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
-
-  // Path planner
-  List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("drivearound", new PathConstraints(2, 1));
-  HashMap<String, Command> eventMap = new HashMap<>();
-
-  // Create path planner auto builder
-  RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(drivetrain::getPose, drivetrain::resetPose,
-      new RamseteController(), drivetrain.kinematics, drivetrain::velocityTankDrive, eventMap, drivetrain);
-
-  // Create path command
-  Command autoFollowPathCommand = autoBuilder.fullAuto(pathGroup);
 
   // Create robotContainer
   public RobotContainer() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
 
     // Put autonomous chooser on dashboard
-    autoChooser.addOption("new path", autoFollowPathCommand);
+    autoChooser.addOption("new path", createPathUtils.CreatePathCommand("drivearound", 3, 2));
 
     SmartDashboard.putData(autoChooser);
     configureBindings();
