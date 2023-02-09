@@ -7,7 +7,7 @@ import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
 
 public class CurtisDriveCommand extends CommandBase {
-    
+
     Drivetrain drivetrain;
 
     public CurtisDriveCommand(Drivetrain drivetrain) {
@@ -23,11 +23,11 @@ public class CurtisDriveCommand extends CommandBase {
     @Override
     public void execute() {
         if (OI.curtisLeftButton.getAsBoolean()) {
-            drivetrain.setOutput(0.15, 0.2);
+            drivetrain.tankDrive(0.15, 0.2);
         } else if (OI.curtisRightButton.getAsBoolean()) {
-            drivetrain.setOutput(0.2, 0.15);
+            drivetrain.tankDrive(0.2, 0.15);
         } else {
-            drivetrain.setOutput(0.2, 0.2);
+            drivetrain.tankDrive(0.2, 0.2);
         }
     }
 
@@ -37,7 +37,7 @@ public class CurtisDriveCommand extends CommandBase {
     }
 
     @Override
-	public boolean isFinished() {
-		return false;
-	}
+    public boolean isFinished() {
+        return false;
+    }
 }
