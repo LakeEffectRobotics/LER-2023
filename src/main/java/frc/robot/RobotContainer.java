@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,7 +25,7 @@ public class RobotContainer {
   public final Limelight limelight = new Limelight();
 
   // path utils
-  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain);
+  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight);
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -40,10 +43,11 @@ public class RobotContainer {
 
   // Create button bindings
   private void configureBindings() {
-    OI.aimButton.whileTrue(new ApriltagAimCommand(limelight, drivetrain));
+    OI.aimButton.onTrue(
+        createPathUtils.createOntheflyPath(drivetrain.getPose(),
+            new Pose2d(new Translation2d(15.4, 6.5), new Rotation2d()), 0.5, 0.5));
     OI.resetPoseButton.whileTrue(new ApriltagPoseCommand(limelight, drivetrain));
     OI.curtisStraightButton.whileTrue(new CurtisDriveCommand(drivetrain));
-
   }
 
   // Set autonomous command from dashboard choice
