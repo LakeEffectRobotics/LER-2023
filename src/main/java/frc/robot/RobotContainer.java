@@ -39,6 +39,10 @@ public class RobotContainer {
 
     SmartDashboard.putData(autoChooser);
     configureBindings();
+
+    // Start pathplanner visualizer server
+    // DISABLE FOR COMPETITION to save on network
+    PathPlannerServer.startServer(5811);
   }
 
   // Create button bindings
