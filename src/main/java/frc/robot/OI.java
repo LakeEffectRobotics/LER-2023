@@ -27,7 +27,7 @@ public class OI {
     /** Buttons on the driver sticks/controller */
     private static class DRIVER_MAP {
         private static final int AIM_BUTTON = 1;
-        private static final int RIGHT_TRIGGER = 1;
+        private static final int RIGHT_TRIGGER = 6;
         private static final int RIGHT_LEFT_BUTTON = 5;
         private static final int RIGHT_RIGHT_BUTTON = 4;
     }

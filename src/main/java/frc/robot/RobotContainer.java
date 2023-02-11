@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.server.PathPlannerServer;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -35,7 +37,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
 
     // Put autonomous chooser on dashboard
-    autoChooser.addOption("new path", createPathUtils.createPathCommand("drivearound", 3, 2));
+    autoChooser.addOption("new path", createPathUtils.createPathCommand("drivearound", 2, 2));
 
     SmartDashboard.putData(autoChooser);
     configureBindings();
@@ -48,10 +50,10 @@ public class RobotContainer {
   // Create button bindings
   private void configureBindings() {
     OI.aimButton.onTrue(
-        createPathUtils.createOntheflyPath(drivetrain.getPose(),
-            new Pose2d(new Translation2d(15.4, 6.5), new Rotation2d()), 0.5, 0.5));
+        createPathUtils.createOntheflyPath(drivetrain::getPose,
+            new Pose2d(new Translation2d(15.3, 6.6), new Rotation2d()), 1, 1));
     OI.resetPoseButton.whileTrue(new ApriltagPoseCommand(limelight, drivetrain));
-    OI.curtisStraightButton.whileTrue(new CurtisDriveCommand(drivetrain));
+    // OI.curtisStraightButton.whileTrue(new CurtisDriveCommand(drivetrain));
   }
 
   // Set autonomous command from dashboard choice

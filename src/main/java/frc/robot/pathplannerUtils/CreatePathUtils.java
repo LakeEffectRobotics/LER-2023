@@ -1,6 +1,7 @@
 package frc.robot.pathplannerUtils;
 
 import java.util.HashMap;
+import java.util.function.Supplier;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -58,19 +59,8 @@ public class CreatePathUtils {
      * Create follow path command to move from current bot pose to a target pose
      * * @return
      */
-    public Command createOntheflyPath(Pose2d currentPose, Pose2d targetPose, double maxVelocity,
+    public Command createOntheflyPath(Supplier<Pose2d> currentPose, Pose2d targetPose, double maxVelocity,
             double maxAcceleration) {
-        // Get current bot pose
-        // Pose2d currentPose = drivetrain.getPose();
-
-        // Create new path to move from current pose to the given targetPose
-        PathPlannerTrajectory path = PathPlanner.generatePath(new PathConstraints(maxVelocity, maxAcceleration),
-                new PathPoint(currentPose.getTranslation(), currentPose.getRotation()),
-                new PathPoint(targetPose.getTranslation(),
-                        targetPose.getRotation()));
-
-        // Build and return path command
-        Command autoFollowPathCommand = autoBuilder.fullAuto(path);
-        return autoFollowPathCommand;
+        return new FollowOntheflyPathCommand(currentPose, targetPose, maxVelocity, maxAcceleration, autoBuilder);
     }
 }
