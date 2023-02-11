@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ApriltagAimCommand;
 import frc.robot.commands.ApriltagPoseCommand;
+import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.commands.CurtisDriveCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.pathplannerUtils.CreatePathUtils;
 import frc.robot.subsystems.Drivetrain;
@@ -40,6 +42,8 @@ public class RobotContainer {
   private void configureBindings() {
     OI.aimButton.whileTrue(new ApriltagAimCommand(limelight, drivetrain));
     OI.resetPoseButton.whileTrue(new ApriltagPoseCommand(limelight, drivetrain));
+    OI.curtisStraightButton.whileTrue(new CurtisDriveCommand(drivetrain));
+
   }
 
   // Set autonomous command from dashboard choice
