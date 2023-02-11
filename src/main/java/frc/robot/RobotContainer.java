@@ -32,7 +32,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
 
     // Put autonomous chooser on dashboard
-    autoChooser.addOption("new path", createPathUtils.CreatePathCommand("drivearound", 3, 2));
+    autoChooser.addOption("new path", createPathUtils.createPathCommand("drivearound", 3, 2));
 
     SmartDashboard.putData(autoChooser);
     configureBindings();
