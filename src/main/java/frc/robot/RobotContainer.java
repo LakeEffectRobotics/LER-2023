@@ -22,7 +22,7 @@ public class RobotContainer {
   public final Limelight limelight = new Limelight();
 
   // path utils
-  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain);
+  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight);
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
