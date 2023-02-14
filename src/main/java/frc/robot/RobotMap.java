@@ -29,6 +29,11 @@ public class RobotMap {
         
         // Wrist controller ID
         private static final int WRIST_CONTROLLER = 8;
+
+        // Telescope controllers
+        private static final int ARM_CONTROLLER_1 = 11;
+        private static final int ARM_CONTROLLER_2 = 12;
+
     }
 
     /**
@@ -65,6 +70,17 @@ public class RobotMap {
             
     // Wrist controller
     public static final CANSparkMax wristController = new CANSparkMax(CAN.WRIST_CONTROLLER, MotorType.kBrushless);
+    
+    // Arm motor controllers
+    public static final CANSparkMax armController1 = new CANSparkMax(CAN.ARM_CONTROLLER_1, MotorType.kBrushless);
+    public static final CANSparkMax armController2 = new CANSparkMax(CAN.ARM_CONTROLLER_2, MotorType.kBrushless);
+
+    // Arm solenoid channels PLACEHOLDERS
+    private static final int ARM_UP = 2;
+    private static final int ARM_DOWN = 3;
+
+    // Arm solenoid
+    public static DoubleSolenoid armSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, ARM_UP, ARM_DOWN);
 
     // Static initializer will be run on first reference to RobotMap
     static {
@@ -89,5 +105,9 @@ public class RobotMap {
         
         // Wrist use brake mode
         wristController.setIdleMode(IdleMode.kBrake);
+
+        // Arm motors
+        armController2.follow(armController1);
+        armController1.setInverted(true);
     }
 }
