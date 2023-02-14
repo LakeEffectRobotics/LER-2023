@@ -40,7 +40,9 @@ class FollowOntheflyPathCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        PathPlannerTrajectory path = PathPlanner.generatePath(new PathConstraints(maxVelocity, maxAcceleration),
+        PathPlannerTrajectory path = PathPlanner.loadPath("drivearound",
+                new PathConstraints(maxVelocity, maxAcceleration));
+        PathPlannerTrajectory onTheFlyPath = PathPlanner.generatePath(new PathConstraints(maxVelocity, maxAcceleration),
                 // new PathPoint(currentPose.get().getTranslation(),
                 // currentPose.get().getRotation()),
                 // temporary: try manual starting location test jitter
