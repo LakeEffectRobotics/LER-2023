@@ -25,6 +25,14 @@ public class Wrist extends SubsystemBase {
     private static final double MAX_OUTPUT = -1;
     private static final double MIN_OUTPUT = -1;
 
+    // Angle of the arm relative to horizontal ground (degrees)
+    // Currently a constant as arm prototype is stationary
+    private static final double ARM_ANGLE = 1.6;
+
+    // Function to convert from potentiometer volts to arm degrees above horizontal
+    private static final double VOLTS_TO_DEGREES_SLOPE = 97.73;
+    private static final double VOLTS_TO_DEGREES_CONSTANT = 113.7;
+
     public Wrist(CANSparkMax controller) {
         wristController = controller;
         forwardLimit = wristController.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
@@ -51,5 +59,10 @@ public class Wrist extends SubsystemBase {
      */
     public void goToPosition(double position) {
         pidController.setReference(position, ControlType.kPosition);
+    }
+
+    public double getAngle() {
+        double potVoltage = pot.getPosition();
+        return potVoltage * VOLTS_TO_DEGREES_SLOPE + VOLTS_TO_DEGREES_CONSTANT + ARM_ANGLE;
     }
 }
