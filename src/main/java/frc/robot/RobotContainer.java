@@ -26,13 +26,16 @@ import frc.robot.commands.SpitOutCommand;
 import frc.robot.commands.instant.CloseClawCommand;
 import frc.robot.commands.instant.OpenClawCommand;
 import frc.robot.subsystems.Claw;
+import frc.robot.commands.instant.SetArmAngleCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Wrist;
 
 public class RobotContainer {
 
   private Drivetrain drivetrain = new Drivetrain(RobotMap.leftController1, RobotMap.rightController1);
   public final Limelight limelight = new Limelight();
+  public final Wrist wrist = new Wrist(RobotMap.wristController);
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -56,6 +59,7 @@ public class RobotContainer {
 
     // Put autonomous chooser on dashboard
     autoChooser.addOption("new path", autoFollowPathCommand);
+    autoChooser.addOption("arm angle", new SetArmAngleCommand(wrist, 0));
 
     SmartDashboard.putData(autoChooser);
     configureBindings();
