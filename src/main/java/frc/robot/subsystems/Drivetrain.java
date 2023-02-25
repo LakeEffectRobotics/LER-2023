@@ -8,6 +8,8 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
@@ -24,7 +26,8 @@ public class Drivetrain extends SubsystemBase {
     // Stage 2 - 18:46
     private static final double METERS_PER_REV = 0.15875 * Math.PI * (14 / 50.0) * (18 / 46.0);
 
-    private final DifferentialDriveOdometry odometry;
+    private final DifferentialDrivePoseEstimator odometry;
+
     public final Field2d field = new Field2d();
 
     // Temporary gyro
@@ -57,9 +60,9 @@ public class Drivetrain extends SubsystemBase {
 
         resetEncoderPosition();
 
-        odometry = new DifferentialDriveOdometry(
-                gyro.getRotation2d(),
-                leftEncoder.getPosition(), rightEncoder.getPosition());
+        odometry = new DifferentialDrivePoseEstimator(kinematics, gyro.getRotation2d(), leftEncoder.getPosition(),
+                rightEncoder.getPosition(), new Pose2d(), VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+                VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
 
         // Setup unit conversions to get meters and meters/second
         leftLeadController.getEncoder().setPositionConversionFactor(METERS_PER_REV);
@@ -101,7 +104,7 @@ public class Drivetrain extends SubsystemBase {
      * @return The pose.
      */
     public Pose2d getPose() {
-        return odometry.getPoseMeters();
+        return odometry.getEstimatedPosition();
     }
 
     /**
@@ -145,6 +148,7 @@ public class Drivetrain extends SubsystemBase {
 
         SmartDashboard.putNumber("left position", leftEncoder.getPosition());
         SmartDashboard.putNumber("right position", rightEncoder.getPosition());
+
         odometry.update(
                 gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition());
     }
