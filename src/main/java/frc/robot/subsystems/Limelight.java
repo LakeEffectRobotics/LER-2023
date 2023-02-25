@@ -9,19 +9,26 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Limelight extends SubsystemBase {
   private NetworkTable table;
+  private Drivetrain drivetrain;
 
   private static final int LIMELIGHT_PIPELINE = 0;
   private static final int APRILTAG_PIPELINE = 1;
 
-  public Limelight() {
+  public Limelight(Drivetrain drivetrain) {
     table = NetworkTableInstance.getDefault().getTable("limelight");
     useApriltagPipeline();
+
+    this.drivetrain = drivetrain;
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("limelightX", getX());
     SmartDashboard.putNumber("LimelightY", getY());
+
+    if (getPose() != null) {
+      drivetrain.updateVisionOdometry(getPose());
+    }
   }
 
   public double getX() {

@@ -6,6 +6,8 @@ import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.VecBuilder;
@@ -91,6 +93,11 @@ public class Drivetrain extends SubsystemBase {
     public void updateOdometry() {
         odometry.update(
                 gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition());
+    }
+
+    public void updateVisionOdometry(Pose2d visionPose) {
+        // todo: add latency
+        odometry.addVisionMeasurement(visionPose, Timer.getFPGATimestamp());
     }
 
     public void resetEncoderPosition() {
