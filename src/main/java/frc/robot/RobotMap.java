@@ -31,8 +31,8 @@ public class RobotMap {
         private static final int WRIST_CONTROLLER = 8;
 
         // Telescope controllers
-        private static final int ARM_CONTROLLER_1 = 11;
-        private static final int ARM_CONTROLLER_2 = 12;
+        private static final int TELESCOPE_CONTROLLER_1 = 11;
+        private static final int TELESCOPE_CONTROLLER_2 = 12;
 
     }
 
@@ -72,15 +72,23 @@ public class RobotMap {
     public static final CANSparkMax wristController = new CANSparkMax(CAN.WRIST_CONTROLLER, MotorType.kBrushless);
     
     // Arm motor controllers
-    public static final CANSparkMax armController1 = new CANSparkMax(CAN.ARM_CONTROLLER_1, MotorType.kBrushless);
-    public static final CANSparkMax armController2 = new CANSparkMax(CAN.ARM_CONTROLLER_2, MotorType.kBrushless);
+    public static final CANSparkMax telescopeController1 = new CANSparkMax(CAN.TELESCOPE_CONTROLLER_1,
+            MotorType.kBrushless);
+    public static final CANSparkMax telescopeController2 = new CANSparkMax(CAN.TELESCOPE_CONTROLLER_2,
+            MotorType.kBrushless);
 
-    // Arm solenoid channels PLACEHOLDERS
-    private static final int ARM_UP = 2;
-    private static final int ARM_DOWN = 3;
+    // Arm solenoid channels
+    private static final int LEFT_ARM_UP = 2;
+    private static final int LEFT_ARM_DOWN = 3;
 
+    private static final int RIGHT_ARM_UP = 2;
+    private static final int RIGHT_ARM_DOWN = 3;
     // Arm solenoid
-    public static DoubleSolenoid armSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, ARM_UP, ARM_DOWN);
+    public static DoubleSolenoid leftArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, LEFT_ARM_UP,
+            LEFT_ARM_DOWN);
+
+    public static DoubleSolenoid rightArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, RIGHT_ARM_UP,
+            RIGHT_ARM_DOWN);
 
     // Static initializer will be run on first reference to RobotMap
     static {
@@ -107,7 +115,7 @@ public class RobotMap {
         wristController.setIdleMode(IdleMode.kBrake);
 
         // Arm motors
-        armController2.follow(armController1);
-        armController1.setInverted(true);
+        telescopeController2.follow(telescopeController1);
+        telescopeController1.setInverted(true);
     }
 }

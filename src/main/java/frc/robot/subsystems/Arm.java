@@ -15,7 +15,9 @@ public class Arm extends SubsystemBase {
     private SparkMaxLimitSwitch forwardLimit;
     private SparkMaxLimitSwitch reverseLimit;
 
-    DoubleSolenoid solenoid;
+    DoubleSolenoid leftSolenoid;
+    DoubleSolenoid rightSolenoid;
+
     ArmPosition currentPosition;
 
     SparkMaxPIDController pidController;
@@ -27,10 +29,12 @@ public class Arm extends SubsystemBase {
     private static final double MAX_OUTPUT = 1;
     private static final double MIN_OUTPUT = -1;
 
-    public Arm(CANSparkMax controller1, CANSparkMax controller2, DoubleSolenoid solenoid) {
+    public Arm(CANSparkMax controller1, CANSparkMax controller2, DoubleSolenoid leftSolenoid,
+            DoubleSolenoid rightSolenoid) {
         this.telescopeController1 = controller1;
         this.telescopeController2 = controller2;
-        this.solenoid = solenoid;
+        this.leftSolenoid = leftSolenoid;
+        this.rightSolenoid = rightSolenoid;
 
         // set PID constants
         pidController = telescopeController1.getPIDController();
@@ -69,7 +73,8 @@ public class Arm extends SubsystemBase {
      */
     public void setArmAngle(ArmPosition position) {
         currentPosition = position;
-        solenoid.set(position.value);
+        leftSolenoid.set(position.value);
+        rightSolenoid.set(position.value);
     }
 
     /**
