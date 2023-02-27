@@ -71,10 +71,18 @@ public class Arm extends SubsystemBase {
      * 
      * @param position Arm up, down, or neutral
      */
-    public void setArmAngle(ArmPosition position) {
+    public void setArmPosition(ArmPosition position) {
         currentPosition = position;
         leftSolenoid.set(position.value);
         rightSolenoid.set(position.value);
+    }
+
+    public void raiseArm() {
+        setArmPosition(ArmPosition.UP);
+    }
+
+    public void lowerArm() {
+        setArmPosition(ArmPosition.NEUTRAL);
     }
 
     /**
