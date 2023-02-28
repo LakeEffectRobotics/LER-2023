@@ -82,7 +82,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void lowerArm() {
-        setArmPosition(ArmPosition.NEUTRAL);
+        setArmPosition(ArmPosition.DOWN);
     }
 
     /**

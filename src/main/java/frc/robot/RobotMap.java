@@ -78,16 +78,16 @@ public class RobotMap {
             MotorType.kBrushless);
 
     // Arm solenoid channels
-    private static final int LEFT_ARM_UP = 2;
-    private static final int LEFT_ARM_DOWN = 3;
+    private static final int LEFT_ARM_UP = 3;
+    private static final int LEFT_ARM_DOWN = 7;
 
-    private static final int RIGHT_ARM_UP = 2;
-    private static final int RIGHT_ARM_DOWN = 3;
+    private static final int RIGHT_ARM_UP = 1;
+    private static final int RIGHT_ARM_DOWN = 5;
     // Arm solenoid
-    public static DoubleSolenoid leftArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, LEFT_ARM_UP,
+    public static DoubleSolenoid leftArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, LEFT_ARM_UP,
             LEFT_ARM_DOWN);
 
-    public static DoubleSolenoid rightArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, RIGHT_ARM_UP,
+    public static DoubleSolenoid rightArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RIGHT_ARM_UP,
             RIGHT_ARM_DOWN);
 
     // Static initializer will be run on first reference to RobotMap
