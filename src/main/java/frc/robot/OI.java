@@ -37,6 +37,8 @@ public class OI {
         private static final int OPEN_CLAW_BUTTON = XboxController.Button.kA.value;
         private static final int CLOSE_CLAW_BUTTON = XboxController.Button.kB.value;
         private static final int SPIN_INTAKE_BUTTON = XboxController.Button.kX.value;
+        private static final int SPIT_OUT_BUTTON = XboxController.Button.kY.value;
+
     }
 
     private static final XboxController xboxController = new XboxController(PORTS.XBOX_CONTROLLER);
@@ -54,8 +56,11 @@ public class OI {
     public static final Trigger openClawButton = new JoystickButton(xboxController, OPERATOR_MAP.OPEN_CLAW_BUTTON);
     public static final Trigger closeClawButton = new JoystickButton(xboxController,
             OPERATOR_MAP.CLOSE_CLAW_BUTTON);
+
     public static final Trigger spinIntakeButton = new JoystickButton(xboxController,
             OPERATOR_MAP.SPIN_INTAKE_BUTTON);
+    public static final Trigger spitOutButton = new JoystickButton(xboxController,
+            OPERATOR_MAP.SPIT_OUT_BUTTON);
 
     // Supply processed drivetrain inputs
     public static DoubleSupplier leftDriveSupplier = () -> {

@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.CurtisDriveCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.SpinIntakeCommand;
+import frc.robot.commands.SpitOutCommand;
 import frc.robot.commands.instant.CloseClawCommand;
 import frc.robot.commands.instant.OpenClawCommand;
 import frc.robot.subsystems.Claw;
@@ -68,6 +69,7 @@ public class RobotContainer {
     OI.openClawButton.onTrue(new OpenClawCommand(claw));
     OI.closeClawButton.onTrue(new CloseClawCommand(claw));
     OI.spinIntakeButton.whileTrue(new SpinIntakeCommand(claw));
+    OI.spitOutButton.whileTrue(new SpitOutCommand(claw));
   }
 
   // Set autonomous command from dashboard choice
