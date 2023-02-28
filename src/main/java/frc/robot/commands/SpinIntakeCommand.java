@@ -16,6 +16,11 @@ public class SpinIntakeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        claw.setSpeed(1);
+        claw.setSpeed(-1);
+    }
+
+    @Override
+    public void end(boolean isInterrupted) {
+        claw.setSpeed(0);
     }
 }
