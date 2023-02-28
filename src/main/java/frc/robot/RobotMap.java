@@ -1,9 +1,9 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
@@ -24,8 +24,8 @@ public class RobotMap {
         private static final int RIGHT_CONTROLLER_2 = 3;
         private static final int RIGHT_CONTROLLER_3 = 4;
 
-        private static final int LEFT_CLAW_CONTROLLER = 8;
-        private static final int RIGHT_CLAW_CONTROLLER = 9;
+        private static final int LEFT_CLAW_CONTROLLER = 9;
+        private static final int RIGHT_CLAW_CONTROLLER = 10;
     }
 
     // Left and right drive controllers
@@ -42,11 +42,17 @@ public class RobotMap {
     public static final CANSparkMax rightClawController = new CANSparkMax(CAN.RIGHT_CLAW_CONTROLLER,
             MotorType.kBrushless);
 
-    // Solenoids - placeholder values
-    private static final int CLAW_OPEN = 0;
-    private static final int CLAW_CLOSED = 1;
+    // Solenoids
+    private static final int LEFT_CLAW_OPEN = 2;
+    private static final int LEFT_CLAW_CLOSED = 6;
 
-    public static DoubleSolenoid clawSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, CLAW_OPEN, CLAW_CLOSED);
+    private static final int RIGHT_CLAW_OPEN = 0;
+    private static final int RIGHT_CLAW_CLOSED = 4;
+
+    public static DoubleSolenoid leftClawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, LEFT_CLAW_OPEN,
+            LEFT_CLAW_CLOSED);
+    public static DoubleSolenoid rightClawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RIGHT_CLAW_OPEN,
+            RIGHT_CLAW_CLOSED);
 
     // Static initializer will be run on first reference to RobotMap
     static {
@@ -66,6 +72,7 @@ public class RobotMap {
         rightController1.setOpenLoopRampRate(0.15);
 
         // Claw motors
-        leftClawController.setInverted(true);
+        leftClawController.setIdleMode(IdleMode.kBrake);
+        rightClawController.setIdleMode(IdleMode.kBrake);
     }
 }

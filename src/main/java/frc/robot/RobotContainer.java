@@ -43,7 +43,8 @@ public class RobotContainer {
   // Create path planner auto builder
   RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(drivetrain::getPose, drivetrain::resetPose,
       new RamseteController(), drivetrain.kinematics, drivetrain::velocityTankDrive, eventMap, drivetrain);
-  private Claw claw = new Claw(RobotMap.leftClawController, RobotMap.rightClawController, RobotMap.clawSolenoid);
+  private Claw claw = new Claw(RobotMap.leftClawController, RobotMap.rightClawController, RobotMap.leftClawSolenoid,
+      RobotMap.rightClawSolenoid);
 
   // Create path command
   Command autoFollowPathCommand = autoBuilder.fullAuto(pathGroup);

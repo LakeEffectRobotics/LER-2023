@@ -9,14 +9,16 @@ public class Claw extends SubsystemBase {
     CANSparkMax leftController;
     CANSparkMax rightController;
 
-    DoubleSolenoid solenoid;
+    DoubleSolenoid rightSolenoid;
+    DoubleSolenoid leftSolenoid;
 
     Position currentPosition;
 
-    public Claw(CANSparkMax leftController, CANSparkMax rightController, DoubleSolenoid solenoid) {
+    public Claw(CANSparkMax leftController, CANSparkMax rightController, DoubleSolenoid leftSolenoid, DoubleSolenoid rightSolenoid) {
         this.leftController = leftController;
         this.rightController = rightController;
-        this.solenoid = solenoid;
+        this.rightSolenoid = rightSolenoid;
+        this.leftSolenoid = leftSolenoid;
     }
 
     public enum Position {
@@ -44,7 +46,8 @@ public class Claw extends SubsystemBase {
     // Solenoids
     public void setPosition(Position position) {
         currentPosition = position;
-        solenoid.set(position.value);
+        rightSolenoid.set(position.value);
+        leftSolenoid.set(position.value);
     }
 
     public Position getPosition() {
