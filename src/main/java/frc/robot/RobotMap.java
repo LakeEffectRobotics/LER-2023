@@ -28,6 +28,18 @@ public class RobotMap {
         private static final int RIGHT_CLAW_CONTROLLER = 10;
     }
 
+    /**
+     * Inner class to hold pneumatic IDs
+     */
+    private class PCM {
+        // Claw solenoids
+        private static final int LEFT_CLAW_OPEN = 2;
+        private static final int LEFT_CLAW_CLOSED = 6;
+
+        private static final int RIGHT_CLAW_OPEN = 0;
+        private static final int RIGHT_CLAW_CLOSED = 4;
+    }
+
     // Left and right drive controllers
     public static final CANSparkMax leftController1 = new CANSparkMax(CAN.LEFT_CONTROLLER_1, MotorType.kBrushless);
     public static final CANSparkMax leftController2 = new CANSparkMax(CAN.LEFT_CONTROLLER_2, MotorType.kBrushless);
@@ -42,17 +54,11 @@ public class RobotMap {
     public static final CANSparkMax rightClawController = new CANSparkMax(CAN.RIGHT_CLAW_CONTROLLER,
             MotorType.kBrushless);
 
-    // Solenoids
-    private static final int LEFT_CLAW_OPEN = 2;
-    private static final int LEFT_CLAW_CLOSED = 6;
 
-    private static final int RIGHT_CLAW_OPEN = 0;
-    private static final int RIGHT_CLAW_CLOSED = 4;
-
-    public static DoubleSolenoid leftClawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, LEFT_CLAW_OPEN,
-            LEFT_CLAW_CLOSED);
-    public static DoubleSolenoid rightClawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RIGHT_CLAW_OPEN,
-            RIGHT_CLAW_CLOSED);
+    public static DoubleSolenoid leftClawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PCM.LEFT_CLAW_OPEN,
+            PCM.LEFT_CLAW_CLOSED);
+    public static DoubleSolenoid rightClawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PCM.RIGHT_CLAW_OPEN,
+            PCM.RIGHT_CLAW_CLOSED);
 
     // Static initializer will be run on first reference to RobotMap
     static {
