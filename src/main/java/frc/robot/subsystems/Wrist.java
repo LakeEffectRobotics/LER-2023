@@ -110,5 +110,13 @@ public class Wrist extends SubsystemBase {
         SmartDashboard.putNumber("wrist current angle", getCurrentAngle());
         SmartDashboard.putNumber("wrist current volts", pot.getPosition());
 
+        // Let gravity lower arm to ground instead of slamming:
+        // Stop pidcontroller if target angle is low, and arm is low enough to fall naturally
+        if (getCurrentAngle() < 0 && targetAngle < -15) {
+            wristController.set(0);
+        } else {
+            // Otherwise, continuously set wrist pid to target angle (must be continuous to update feedforward as angle changes)
+            pidController.setReference(convertAngleToVolts(targetAngle), ControlType.kPosition, 0, getArbitraryFeedforward());
+        }
     }
 }
