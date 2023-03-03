@@ -68,14 +68,6 @@ public class Wrist extends SubsystemBase {
 
     /**
      * 
-     * @param position -1 to 1
-     */
-    public void goToPosition(double position) {
-        pidController.setReference(position, ControlType.kPosition);
-    }
-
-    /**
-     * 
      * @return current wrist angle relative to horizontal (degrees)
      */
     public double getCurrentAngle() {
