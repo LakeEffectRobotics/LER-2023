@@ -31,6 +31,8 @@ public class Wrist extends SubsystemBase {
     private static final double ARM_ANGLE = 1.6;
 
     // Function to convert from potentiometer volts to arm degrees above horizontal
+    // Slope: degrees per volt
+    // Constant: the degrees value at volts = 0
     private static final double VOLTS_TO_DEGREES_SLOPE = 67.95;
     private static final double VOLTS_TO_DEGREES_CONSTANT = -82.16;
 
@@ -39,7 +41,7 @@ public class Wrist extends SubsystemBase {
     private static final double GRAVITY_COMPENSATION = 0.075 * 12;
 
     // Wrist angle
-    private double angle = 0;
+    private double targetAngle;
 
     public Wrist(CANSparkMax controller) {
         wristController = controller;
@@ -61,7 +63,7 @@ public class Wrist extends SubsystemBase {
         pidController.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 
         // Initialize angle to where wrist is so it doesn't try to move on enable
-        angle = getAngle();
+        targetAngle = getCurrentAngle();
     }
 
     /**
@@ -72,38 +74,40 @@ public class Wrist extends SubsystemBase {
         pidController.setReference(position, ControlType.kPosition);
     }
 
-    public double getAngle() {
+    /**
+     * 
+     * @return current wrist angle relative to horizontal (degrees)
+     */
+    public double getCurrentAngle() {
         double potVoltage = pot.getPosition();
         return potVoltage * VOLTS_TO_DEGREES_SLOPE + VOLTS_TO_DEGREES_CONSTANT + ARM_ANGLE;
     }
 
     public double convertAngleToVolts(double angle) {
+        // I hate algebra
         return angle * (1 / VOLTS_TO_DEGREES_SLOPE) - VOLTS_TO_DEGREES_CONSTANT * (1 / VOLTS_TO_DEGREES_SLOPE);
     }
 
     /**
      * 
-     * @param angle degrees
+     * @param angle desired degrees above horizontal
      */
-    public void setAngle(double angle) { // abc1239+10=21 road work ahead, i sure hope it does. David was here.......
-        this.angle = angle;
+    public void setTargetAngle(double angle) { // abc1239+10=21 road work ahead, i sure hope it does. David was here.......
+        this.targetAngle = angle;
     }
 
     private double getArbitraryFeedforward() {
-        // Gravity compensation constant * cos(current angle)
-        return GRAVITY_COMPENSATION * Math.cos(Math.toRadians(getAngle()));
+        // Return volts needed to "cancel out" gravity: (Gravity compensation constant) * cos(current angle)
+        return GRAVITY_COMPENSATION * Math.cos(Math.toRadians(getCurrentAngle()));
     }
 
     @Override
     public void periodic() {
-        // Wrist PID is always being set to the given angle. Wrist is never floppy
-        pidController.setReference(convertAngleToVolts(angle), ControlType.kPosition, 0, getArbitraryFeedforward());
-
-        SmartDashboard.putNumber("wrist target angle", angle);
-        SmartDashboard.putNumber("wrist target volts", convertAngleToVolts(angle));
+        SmartDashboard.putNumber("wrist target angle", targetAngle);
+        SmartDashboard.putNumber("wrist target volts", convertAngleToVolts(targetAngle));
         SmartDashboard.putNumber("wrist AFF", getArbitraryFeedforward());
 
-        SmartDashboard.putNumber("wrist current angle", getAngle());
+        SmartDashboard.putNumber("wrist current angle", getCurrentAngle());
         SmartDashboard.putNumber("wrist current volts", pot.getPosition());
 
     }

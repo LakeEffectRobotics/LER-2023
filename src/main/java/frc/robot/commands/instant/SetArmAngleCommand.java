@@ -14,7 +14,7 @@ public class SetArmAngleCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        wrist.setAngle(angle);
+        wrist.setTargetAngle(angle);
     }
 
 }
