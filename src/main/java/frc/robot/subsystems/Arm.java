@@ -68,21 +68,23 @@ public class Arm extends SubsystemBase {
     }
 
     /**
-     * 
-     * @param position Arm up, down, or neutral
+     * Extend both arm pistons
      */
-    public void setArmPosition(ArmPosition position) {
-        currentPosition = position;
-        leftSolenoid.set(position.value);
-        rightSolenoid.set(position.value);
-    }
-
     public void raiseArm() {
-        setArmPosition(ArmPosition.UP);
+        currentPosition = ArmPosition.UP;
+
+        leftSolenoid.set(ArmPosition.UP.value);
+        rightSolenoid.set(ArmPosition.UP.value);
     }
 
+    /**
+     * Release both arm pistons
+     */
     public void lowerArm() {
-        setArmPosition(ArmPosition.DOWN);
+        currentPosition = ArmPosition.DOWN;
+
+        leftSolenoid.set(ArmPosition.DOWN.value);
+        rightSolenoid.set(ArmPosition.DOWN.value);
     }
 
     /**
