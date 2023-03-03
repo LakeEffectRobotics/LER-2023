@@ -20,22 +20,23 @@ public class Wrist extends SubsystemBase {
     private SparkMaxPIDController pidController;
 
     private static final double kF = 0;
-    private static final double kP = 0;
+    private static final double kP = 0.45;
     private static final double kI = 0;
     private static final double kD = 0;
-    private static final double MAX_OUTPUT = 1;
-    private static final double MIN_OUTPUT = -1;
+    private static final double MAX_OUTPUT = 0.4;
+    private static final double MIN_OUTPUT = -0.2;
 
     // Angle of the arm relative to horizontal ground (degrees)
     // Currently a constant as arm prototype is stationary
     private static final double ARM_ANGLE = 1.6;
 
     // Function to convert from potentiometer volts to arm degrees above horizontal
-    private static final double VOLTS_TO_DEGREES_SLOPE = 97.73;
-    private static final double VOLTS_TO_DEGREES_CONSTANT = -113.7;
+    private static final double VOLTS_TO_DEGREES_SLOPE = 67.95;
+    private static final double VOLTS_TO_DEGREES_CONSTANT = -82.16;
 
     // Voltage required to hold arm up at horizontal
-    private static final double GRAVITY_COMPENSATION = 0.1 * 12;
+    // 0.075 is the experimentally determined motor percentage that does that
+    private static final double GRAVITY_COMPENSATION = 0.075 * 12;
 
     // Wrist angle
     private double angle = 0;
@@ -77,7 +78,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public double convertAngleToVolts(double angle) {
-        return angle * (1 / VOLTS_TO_DEGREES_SLOPE) + VOLTS_TO_DEGREES_CONSTANT * (1 / VOLTS_TO_DEGREES_SLOPE);
+        return angle * (1 / VOLTS_TO_DEGREES_SLOPE) - VOLTS_TO_DEGREES_CONSTANT * (1 / VOLTS_TO_DEGREES_SLOPE);
     }
 
     /**
