@@ -30,12 +30,17 @@ import frc.robot.commands.instant.SetWristAngleCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Wrist;
+import frc.robot.commands.GyroCommand;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Gyro;
 
 public class RobotContainer {
 
   private Drivetrain drivetrain = new Drivetrain(RobotMap.leftController1, RobotMap.rightController1);
   public final Limelight limelight = new Limelight();
   public final Wrist wrist = new Wrist(RobotMap.wristController);
+  private Gyro gyro = new Gyro();
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -56,6 +61,7 @@ public class RobotContainer {
   // Create robotContainer
   public RobotContainer() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
+    gyro.setDefaultCommand(new GyroCommand(gyro));
 
     // Put autonomous chooser on dashboard
     autoChooser.addOption("new path", autoFollowPathCommand);
