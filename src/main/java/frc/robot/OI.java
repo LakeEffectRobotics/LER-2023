@@ -34,10 +34,19 @@ public class OI {
 
     /** Buttons on the operator controller */
     private static class OPERATOR_MAP {
-        private static final int OPEN_CLAW_BUTTON = XboxController.Button.kA.value;
-        private static final int CLOSE_CLAW_BUTTON = XboxController.Button.kB.value;
-        private static final int SPIN_INTAKE_BUTTON = XboxController.Button.kX.value;
-        private static final int SPIT_OUT_BUTTON = XboxController.Button.kY.value;
+        private static final int GROUND_BUTTON = XboxController.Button.kA.value;
+        private static final int LOADING_STATION_BUTTON = XboxController.Button.kB.value;
+        private static final int SCORE_POSITION_BUTTON = XboxController.Button.kX.value;
+        private static final int TRANSPORT_BUTTON = XboxController.Button.kY.value;
+
+        private static final int SPIT_OUT_BUTTON = XboxController.Axis.kLeftTrigger.value;
+        private static final int OPEN_CLAW_BUTOTN = XboxController.Button.kLeftBumper.value;
+
+        private static final int SPIN_IN_BUTTON = XboxController.Axis.kRightTrigger.value;
+        private static final int CLOSE_CLAW_BUTTON = XboxController.Button.kRightBumper.value;
+
+       // private static final int SCORING_HEIGHT_SELECTION = XboxController.Axis.;
+      //  private static final int GROUND_BUTTON = XboxController.Button.kA.value;
 
     }
 
@@ -52,10 +61,20 @@ public class OI {
     public static final JoystickButton curtisRightButton = new JoystickButton(rightJoystick,
             DRIVER_MAP.RIGHT_RIGHT_BUTTON);
 
-    // Buttons
-    public static final Trigger openClawButton = new JoystickButton(xboxController, OPERATOR_MAP.OPEN_CLAW_BUTTON);
-    public static final Trigger closeClawButton = new JoystickButton(xboxController,
-            OPERATOR_MAP.CLOSE_CLAW_BUTTON);
+    // Operator xbox controller
+    public static final Trigger transportButton = new JoystickButton(xboxController, OPERATOR_MAP.TRANSPORT_BUTTON);
+    public static final Trigger loadingStationButton = new JoystickButton(xboxController, OPERATOR_MAP.LOADING_STATION_BUTTON);
+    public static final Trigger scorePositionButton = new JoystickButton(xboxController, OPERATOR_MAP.SCORE_POSITION_BUTTON);
+    public static final Trigger groundIntakeButton = new JoystickButton(xboxController, OPERATOR_MAP.GROUND_BUTTON);
+
+    public static final Trigger spitOutButton = new JoystickButton(xboxController, OPERATOR_MAP.SPIT_OUT_BUTTON);
+    public static final Trigger openClawButton = new JoystickButton(xboxController, OPERATOR_MAP.OPEN_CLAW_BUTOTN);
+
+    public static final Trigger spinInButton= new JoystickButton(xboxController, OPERATOR_MAP.SPIN_IN_BUTTON);
+    public static final Trigger closeClawButton = new JoystickButton(xboxController, OPERATOR_MAP.CLOSE_CLAW_BUTTON);
+
+    //public static final Trigger groundIntakeButton = new JoystickButton(xboxController, OPERATOR_MAP.GROUND_BUTTON);
+   // public static final Trigger groundIntakeButton = new JoystickButton(xboxController, OPERATOR_MAP.GROUND_BUTTON);
 
     public static final Trigger spinIntakeButton = new JoystickButton(xboxController,
             OPERATOR_MAP.SPIN_INTAKE_BUTTON);
