@@ -43,6 +43,12 @@ public class Wrist extends SubsystemBase {
     // Wrist angle
     private double targetAngle;
 
+    public static final double TRANSPORT = 80;
+    //PLACEHOLDER VALUE
+    public static final double LOADING_STATION = 0;
+    public static final double GROUND = -40;
+    public static final double SCORE_CONE = 0;
+
     public Wrist(CANSparkMax controller) {
         wristController = controller;
         forwardLimit = wristController.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
