@@ -76,10 +76,6 @@ public class OI {
     //public static final Trigger groundIntakeButton = new JoystickButton(xboxController, OPERATOR_MAP.GROUND_BUTTON);
    // public static final Trigger groundIntakeButton = new JoystickButton(xboxController, OPERATOR_MAP.GROUND_BUTTON);
 
-    public static final Trigger spinIntakeButton = new JoystickButton(xboxController,
-            OPERATOR_MAP.SPIN_INTAKE_BUTTON);
-    public static final Trigger spitOutButton = new JoystickButton(xboxController,
-            OPERATOR_MAP.SPIT_OUT_BUTTON);
 
     // Supply processed drivetrain inputs
     public static DoubleSupplier leftDriveSupplier = () -> {
