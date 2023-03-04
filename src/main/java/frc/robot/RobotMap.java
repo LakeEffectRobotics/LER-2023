@@ -26,6 +26,9 @@ public class RobotMap {
 
         private static final int LEFT_CLAW_CONTROLLER = 9;
         private static final int RIGHT_CLAW_CONTROLLER = 10;
+        
+        // Wrist controller ID
+        private static final int WRIST_CONTROLLER = 8;
     }
 
     /**
@@ -59,6 +62,9 @@ public class RobotMap {
             PCM.LEFT_CLAW_CLOSED);
     public static DoubleSolenoid rightClawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PCM.RIGHT_CLAW_OPEN,
             PCM.RIGHT_CLAW_CLOSED);
+            
+    // Wrist controller
+    public static final CANSparkMax wristController = new CANSparkMax(CAN.WRIST_CONTROLLER, MotorType.kBrushless);
 
     // Static initializer will be run on first reference to RobotMap
     static {
@@ -80,5 +86,8 @@ public class RobotMap {
         // Claw motors
         leftClawController.setIdleMode(IdleMode.kBrake);
         rightClawController.setIdleMode(IdleMode.kBrake);
+        
+        // Wrist use brake mode
+        wristController.setIdleMode(IdleMode.kBrake);
     }
 }
