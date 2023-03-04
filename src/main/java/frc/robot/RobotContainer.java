@@ -81,8 +81,8 @@ public class RobotContainer {
 
     OI.openClawButton.onTrue(new OpenClawCommand(claw));
     OI.closeClawButton.onTrue(new CloseClawCommand(claw));
-    OI.spinInButton.whileTrue(new SpinIntakeCommand(claw));
-    OI.spitOutButton.whileTrue(new SpitOutCommand(claw));
+    OI.spinInButton.whileTrue(new SpinIntakeCommand(claw, OI.clawInSpeedSupplier));
+    OI.spitOutButton.whileTrue(new SpitOutCommand(claw, OI.clawOutSpeedSupplier));
   }
 
   // Set autonomous command from dashboard choice

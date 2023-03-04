@@ -1,13 +1,24 @@
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Claw;
 
 public class SpitOutCommand extends CommandBase {
+    
     Claw claw;
-
-    public SpitOutCommand(Claw claw) {
+    DoubleSupplier speedSupplier;
+    
+    /**
+     * Create a new SpinIntakeCommand
+     * @param claw Claw subsystem
+     * @param speedSupplier Double supplier for intake speed, in %. +ve spins out
+     */
+    public SpitOutCommand(Claw claw, DoubleSupplier speedSupplier) {
+        this.addRequirements(claw);
         this.claw = claw;
+        this.speedSupplier = speedSupplier;
     }
 
     @Override
@@ -16,7 +27,7 @@ public class SpitOutCommand extends CommandBase {
 
     @Override
     public void execute() {
-        claw.setSpeed(1);
+        claw.setSpeed(speedSupplier.getAsDouble());
     }
 
     @Override

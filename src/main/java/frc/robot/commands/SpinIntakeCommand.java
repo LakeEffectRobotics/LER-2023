@@ -1,13 +1,24 @@
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Claw;
 
 public class SpinIntakeCommand extends CommandBase {
+    
     Claw claw;
+    DoubleSupplier speedSupplier;
 
-    public SpinIntakeCommand(Claw claw) {
+    /**
+     * Create a new SpinIntakeCommand
+     * @param claw Claw subsystem
+     * @param speedSupplier Double supplier for intake speed, in %. +ve spins in
+     */
+    public SpinIntakeCommand(Claw claw, DoubleSupplier speedSupplier) {
+        addRequirements(claw);
         this.claw = claw;
+        this.speedSupplier = speedSupplier;
     }
 
     @Override
@@ -16,7 +27,7 @@ public class SpinIntakeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        claw.setSpeed(-1);
+        claw.setSpeed(-speedSupplier.getAsDouble());
     }
 
     @Override
