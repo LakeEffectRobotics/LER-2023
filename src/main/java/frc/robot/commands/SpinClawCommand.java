@@ -5,7 +5,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Claw;
 
-public class SpinIntakeCommand extends CommandBase {
+public class SpinClawCommand extends CommandBase {
     
     /**
      * Claw spin direction
@@ -38,7 +38,7 @@ public class SpinIntakeCommand extends CommandBase {
      * @param claw Claw subsystem
      * @param speedSupplier Double supplier for intake speed, in %. +ve spins out, -ve spins in
      */
-    public SpinIntakeCommand(Claw claw, DoubleSupplier speedSupplier) {
+    public SpinClawCommand(Claw claw, DoubleSupplier speedSupplier) {
         addRequirements(claw);
         this.claw = claw;
         this.speedSupplier = speedSupplier;
@@ -50,7 +50,7 @@ public class SpinIntakeCommand extends CommandBase {
      * @param direction Direction for +ve spin
      * @param speedSupplier Double supplier for intake speed, in %. +ve spins specified direction
      */
-    public SpinIntakeCommand(Claw claw, Direction direction, DoubleSupplier speedSupplier) {
+    public SpinClawCommand(Claw claw, Direction direction, DoubleSupplier speedSupplier) {
         // Call normal constructor, but wrap supplier with multiplication by direction's sign
         this(claw, () -> speedSupplier.getAsDouble() * direction.sign);
     }
