@@ -14,8 +14,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  public static final Lights lights = new Lights();
-
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();

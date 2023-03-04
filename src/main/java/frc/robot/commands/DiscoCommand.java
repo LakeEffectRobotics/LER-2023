@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Lights;
 
 public class DiscoCommand extends CommandBase {
@@ -22,9 +22,9 @@ public class DiscoCommand extends CommandBase {
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
-    Robot.lights.setColour(Lights.LEFT, (leftColour & RED) == RED, (leftColour & GREEN) == GREEN,
+    RobotContainer.lights.setColour(Lights.LEFT, (leftColour & RED) == RED, (leftColour & GREEN) == GREEN,
         (leftColour & BLUE) == BLUE);
-    Robot.lights.setColour(Lights.RIGHT, (rightColour & RED) == RED, (rightColour & GREEN) == GREEN,
+    RobotContainer.lights.setColour(Lights.RIGHT, (rightColour & RED) == RED, (rightColour & GREEN) == GREEN,
         (rightColour & BLUE) == BLUE);
   }
 
@@ -43,9 +43,9 @@ public class DiscoCommand extends CommandBase {
     if (rightColour == 0b000)
       rightColour = 0b111;
 
-    Robot.lights.setColour(Lights.LEFT, (leftColour & RED) == RED, (leftColour & GREEN) == GREEN,
+    RobotContainer.lights.setColour(Lights.LEFT, (leftColour & RED) == RED, (leftColour & GREEN) == GREEN,
         (leftColour & BLUE) == BLUE);
-    Robot.lights.setColour(Lights.RIGHT, (rightColour & RED) == RED, (rightColour & GREEN) == GREEN,
+    RobotContainer.lights.setColour(Lights.RIGHT, (rightColour & RED) == RED, (rightColour & GREEN) == GREEN,
         (rightColour & BLUE) == BLUE);
   }
 
