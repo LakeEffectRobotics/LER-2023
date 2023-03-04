@@ -25,6 +25,7 @@ import frc.robot.commands.SpinIntakeCommand;
 import frc.robot.commands.SpitOutCommand;
 import frc.robot.commands.instant.CloseClawCommand;
 import frc.robot.commands.instant.OpenClawCommand;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.commands.instant.SetWristAngleCommand;
 import frc.robot.subsystems.Drivetrain;
@@ -41,6 +42,8 @@ public class RobotContainer {
   public final Limelight limelight = new Limelight();
   public final Wrist wrist = new Wrist(RobotMap.wristController);
   private Gyro gyro = new Gyro();
+  public final Arm arm = new Arm(RobotMap.telescopeController1, RobotMap.telescopeController2, RobotMap.leftArmSolenoid, RobotMap.rightArmSolenoid);
+  private Claw claw = new Claw(RobotMap.leftClawController, RobotMap.rightClawController, RobotMap.leftClawSolenoid, RobotMap.rightClawSolenoid);
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -52,8 +55,6 @@ public class RobotContainer {
   // Create path planner auto builder
   RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(drivetrain::getPose, drivetrain::resetPose,
       new RamseteController(), drivetrain.kinematics, drivetrain::velocityTankDrive, eventMap, drivetrain);
-  private Claw claw = new Claw(RobotMap.leftClawController, RobotMap.rightClawController, RobotMap.leftClawSolenoid,
-      RobotMap.rightClawSolenoid);
 
   // Create path command
   Command autoFollowPathCommand = autoBuilder.fullAuto(pathGroup);
