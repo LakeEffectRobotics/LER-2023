@@ -100,6 +100,9 @@ public class RobotContainer {
         () -> arm.getArmPosition() == ArmPosition.DOWN
       )
     );
+    
+    // Temp scoring position for early testing
+    OI.scorePositionButton.onTrue(new RaiseArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.SCORE_CONE)));
   }
 
   // Set autonomous command from dashboard choice
