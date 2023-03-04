@@ -23,7 +23,7 @@ import frc.robot.commands.CurtisDriveCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.SpinClawCommand;
 import frc.robot.commands.SpinClawCommand.Direction;
-import frc.robot.commands.instant.CloseClawCommand;
+import frc.robot.commands.instant.OpenClawCommand;
 import frc.robot.commands.instant.OpenClawCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
@@ -35,6 +35,7 @@ import frc.robot.commands.GyroCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Claw.Position;
 
 public class RobotContainer {
 
@@ -79,8 +80,8 @@ public class RobotContainer {
     
     OI.curtisStraightButton.whileTrue(new CurtisDriveCommand(drivetrain));
 
-    OI.openClawButton.onTrue(new OpenClawCommand(claw));
-    OI.closeClawButton.onTrue(new CloseClawCommand(claw));
+    OI.openClawButton.onTrue(new OpenClawCommand(claw, Position.OPEN));
+    OI.closeClawButton.onTrue(new OpenClawCommand(claw, Position.CLOSED));
     OI.spinInButton.whileTrue(new SpinClawCommand(claw, Direction.IN, OI.clawInSpeedSupplier));
     OI.spitOutButton.whileTrue(new SpinClawCommand(claw, Direction.OUT, OI.clawOutSpeedSupplier));
   }
