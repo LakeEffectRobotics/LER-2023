@@ -7,18 +7,52 @@ import frc.robot.subsystems.Claw;
 
 public class SpinIntakeCommand extends CommandBase {
     
+    /**
+     * Claw spin direction
+     */
+    public enum Direction {
+        IN(-1), 
+        OUT(1);
+
+        /**
+         * Coefficient to get motor direction from always-positive speed
+         */
+        private int sign;
+
+        private Direction(int sign){
+            this.sign = sign;
+        }
+        /**
+         * Get the sign (+/- 1) to get motor direction from always-positive speed
+         */
+        int getSign(){
+            return sign;
+        }
+    }
+
     Claw claw;
     DoubleSupplier speedSupplier;
 
     /**
      * Create a new SpinIntakeCommand
      * @param claw Claw subsystem
-     * @param speedSupplier Double supplier for intake speed, in %. +ve spins in
+     * @param speedSupplier Double supplier for intake speed, in %. +ve spins out, -ve spins in
      */
     public SpinIntakeCommand(Claw claw, DoubleSupplier speedSupplier) {
         addRequirements(claw);
         this.claw = claw;
         this.speedSupplier = speedSupplier;
+    }
+
+    /**
+     * Create a new SpinIntakeCommand
+     * @param claw Claw subsystem
+     * @param direction Direction for +ve spin
+     * @param speedSupplier Double supplier for intake speed, in %. +ve spins specified direction
+     */
+    public SpinIntakeCommand(Claw claw, Direction direction, DoubleSupplier speedSupplier) {
+        // Call normal constructor, but wrap supplier with multiplication by direction's sign
+        this(claw, () -> speedSupplier.getAsDouble() * direction.sign);
     }
 
     @Override
@@ -27,7 +61,7 @@ public class SpinIntakeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        claw.setSpeed(-speedSupplier.getAsDouble());
+        claw.setSpeed(speedSupplier.getAsDouble());
     }
 
     @Override
