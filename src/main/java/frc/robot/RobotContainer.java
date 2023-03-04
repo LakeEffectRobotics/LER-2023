@@ -75,10 +75,12 @@ public class RobotContainer {
   private void configureBindings() {
     OI.aimButton.whileTrue(new ApriltagAimCommand(limelight, drivetrain));
     OI.resetPoseButton.whileTrue(new ApriltagPoseCommand(limelight, drivetrain));
+    
     OI.curtisStraightButton.whileTrue(new CurtisDriveCommand(drivetrain));
+
     OI.openClawButton.onTrue(new OpenClawCommand(claw));
     OI.closeClawButton.onTrue(new CloseClawCommand(claw));
-    OI.spinIntakeButton.whileTrue(new SpinIntakeCommand(claw));
+    OI.spinInButton.whileTrue(new SpinIntakeCommand(claw));
     OI.spitOutButton.whileTrue(new SpitOutCommand(claw));
   }
 
