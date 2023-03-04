@@ -21,11 +21,12 @@ import frc.robot.commands.ApriltagPoseCommand;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.CurtisDriveCommand;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.SpinIntakeCommand;
-import frc.robot.commands.SpitOutCommand;
-import frc.robot.commands.instant.CloseClawCommand;
-import frc.robot.commands.instant.OpenClawCommand;
+import frc.robot.commands.SpinClawCommand;
+import frc.robot.commands.SpinClawCommand.Direction;
+import frc.robot.commands.instant.SetClawCommand;
 import frc.robot.subsystems.Arm;
+import frc.robot.commands.instant.SetClawCommand;
+import frc.robot.commands.instant.SetClawCommand;
 import frc.robot.subsystems.Claw;
 import frc.robot.commands.instant.SetWristAngleCommand;
 import frc.robot.subsystems.Drivetrain;
@@ -35,6 +36,7 @@ import frc.robot.commands.GyroCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Claw.Position;
 
 public class RobotContainer {
 
@@ -79,10 +81,10 @@ public class RobotContainer {
     
     OI.curtisStraightButton.whileTrue(new CurtisDriveCommand(drivetrain));
 
-    OI.openClawButton.onTrue(new OpenClawCommand(claw));
-    OI.closeClawButton.onTrue(new CloseClawCommand(claw));
-    OI.spinInButton.whileTrue(new SpinIntakeCommand(claw));
-    OI.spitOutButton.whileTrue(new SpitOutCommand(claw));
+    OI.openClawButton.onTrue(new SetClawCommand(claw, Position.OPEN));
+    OI.closeClawButton.onTrue(new SetClawCommand(claw, Position.CLOSED));
+    OI.spinInButton.whileTrue(new SpinClawCommand(claw, Direction.IN, OI.clawInSpeedSupplier));
+    OI.spitOutButton.whileTrue(new SpinClawCommand(claw, Direction.OUT, OI.clawOutSpeedSupplier));
   }
 
   // Set autonomous command from dashboard choice
