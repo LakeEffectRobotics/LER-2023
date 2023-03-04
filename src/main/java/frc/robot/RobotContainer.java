@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ApriltagAimCommand;
 import frc.robot.commands.ApriltagPoseCommand;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import frc.robot.commands.CurtisDriveCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.SpinClawCommand;
@@ -34,6 +35,7 @@ import frc.robot.commands.instant.SetWristAngleCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Wrist;
+import frc.robot.subsystems.Arm.ArmPosition;
 import frc.robot.commands.GyroCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
@@ -48,8 +50,6 @@ public class RobotContainer {
   private Gyro gyro = new Gyro();
   public final Arm arm = new Arm(RobotMap.telescopeController1, RobotMap.telescopeController2, RobotMap.leftArmSolenoid, RobotMap.rightArmSolenoid);
   private Claw claw = new Claw(RobotMap.leftClawController, RobotMap.rightClawController, RobotMap.leftClawSolenoid, RobotMap.rightClawSolenoid);
-
-  private final Command lowerArmCommand = new LowerArmCommand(arm);
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -91,7 +91,15 @@ public class RobotContainer {
     OI.spitOutButton.whileTrue(new SpinClawCommand(claw, Direction.OUT, OI.clawOutSpeedSupplier));
 
     // Move arm and wrist into transport position
-    OI.transportButton.onTrue(lowerArmCommand.andThen(new SetWristAngleCommand(wrist, Wrist.TRANSPORT)));
+    OI.transportButton.onTrue(new LowerArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.TRANSPORT)));
+    // Move arm and wrist into ground intake position. Only run if arm is already down to avoid smashing things in front of the robot. (Still sets arm to down position for completion sake)
+    OI.groundIntakeButton.onTrue(
+      new ConditionalCommand(
+        new LowerArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.GROUND)),
+        Commands.runOnce(() -> System.out.print("Lower arm before going to ground position")), 
+        () -> arm.getArmPosition() == ArmPosition.DOWN
+      )
+    );
   }
 
   // Set autonomous command from dashboard choice
