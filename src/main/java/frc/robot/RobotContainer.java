@@ -32,6 +32,7 @@ import frc.robot.commands.instant.SetWristAngleCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Wrist;
+import frc.robot.subsystems.Lights.Colour;
 import frc.robot.commands.GyroCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
@@ -73,6 +74,8 @@ public class RobotContainer {
 
     SmartDashboard.putData(autoChooser);
     configureBindings();
+
+    lights.setBoth(Colour.PURPLE);
   }
 
   // Create button bindings
