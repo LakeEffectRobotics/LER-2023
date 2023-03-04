@@ -1,8 +1,10 @@
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -90,6 +92,8 @@ public class RobotMap {
 
     public static DoubleSolenoid rightArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PCM.RIGHT_ARM_UP,
             PCM.RIGHT_ARM_DOWN);
+    // Gyro
+    public static final AHRS gyro = new AHRS(SPI.Port.kMXP);
 
     // Static initializer will be run on first reference to RobotMap
     static {
