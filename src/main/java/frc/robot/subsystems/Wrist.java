@@ -40,8 +40,10 @@ public class Wrist extends SubsystemBase {
     // 0.075 is the experimentally determined motor percentage that does that
     private static final double GRAVITY_COMPENSATION = 0.075 * 12;
 
-    // Wrist angle
+    // Target angle and volts
+    // Angle is relative to horizontal, so volts accounts for arm angle
     private double targetAngle;
+    private double targetVolts;
 
     public static final double TRANSPORT = 80;
     //PLACEHOLDER VALUE
@@ -71,10 +73,12 @@ public class Wrist extends SubsystemBase {
 
         // Initialize angle to where wrist is so it doesn't try to move on enable
         targetAngle = getCurrentAngle();
+        targetVolts = convertAngleToVolts(targetAngle - ARM_ANGLE);
 
         controller.setSmartCurrentLimit(15, 35, 50);
         // TODO: Adjust ramp rate for best performance/jerk tradeoff
         controller.setClosedLoopRampRate(1);
+
     }
 
     /**
@@ -97,6 +101,7 @@ public class Wrist extends SubsystemBase {
      */
     public void setTargetAngle(double angle) { // abc1239+10=21 road work ahead, i sure hope it does. David was here.......
         this.targetAngle = angle;
+        this.targetVolts = convertAngleToVolts(targetAngle - ARM_ANGLE);
     }
 
     private double getArbitraryFeedforward() {
@@ -119,7 +124,7 @@ public class Wrist extends SubsystemBase {
             wristController.set(0);
         } else {
             // Otherwise, continuously set wrist pid to target angle (must be continuous to update feedforward as angle changes)
-            pidController.setReference(convertAngleToVolts(targetAngle), ControlType.kPosition, 0, getArbitraryFeedforward());
+            pidController.setReference(targetVolts, ControlType.kPosition, 0, getArbitraryFeedforward());
         }
     }
 }
