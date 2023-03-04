@@ -25,6 +25,7 @@ import frc.robot.commands.SpinIntakeCommand;
 import frc.robot.commands.SpitOutCommand;
 import frc.robot.commands.instant.CloseClawCommand;
 import frc.robot.commands.instant.OpenClawCommand;
+import frc.robot.commands.instant.RaiseArmCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.commands.instant.SetWristAngleCommand;
@@ -44,6 +45,8 @@ public class RobotContainer {
   private Gyro gyro = new Gyro();
   public final Arm arm = new Arm(RobotMap.telescopeController1, RobotMap.telescopeController2, RobotMap.leftArmSolenoid, RobotMap.rightArmSolenoid);
   private Claw claw = new Claw(RobotMap.leftClawController, RobotMap.rightClawController, RobotMap.leftClawSolenoid, RobotMap.rightClawSolenoid);
+
+  private final Command raiseArmCommand = new RaiseArmCommand(arm);
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -83,6 +86,8 @@ public class RobotContainer {
     OI.closeClawButton.onTrue(new CloseClawCommand(claw));
     OI.spinInButton.whileTrue(new SpinIntakeCommand(claw));
     OI.spitOutButton.whileTrue(new SpitOutCommand(claw));
+
+    OI.loadingStationButton.onTrue(raiseArmCommand.andThen(new SetWristAngleCommand(wrist, Wrist.LOADING_STATION)));
   }
 
   // Set autonomous command from dashboard choice
