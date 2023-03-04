@@ -20,6 +20,7 @@ import frc.robot.commands.ApriltagAimCommand;
 import frc.robot.commands.ApriltagPoseCommand;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.CurtisDriveCommand;
+import frc.robot.commands.DiscoCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.SpinIntakeCommand;
 import frc.robot.commands.SpitOutCommand;
@@ -35,6 +36,7 @@ import frc.robot.commands.GyroCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Lights;
 
 public class RobotContainer {
 
@@ -44,6 +46,7 @@ public class RobotContainer {
   private Gyro gyro = new Gyro();
   public final Arm arm = new Arm(RobotMap.telescopeController1, RobotMap.telescopeController2, RobotMap.leftArmSolenoid, RobotMap.rightArmSolenoid);
   private Claw claw = new Claw(RobotMap.leftClawController, RobotMap.rightClawController, RobotMap.leftClawSolenoid, RobotMap.rightClawSolenoid);
+  private Lights lights = new Lights();
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -81,6 +84,7 @@ public class RobotContainer {
     OI.closeClawButton.onTrue(new CloseClawCommand(claw));
     OI.spinIntakeButton.whileTrue(new SpinIntakeCommand(claw));
     OI.spitOutButton.whileTrue(new SpitOutCommand(claw));
+    OI.dicoButton.whileTrue(new DiscoCommand(lights));
   }
 
   // Set autonomous command from dashboard choice
