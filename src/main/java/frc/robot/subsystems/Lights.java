@@ -57,7 +57,7 @@ public class Lights extends SubsystemBase {
 
     if (side == LEFT) {
       pb = RobotMap.leftLED_PB;
-      gr = RobotMap.leftLED_GB;
+      gr = RobotMap.leftLED_GR;
     } else if (side == RIGHT) {
       pb = RobotMap.rightLED_PB;
       gr = RobotMap.rightLED_GR;

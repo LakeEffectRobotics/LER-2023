@@ -62,10 +62,10 @@ public class RobotMap {
     * LEDs IDs (not really use what system they are using :D)
     TODO Make better decription
     */
-    private static final int LEFT_PB_RELAY = 0;
-    private static final int LEFT_GR_RELAY = 1;
-    private static final int RIGHT_PB_RELAY = 2;
-    private static final int RIGHT_GR_RELAY = 3;
+    private static final int LEFT_PB_RELAY = 2;
+    private static final int RIGHT_GR_RELAY = 1;
+    private static final int RIGHT_PB_RELAY = 3; //CORRECT
+    private static final int LEFT_GR_RELAY = 0;
 
     // Left and right drive controllers
     public static final CANSparkMax leftController1 = new CANSparkMax(CAN.LEFT_CONTROLLER_1, MotorType.kBrushless);
@@ -107,7 +107,7 @@ public class RobotMap {
 
     // LED lights
     public static Relay leftLED_PB = new Relay(LEFT_PB_RELAY, Relay.Direction.kBoth);
-    public static Relay leftLED_GB = new Relay(LEFT_GR_RELAY, Relay.Direction.kBoth);
+    public static Relay leftLED_GR = new Relay(LEFT_GR_RELAY, Relay.Direction.kBoth);
     public static Relay rightLED_PB = new Relay(RIGHT_PB_RELAY, Relay.Direction.kBoth);
     public static Relay rightLED_GR = new Relay(RIGHT_GR_RELAY, Relay.Direction.kBoth);
 

@@ -31,7 +31,7 @@ public class DiscoCommand extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    if (delay < 7) {
+    if (delay < 5) {
       delay++;
       return;
     }
