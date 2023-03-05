@@ -19,6 +19,8 @@ public class Wrist extends SubsystemBase {
 
     private SparkMaxPIDController pidController;
 
+    private Arm arm; 
+
     private static final double kF = 0;
     private static final double kP = 0.45;
     private static final double kI = 0;
@@ -52,10 +54,12 @@ public class Wrist extends SubsystemBase {
     // Placeholder for testing, needs bettter calibration
     public static final double SCORE_CONE = -15;
 
-    public Wrist(CANSparkMax controller) {
+    public Wrist(CANSparkMax controller, Arm arm) {
         wristController = controller;
         forwardLimit = wristController.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
         reverseLimit = wristController.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+
+        this.arm = arm;
 
         pot = wristController.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
 
