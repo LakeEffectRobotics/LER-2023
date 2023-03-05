@@ -71,6 +71,10 @@ public class Wrist extends SubsystemBase {
 
         // Initialize angle to where wrist is so it doesn't try to move on enable
         targetAngle = getCurrentAngle();
+
+        controller.setSmartCurrentLimit(15, 35, 50);
+        // TODO: Adjust ramp rate for best performance/jerk tradeoff
+        controller.setClosedLoopRampRate(1);
     }
 
     /**
