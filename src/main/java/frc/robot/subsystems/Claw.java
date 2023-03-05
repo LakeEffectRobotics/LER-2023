@@ -6,17 +6,15 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Claw extends SubsystemBase {
-    CANSparkMax leftController;
-    CANSparkMax rightController;
+    CANSparkMax leadController;
 
     DoubleSolenoid rightSolenoid;
     DoubleSolenoid leftSolenoid;
 
     Position currentPosition;
 
-    public Claw(CANSparkMax leftController, CANSparkMax rightController, DoubleSolenoid leftSolenoid, DoubleSolenoid rightSolenoid) {
-        this.leftController = leftController;
-        this.rightController = rightController;
+    public Claw(CANSparkMax leadController, DoubleSolenoid leftSolenoid, DoubleSolenoid rightSolenoid) {
+        this.leadController = leadController;
         this.rightSolenoid = rightSolenoid;
         this.leftSolenoid = leftSolenoid;
     }
@@ -39,8 +37,8 @@ public class Claw extends SubsystemBase {
 
     // Motors
     public void setSpeed(double speed) {
-        leftController.set(-speed);
-        rightController.set(speed);
+        leadController.set(speed);
+        
     }
 
     // Solenoids

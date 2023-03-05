@@ -129,8 +129,8 @@ public class RobotMap {
         rightController1.setOpenLoopRampRate(0.15);
 
         // Claw motors
-        leftClawController.setIdleMode(IdleMode.kBrake);
         rightClawController.setIdleMode(IdleMode.kBrake);
+        leftClawController.follow(rightClawController, true);
         
         // Wrist use brake mode
         wristController.setIdleMode(IdleMode.kBrake);
