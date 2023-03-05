@@ -47,8 +47,6 @@ public class RobotContainer {
   public final Arm arm = new Arm(RobotMap.telescopeController1, RobotMap.telescopeController2, RobotMap.leftArmSolenoid, RobotMap.rightArmSolenoid);
   private Claw claw = new Claw(RobotMap.leftClawController, RobotMap.rightClawController, RobotMap.leftClawSolenoid, RobotMap.rightClawSolenoid);
 
-  private final Command lowerArmCommand = new LowerArmCommand(arm);
-
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -89,10 +87,13 @@ public class RobotContainer {
     OI.spitOutButton.whileTrue(new SpinClawCommand(claw, Direction.OUT, OI.clawOutSpeedSupplier));
     
     // Move arm and wrist into transport position
-    OI.transportButton.onTrue(lowerArmCommand.andThen(new SetWristAngleCommand(wrist, Wrist.TRANSPORT)));
+    OI.transportButton.onTrue(new LowerArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.TRANSPORT)));
 
     // Move arm and wrist into ground intake position
-    OI.groundIntakeButton.onTrue(lowerArmCommand.andThen(new SetWristAngleCommand(wrist, Wrist.GROUND)));
+    OI.groundIntakeButton.onTrue(new LowerArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.GROUND)));
+
+    // Loading station position
+    OI.loadingStationButton.onTrue(new RaiseArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.LOADING_STATION)));
   }
 
   // Set autonomous command from dashboard choice
