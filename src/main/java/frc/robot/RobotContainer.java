@@ -91,9 +91,6 @@ public class RobotContainer {
     // Move arm and wrist into transport position
     OI.transportButton.onTrue(new LowerArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.TRANSPORT)));
 
-    // Move arm and wrist into ground intake position
-    OI.groundIntakeButton.onTrue(new LowerArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.GROUND)));
-
     // Loading station position
     OI.loadingStationButton.onTrue(new RaiseArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.LOADING_STATION)));
 
