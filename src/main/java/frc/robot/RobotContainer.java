@@ -61,6 +61,7 @@ public class RobotContainer {
   CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight, arm, wrist, claw, gyro);
   
   private TargetSelection targetSelection = new TargetSelection();
+  public final Wrist wrist = new Wrist(RobotMap.wristController, arm);
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
