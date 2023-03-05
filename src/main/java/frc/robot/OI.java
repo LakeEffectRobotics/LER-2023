@@ -41,7 +41,7 @@ public class OI {
 
         // NOTE: This is expected to be an axis. If it is changed to a button, then modify spitOutButton and clawInSpeedSupplier accordingly
         private static final int SPIT_OUT_TRIGGER = XboxController.Axis.kLeftTrigger.value;
-        private static final int OPEN_CLAW_BUTOTN = XboxController.Button.kLeftBumper.value;
+        private static final int OPEN_CLAW_BUTTON = XboxController.Button.kLeftBumper.value;
 
         // NOTE: This is expected to be an axis. If it is changed to a button, then modify spinInButton and clawOutSpeedSupplier accordingly
         private static final int SPIN_IN_TRIGGER = XboxController.Axis.kRightTrigger.value;
@@ -75,7 +75,7 @@ public class OI {
 
     // Custom trigger used to bind a command to the xbox controller's trgger.
     public static final Trigger spitOutButton = new Trigger(() -> xboxController.getRawAxis(OPERATOR_MAP.SPIT_OUT_TRIGGER) >= XBOX_TRIGGER_THRESHOLD);
-    public static final Trigger openClawButton = new JoystickButton(xboxController, OPERATOR_MAP.OPEN_CLAW_BUTOTN);
+    public static final Trigger openClawButton = new JoystickButton(xboxController, OPERATOR_MAP.OPEN_CLAW_BUTTON);
 
     public static final Trigger spinInButton = new Trigger(() -> xboxController.getRawAxis(OPERATOR_MAP.SPIN_IN_TRIGGER) >= XBOX_TRIGGER_THRESHOLD);
     public static final Trigger closeClawButton = new JoystickButton(xboxController, OPERATOR_MAP.CLOSE_CLAW_BUTTON);

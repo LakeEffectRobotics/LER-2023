@@ -90,6 +90,9 @@ public class RobotContainer {
     
     // Move arm and wrist into transport position
     OI.transportButton.onTrue(lowerArmCommand.andThen(new SetWristAngleCommand(wrist, Wrist.TRANSPORT)));
+
+    // Move arm and wrist into ground intake position
+    OI.groundIntakeButton.onTrue(lowerArmCommand.andThen(new SetWristAngleCommand(wrist, Wrist.GROUND)));
   }
 
   // Set autonomous command from dashboard choice
