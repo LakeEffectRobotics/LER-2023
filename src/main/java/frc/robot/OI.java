@@ -105,8 +105,8 @@ public class OI {
         if (Math.abs(raw) < 0.2)
             raw = 0;
         // raw = Math.pow(raw, [EXPONENT]);
-        // raw *= [INPUT_SCALING];
-        return -raw;
+         raw *= 0.9;
+        return raw;
     }
 
     /**

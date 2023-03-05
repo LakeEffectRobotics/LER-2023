@@ -20,12 +20,12 @@ public class RobotMap {
      */
     private class CAN {
         // Drive controller CAN IDs
-        private static final int LEFT_CONTROLLER_1 = 5;
-        private static final int LEFT_CONTROLLER_2 = 6;
-        private static final int LEFT_CONTROLLER_3 = 7;
-        private static final int RIGHT_CONTROLLER_1 = 2;
-        private static final int RIGHT_CONTROLLER_2 = 3;
-        private static final int RIGHT_CONTROLLER_3 = 4;
+        private static final int LEFT_CONTROLLER_1 = 2;
+        private static final int LEFT_CONTROLLER_2 = 3;
+        private static final int LEFT_CONTROLLER_3 = 4;
+        private static final int RIGHT_CONTROLLER_1 = 5;
+        private static final int RIGHT_CONTROLLER_2 = 6;
+        private static final int RIGHT_CONTROLLER_3 = 7;
 
         private static final int LEFT_CLAW_CONTROLLER = 9;
         private static final int RIGHT_CLAW_CONTROLLER = 10;
@@ -120,7 +120,7 @@ public class RobotMap {
         rightController2.follow(rightController1);
         rightController3.follow(rightController1);
 
-        rightController1.setInverted(true);
+        leftController1.setInverted(true);
 
         leftController1.setClosedLoopRampRate(0.15);
         rightController1.setClosedLoopRampRate(0.15);
