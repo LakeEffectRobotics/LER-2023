@@ -20,7 +20,7 @@ public class Arm extends SubsystemBase {
 
     ArmPosition currentPosition;
 
-    private Double currentAngle;
+    private Double currentAngle = DOWN_ANGLE;
 
     private static final double UP_ANGLE = 33;
     private static final double DOWN_ANGLE = 1.6;
