@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxLimitSwitch;
+import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,10 +15,17 @@ public class Claw extends SubsystemBase {
 
     Position currentPosition;
 
+    SparkMaxLimitSwitch clawLimitSwitch;
+
     public Claw(CANSparkMax leadController, DoubleSolenoid leftSolenoid, DoubleSolenoid rightSolenoid) {
         this.leadController = leadController;
         this.rightSolenoid = rightSolenoid;
         this.leftSolenoid = leftSolenoid;
+
+        this.clawLimitSwitch = leadController.getForwardLimitSwitch(Type.kNormallyOpen);
+        clawLimitSwitch.enableLimitSwitch(true);
+
+        
     }
 
     public enum Position {
@@ -37,6 +46,10 @@ public class Claw extends SubsystemBase {
 
     // Motors
     public void setSpeed(double speed) {
+        if (speed < 0) {
+            // half speed intake direction 
+            speed = speed / 2;
+        }
         leadController.set(speed);
         
     }
