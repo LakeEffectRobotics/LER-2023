@@ -106,7 +106,7 @@ public class OI {
             raw = 0;
         // raw = Math.pow(raw, [EXPONENT]);
          raw *= 0.9;
-        return raw;
+        return -raw;
     }
 
     /**
