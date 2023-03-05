@@ -20,6 +20,11 @@ public class Arm extends SubsystemBase {
 
     ArmPosition currentPosition;
 
+    private Double currentAngle;
+
+    private static final double UP_ANGLE = 33;
+    private static final double DOWN_ANGLE = 1.6;
+
     SparkMaxPIDController pidController;
 
     private static final double kF = 0;
@@ -72,6 +77,7 @@ public class Arm extends SubsystemBase {
      */
     public void raiseArm() {
         currentPosition = ArmPosition.UP;
+        currentAngle = UP_ANGLE;
 
         // leftSolenoid.set(ArmPosition.UP.value);
         rightSolenoid.set(ArmPosition.UP.value);
@@ -82,6 +88,7 @@ public class Arm extends SubsystemBase {
      */
     public void lowerArm() {
         currentPosition = ArmPosition.DOWN;
+        currentAngle = DOWN_ANGLE;
 
         // leftSolenoid.set(ArmPosition.DOWN.value);
         rightSolenoid.set(ArmPosition.DOWN.value);
@@ -93,6 +100,10 @@ public class Arm extends SubsystemBase {
      */
     public ArmPosition getArmPosition() {
         return currentPosition;
+    }
+
+    public double getCurrentAngle() {
+        return currentAngle;
     }
 
     /**

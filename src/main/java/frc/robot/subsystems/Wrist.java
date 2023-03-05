@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.Arm.ArmPosition;
 
 public class Wrist extends SubsystemBase {
     CANSparkMax wristController;
@@ -29,8 +30,7 @@ public class Wrist extends SubsystemBase {
     private static final double MIN_OUTPUT = -0.2;
 
     // Angle of the arm relative to horizontal ground (degrees)
-    // Currently a constant as arm prototype is stationary
-    private static final double ARM_ANGLE = 1.6;
+    private double armAngle;
 
     // Function to convert from potentiometer volts to arm degrees above horizontal
     // Slope: degrees per volt
@@ -91,7 +91,7 @@ public class Wrist extends SubsystemBase {
      */
     public double getCurrentAngle() {
         double potVoltage = pot.getPosition();
-        return potVoltage * VOLTS_TO_DEGREES_SLOPE + VOLTS_TO_DEGREES_CONSTANT + ARM_ANGLE;
+        return potVoltage * VOLTS_TO_DEGREES_SLOPE + VOLTS_TO_DEGREES_CONSTANT + armAngle;
     }
 
     public double convertAngleToVolts(double angle) {
@@ -121,6 +121,8 @@ public class Wrist extends SubsystemBase {
 
         SmartDashboard.putNumber("wrist current angle", getCurrentAngle());
         SmartDashboard.putNumber("wrist current volts", pot.getPosition());
+
+        armAngle = arm.getCurrentAngle();
 
         // Let gravity lower arm to ground instead of slamming:
         // Stop pidcontroller if target angle is low, and arm is low enough to fall naturally
