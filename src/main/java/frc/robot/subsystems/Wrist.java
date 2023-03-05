@@ -91,7 +91,7 @@ public class Wrist extends SubsystemBase {
      */
     public double getCurrentAngle() {
         double potVoltage = pot.getPosition();
-        return potVoltage * VOLTS_TO_DEGREES_SLOPE + VOLTS_TO_DEGREES_CONSTANT + armAngle;
+        return potVoltage * VOLTS_TO_DEGREES_SLOPE + VOLTS_TO_DEGREES_CONSTANT + arm.getCurrentAngle();
     }
 
     public double convertAngleToVolts(double angle) {
@@ -105,7 +105,7 @@ public class Wrist extends SubsystemBase {
      */
     public void setTargetAngle(double angle) { // abc1239+10=21 road work ahead, i sure hope it does. David was here.......
         this.targetAngle = angle;
-        this.targetVolts = convertAngleToVolts(targetAngle - armAngle);
+        this.targetVolts = convertAngleToVolts(targetAngle - arm.getCurrentAngle());
     }
 
     private double getArbitraryFeedforward() {
@@ -122,7 +122,6 @@ public class Wrist extends SubsystemBase {
         SmartDashboard.putNumber("wrist current angle", getCurrentAngle());
         SmartDashboard.putNumber("wrist current volts", pot.getPosition());
 
-        armAngle = arm.getCurrentAngle();
 
         // Let gravity lower arm to ground instead of slamming:
         // Stop pidcontroller if target angle is low, and arm is low enough to fall naturally
