@@ -1,0 +1,33 @@
+package frc.robot;   
+
+public class TargetSelection {
+    
+    public enum Type {
+        CONE, CUBE
+    }
+
+    public enum Height {
+        LOW, MID, HIGH
+    }
+
+    public static Target SelectedTarget;
+
+    public class Target {
+
+        private Type type;
+        private Height height;
+
+        Target(Type type, Height height) {
+            this.type = type;
+            this.height = height;
+        } 
+
+        public Type getType() {
+            return type;
+        }
+
+        public Height getHeight() {
+            return height;
+        }
+    }
+}
