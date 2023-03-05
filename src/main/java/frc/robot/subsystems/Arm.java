@@ -73,7 +73,7 @@ public class Arm extends SubsystemBase {
     public void raiseArm() {
         currentPosition = ArmPosition.UP;
 
-        leftSolenoid.set(ArmPosition.UP.value);
+        // leftSolenoid.set(ArmPosition.UP.value);
         rightSolenoid.set(ArmPosition.UP.value);
     }
 
@@ -83,7 +83,7 @@ public class Arm extends SubsystemBase {
     public void lowerArm() {
         currentPosition = ArmPosition.DOWN;
 
-        leftSolenoid.set(ArmPosition.DOWN.value);
+        // leftSolenoid.set(ArmPosition.DOWN.value);
         rightSolenoid.set(ArmPosition.DOWN.value);
     }
 
