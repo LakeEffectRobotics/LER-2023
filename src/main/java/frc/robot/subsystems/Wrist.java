@@ -77,7 +77,7 @@ public class Wrist extends SubsystemBase {
 
         // Initialize angle to where wrist is so it doesn't try to move on enable
         targetAngle = getCurrentAngle();
-        targetVolts = convertAngleToVolts(targetAngle - ARM_ANGLE);
+        targetVolts = convertAngleToVolts(targetAngle - armAngle);
 
         controller.setSmartCurrentLimit(15, 35, 50);
         // TODO: Adjust ramp rate for best performance/jerk tradeoff
@@ -105,7 +105,7 @@ public class Wrist extends SubsystemBase {
      */
     public void setTargetAngle(double angle) { // abc1239+10=21 road work ahead, i sure hope it does. David was here.......
         this.targetAngle = angle;
-        this.targetVolts = convertAngleToVolts(targetAngle - ARM_ANGLE);
+        this.targetVolts = convertAngleToVolts(targetAngle - armAngle);
     }
 
     private double getArbitraryFeedforward() {
