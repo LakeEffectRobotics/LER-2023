@@ -30,6 +30,7 @@ public class OI {
         private static final int RIGHT_LEFT_BUTTON = 5;
         private static final int RIGHT_RIGHT_BUTTON = 4;
         private static final int RESET_POSE_BUTTON = 6;
+        private static final int DISO_BUTTON = 2;
     }
 
     /** Buttons on the operator controller */
@@ -66,6 +67,7 @@ public class OI {
             DRIVER_MAP.RIGHT_LEFT_BUTTON);
     public static final JoystickButton curtisRightButton = new JoystickButton(rightJoystick,
             DRIVER_MAP.RIGHT_RIGHT_BUTTON);
+    public static final JoystickButton dicoButton = new JoystickButton(rightJoystick, DRIVER_MAP.DISO_BUTTON);
 
     // Operator xbox controller
     public static final Trigger transportButton = new JoystickButton(xboxController, OPERATOR_MAP.TRANSPORT_BUTTON);

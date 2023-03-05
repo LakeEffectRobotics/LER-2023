@@ -21,6 +21,7 @@ import frc.robot.commands.ApriltagPoseCommand;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import frc.robot.commands.CurtisDriveCommand;
+import frc.robot.commands.DiscoCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.SpinClawCommand;
 import frc.robot.commands.SpinClawCommand.Direction;
@@ -34,11 +35,13 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.Arm.ArmPosition;
+import frc.robot.subsystems.Lights.Colour;
 import frc.robot.commands.GyroCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Claw.Position;
+import frc.robot.subsystems.Lights;
 
 public class RobotContainer {
 
@@ -48,6 +51,7 @@ public class RobotContainer {
   private Gyro gyro = new Gyro();
   public final Arm arm = new Arm(RobotMap.telescopeController1, RobotMap.telescopeController2, RobotMap.leftArmSolenoid, RobotMap.rightArmSolenoid);
   private Claw claw = new Claw(RobotMap.leftClawController, RobotMap.rightClawController, RobotMap.leftClawSolenoid, RobotMap.rightClawSolenoid);
+  public static final Lights lights = new Lights();
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -74,6 +78,8 @@ public class RobotContainer {
 
     SmartDashboard.putData(autoChooser);
     configureBindings();
+
+    lights.setBoth(Colour.PURPLE);
   }
 
   // Create button bindings
@@ -105,6 +111,8 @@ public class RobotContainer {
     
     // Temp scoring position for early testing
     // OI.scorePositionButton.onTrue(new RaiseArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.SCORE_CONE)));
+
+    OI.dicoButton.whileTrue(new DiscoCommand(lights));
   }
 
   // Set autonomous command from dashboard choice
