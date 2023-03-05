@@ -39,7 +39,7 @@ public class Claw extends SubsystemBase {
 
     // Motors
     public void setSpeed(double speed) {
-        leftController.set(speed);
+        leftController.set(-speed);
         rightController.set(speed);
     }
 

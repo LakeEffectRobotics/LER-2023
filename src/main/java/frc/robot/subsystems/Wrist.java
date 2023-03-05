@@ -43,6 +43,13 @@ public class Wrist extends SubsystemBase {
     // Wrist angle
     private double targetAngle;
 
+    public static final double TRANSPORT = 80;
+    //PLACEHOLDER VALUE
+    public static final double LOADING_STATION = 0;
+    public static final double GROUND = -40;
+    // Placeholder for testing, needs bettter calibration
+    public static final double SCORE_CONE = -15;
+
     public Wrist(CANSparkMax controller) {
         wristController = controller;
         forwardLimit = wristController.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
@@ -64,6 +71,10 @@ public class Wrist extends SubsystemBase {
 
         // Initialize angle to where wrist is so it doesn't try to move on enable
         targetAngle = getCurrentAngle();
+
+        controller.setSmartCurrentLimit(15, 35, 50);
+        // TODO: Adjust ramp rate for best performance/jerk tradeoff
+        controller.setClosedLoopRampRate(1);
     }
 
     /**
