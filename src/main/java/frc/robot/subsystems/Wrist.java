@@ -29,17 +29,14 @@ public class Wrist extends SubsystemBase {
     private static final double MAX_OUTPUT = 0.4;
     private static final double MIN_OUTPUT = -0.2;
 
-    // Angle of the arm relative to horizontal ground (degrees)
-    private double armAngle;
-
     // Function to convert from potentiometer volts to arm degrees above horizontal
     // Slope: degrees per volt
     // Constant: the degrees value at volts = 0
     private static final double VOLTS_TO_DEGREES_SLOPE = 67.95;
     private static final double VOLTS_TO_DEGREES_CONSTANT = -82.16;
 
-    // Voltage required to hold arm up at horizontal
-    // 0.075 is the experimentally determined motor percentage that does that
+    // Motor voltage required to hold arm up at horizontal
+    // 0.075 is the experimentally determined motor percentage that does that, so convert % to volts:
     private static final double GRAVITY_COMPENSATION = 0.075 * 12;
 
     // Target angle and volts
@@ -77,7 +74,7 @@ public class Wrist extends SubsystemBase {
 
         // Initialize angle to where wrist is so it doesn't try to move on enable
         targetAngle = getCurrentAngle();
-        targetVolts = convertAngleToVolts(targetAngle - armAngle);
+        targetVolts = convertAngleToVolts(targetAngle);
 
         controller.setSmartCurrentLimit(15, 35, 50);
         // TODO: Adjust ramp rate for best performance/jerk tradeoff
@@ -94,33 +91,41 @@ public class Wrist extends SubsystemBase {
         return potVoltage * VOLTS_TO_DEGREES_SLOPE + VOLTS_TO_DEGREES_CONSTANT + arm.getCurrentAngle();
     }
 
-    public double convertAngleToVolts(double angle) {
-        // I hate algebra
-        return angle * (1 / VOLTS_TO_DEGREES_SLOPE) - VOLTS_TO_DEGREES_CONSTANT * (1 / VOLTS_TO_DEGREES_SLOPE);
-    }
-
     /**
      * 
      * @param angle desired degrees above horizontal
      */
     public void setTargetAngle(double angle) { // abc1239+10=21 road work ahead, i sure hope it does. David was here.......
         this.targetAngle = angle;
-        this.targetVolts = convertAngleToVolts(targetAngle - arm.getCurrentAngle());
+        this.targetVolts = convertAngleToVolts(targetAngle);
     }
 
+    /**
+     * 
+     * @param angle desired angle above horizontal (degrees)
+     * @return pot position at this angle. this accounts for current arm angle
+     */
+    private double convertAngleToVolts(double angle) {
+        // I hate algebra
+        return angle * (1 / VOLTS_TO_DEGREES_SLOPE) - VOLTS_TO_DEGREES_CONSTANT * (1 / VOLTS_TO_DEGREES_SLOPE) - arm.getCurrentAngle();
+    }
+
+    /**
+     * 
+     * @return  motor volts needed to "cancel out" gravity: (Gravity compensation constant) * cos(current angle)
+     */
     private double getArbitraryFeedforward() {
-        // Return volts needed to "cancel out" gravity: (Gravity compensation constant) * cos(current angle)
         return GRAVITY_COMPENSATION * Math.cos(Math.toRadians(getCurrentAngle()));
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("wrist target angle", targetAngle);
-        SmartDashboard.putNumber("wrist target volts", convertAngleToVolts(targetAngle));
+        SmartDashboard.putNumber("wrist target deg horizontal", targetAngle);
+        SmartDashboard.putNumber("wrist target pot volts", convertAngleToVolts(targetAngle));
         SmartDashboard.putNumber("wrist AFF", getArbitraryFeedforward());
 
-        SmartDashboard.putNumber("wrist current angle", getCurrentAngle());
-        SmartDashboard.putNumber("wrist current volts", pot.getPosition());
+        SmartDashboard.putNumber("wrist current deg horizontal", getCurrentAngle());
+        SmartDashboard.putNumber("wrist current pot volts", pot.getPosition());
 
 
         // Let gravity lower arm to ground instead of slamming:
