@@ -29,9 +29,11 @@ import frc.robot.subsystems.Claw;
 import frc.robot.commands.instant.SetWristAngleCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.TargetSelection;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.Arm.ArmPosition;
 import frc.robot.subsystems.Lights.Colour;
+import frc.robot.subsystems.TargetSelection.Height;
 import frc.robot.commands.GyroCommand;
 import frc.robot.commands.ManualMoveWristCommand;
 import frc.robot.subsystems.Gyro;
@@ -51,6 +53,8 @@ public class RobotContainer {
 
   // path utils
   CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight, arm, wrist, claw, gyro);
+  
+  private TargetSelection targetSelection = new TargetSelection();
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
