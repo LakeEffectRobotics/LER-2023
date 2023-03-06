@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static frc.robot.subsystems.TargetSelection.Type.*;
+import static frc.robot.subsystems.TargetSelection.Height.*;
 
 public class TargetSelection extends SubsystemBase {
     
@@ -17,6 +19,17 @@ public class TargetSelection extends SubsystemBase {
     public enum Height {
         LOW, MID, HIGH
     }
+
+    /**
+     * Software representation of the Grid
+     * Item at 0,0 represents the top-left scoring node from the robot's perspective
+     * Currently this is rigged up to just have cone/cube at each height until we have time to develop vision-based scoring
+     */
+    private static final Node[][] GRID = new Node[][] {
+        { new Node(CONE, HIGH), new Node(CUBE, HIGH) },
+        { new Node(CONE, MID), new Node(CUBE, MID) },
+        { new Node(CONE, LOW), new Node(CUBE, LOW) },
+    };
 
     /**
      * Class representing a node which can be targeted
