@@ -76,6 +76,38 @@ public class TargetSelection extends SubsystemBase {
         selectedNode = GRID[selectedRow][selectedCol];
     }
 
+    /**
+     * Raise the selected Node up one height
+     */
+    public void selectionUp(){
+        selectedRow = bound(selectedRow + 1, 0, GRID.length);
+        selectedNode = GRID[selectedRow][selectedCol];
+    }
+    
+    /**
+     * Lower the selected Node down one height
+     */
+    public void selectionDown(){
+        selectedRow = bound(selectedRow - 1, 0, GRID.length);
+        selectedNode = GRID[selectedRow][selectedCol];
+    }
+    
+    /**
+     * Move the selected Node left one column
+     */
+    public void selectionLeft(){
+        selectedCol = bound(selectedCol - 1, 0, GRID[selectedRow].length);
+        selectedNode = GRID[selectedRow][selectedCol];
+    }
+    
+    /**
+     * Move the selected Node right one column
+     */
+    public void selectionRight(){
+        selectedCol = bound(selectedCol + 1, 0, GRID[selectedRow].length);
+        selectedNode = GRID[selectedRow][selectedCol];
+    }
+
     private static int bound(int val, int min, int max){
         if(val < min)
             return min;
