@@ -31,6 +31,60 @@ public class TargetSelection extends SubsystemBase {
         { new Node(CONE, LOW), new Node(CUBE, LOW) },
     };
 
+    // Actual selection location is stored as x, y locally
+    private int selectedRow = 0;
+    private int selectedCol = 0;
+    /**
+     * Currently selected Node, defaults to 0,0
+     * TODO: Pick a better starting node?
+     */
+    private Node selectedNode = GRID[selectedRow][selectedCol];
+
+    /**
+     * Get the currently selected Node
+     */
+    public Node getSelectedNode() {
+        return selectedNode;
+    }
+
+    /**
+     * Select a specific node
+     * @param height Height of node
+     * @param col Grid column of Node. 0 is left of field from the robot's perspective
+     */
+    public void selectedNode(Height height, int col) {
+        // Bound column input to grid size
+        col = bound(col, 0, GRID[0].length);
+
+        // Determine the row index based on provided height
+        switch(height){
+            case HIGH:
+                selectedRow = 0;
+                selectedCol = col;
+                break;
+            case MID:
+                selectedRow = 1;
+                selectedCol = col;
+                break;
+            case LOW:
+                selectedRow = 2;
+                selectedCol = col;
+                break;
+        }
+
+        // Select node from provided values
+        selectedNode = GRID[selectedRow][selectedCol];
+    }
+
+    private static int bound(int val, int min, int max){
+        if(val < min)
+            return min;
+        if (val > max)
+            return max;
+        else
+            return val;
+    }
+
     /**
      * Class representing a node which can be targeted
      */
