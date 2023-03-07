@@ -13,6 +13,7 @@ import frc.robot.commands.ApriltagPoseCommand;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import frc.robot.commands.CurtisDriveCommand;
+import frc.robot.commands.DefaultLightCommand;
 import frc.robot.commands.DiscoCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.pathplannerUtils.CreatePathUtils;
@@ -64,6 +65,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
     gyro.setDefaultCommand(new GyroCommand(gyro));
     wrist.setDefaultCommand(new ManualMoveWristCommand(wrist, OI.manualMoveWristSupplier));
+    lights.setDefaultCommand(new DefaultLightCommand(lights, targetSelection));
 
     // Put autonomous chooser on dashboard
     autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
@@ -116,6 +118,11 @@ public class RobotContainer {
     // OI.scorePositionButton.onTrue(new RaiseArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.SCORE_CONE)));
 
     OI.dicoButton.whileTrue(new DiscoCommand(lights));
+
+    OI.upSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionUp()));
+    OI.rightSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionRight()));
+    OI.downSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionDown()));
+    OI.leftSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionLeft()));
   }
 
   // Set autonomous command from dashboard choice
