@@ -73,7 +73,7 @@ public class Limelight extends SubsystemBase {
   public Pose2d getPose() {
     if (isThereValidTarget()) {
       double[] pose = table.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
-      return new Pose2d(pose[0], pose[1], new Rotation2d(pose[5]));
+      return new Pose2d(pose[0], pose[1], Rotation2d.fromDegrees(pose[5]));
     } else {
       return null;
     }
