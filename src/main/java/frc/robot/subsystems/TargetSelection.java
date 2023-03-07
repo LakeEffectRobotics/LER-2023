@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.subsystems.TargetSelection.Type.*;
 import static frc.robot.subsystems.TargetSelection.Height.*;
@@ -80,7 +81,7 @@ public class TargetSelection extends SubsystemBase {
      * Raise the selected Node up one height
      */
     public void selectionUp(){
-        selectedRow = bound(selectedRow + 1, 0, GRID.length);
+        selectedRow = bound(selectedRow + 1, 0, GRID.length-1);
         selectedNode = GRID[selectedRow][selectedCol];
     }
     
@@ -88,7 +89,7 @@ public class TargetSelection extends SubsystemBase {
      * Lower the selected Node down one height
      */
     public void selectionDown(){
-        selectedRow = bound(selectedRow - 1, 0, GRID.length);
+        selectedRow = bound(selectedRow - 1, 0, GRID.length-1);
         selectedNode = GRID[selectedRow][selectedCol];
     }
     
@@ -96,16 +97,18 @@ public class TargetSelection extends SubsystemBase {
      * Move the selected Node left one column
      */
     public void selectionLeft(){
-        selectedCol = bound(selectedCol - 1, 0, GRID[selectedRow].length);
+        selectedCol = bound(selectedCol - 1, 0, GRID[selectedRow].length-1);
         selectedNode = GRID[selectedRow][selectedCol];
+        SmartDashboard.putString("Object Type", selectedNode.type.name());
     }
     
     /**
      * Move the selected Node right one column
      */
     public void selectionRight(){
-        selectedCol = bound(selectedCol + 1, 0, GRID[selectedRow].length);
+        selectedCol = bound(selectedCol + 1, 0, GRID[selectedRow].length-1);
         selectedNode = GRID[selectedRow][selectedCol];
+        SmartDashboard.putString("Object Type", selectedNode.type.name());
     }
 
     private static int bound(int val, int min, int max){
