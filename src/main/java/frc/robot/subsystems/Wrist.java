@@ -47,7 +47,7 @@ public class Wrist extends SubsystemBase {
     public static final double TRANSPORT = 80;
     //PLACEHOLDER VALUE
     public static final double LOADING_STATION = 0;
-    public static final double GROUND = -40;
+    public static final double GROUND = -23;
     // Placeholder for testing, needs bettter calibration
     public static final double SCORE_CONE = -15;
 
@@ -107,7 +107,7 @@ public class Wrist extends SubsystemBase {
      */
     private double convertAngleToVolts(double angle) {
         // I hate algebra
-        return angle * (1 / VOLTS_TO_DEGREES_SLOPE) - VOLTS_TO_DEGREES_CONSTANT * (1 / VOLTS_TO_DEGREES_SLOPE) - arm.getCurrentAngle();
+        return angle * (1 / VOLTS_TO_DEGREES_SLOPE) - VOLTS_TO_DEGREES_CONSTANT * (1 / VOLTS_TO_DEGREES_SLOPE);
     }
 
     /**
@@ -121,8 +121,10 @@ public class Wrist extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("wrist target deg horizontal", targetAngle);
-        SmartDashboard.putNumber("wrist target pot volts", convertAngleToVolts(targetAngle));
+        SmartDashboard.putNumber("wrist target pot volts", targetVolts);
         SmartDashboard.putNumber("wrist AFF", getArbitraryFeedforward());
+
+        SmartDashboard.putNumber("arm curent", arm.getCurrentAngle());
 
         SmartDashboard.putNumber("wrist current deg horizontal", getCurrentAngle());
         SmartDashboard.putNumber("wrist current pot volts", pot.getPosition());
