@@ -33,6 +33,9 @@ public class DriveCommand extends CommandBase {
         SmartDashboard.putNumber("leftspeed target", leftSpeed);
         SmartDashboard.putNumber("rightspeed target", rightSpeed);
         drivetrain.velocityTankDrive(leftSpeed, rightSpeed);
+
+        SmartDashboard.putNumber("joystik left", leftSupplier.getAsDouble());
+
     }
 
     @Override

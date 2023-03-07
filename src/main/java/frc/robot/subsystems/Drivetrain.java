@@ -1,13 +1,11 @@
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -31,7 +29,7 @@ public class Drivetrain extends SubsystemBase {
 
     // Temporary gyro
     // final ADXRS450_Gyro gyro = new ADXRS450_Gyro(Port.kOnboardCS0);
-    AHRS gyro = new AHRS(SPI.Port.kMXP);
+    Gyro gyro = new Gyro();
 
     RelativeEncoder leftEncoder;
     RelativeEncoder rightEncoder;
