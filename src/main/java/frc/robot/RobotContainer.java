@@ -45,13 +45,14 @@ import frc.robot.subsystems.Lights;
 
 public class RobotContainer {
 
+  // Initialize subsystems
   private Drivetrain drivetrain = new Drivetrain(RobotMap.leftController1, RobotMap.rightController1);
   public final Limelight limelight = new Limelight();
-  public final Wrist wrist = new Wrist(RobotMap.wristController);
   private Gyro gyro = new Gyro();
   public final Arm arm = new Arm(RobotMap.telescopeController1, RobotMap.telescopeController2, RobotMap.leftArmSolenoid, RobotMap.rightArmSolenoid);
   private Claw claw = new Claw(RobotMap.leftClawController, RobotMap.rightClawController, RobotMap.leftClawSolenoid, RobotMap.rightClawSolenoid);
   public static final Lights lights = new Lights();
+  public final Wrist wrist = new Wrist(RobotMap.wristController, arm);
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();

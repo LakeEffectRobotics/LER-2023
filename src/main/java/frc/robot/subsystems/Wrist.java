@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.Arm.ArmPosition;
 
 public class Wrist extends SubsystemBase {
     CANSparkMax wristController;
@@ -19,6 +20,8 @@ public class Wrist extends SubsystemBase {
 
     private SparkMaxPIDController pidController;
 
+    private Arm arm; 
+
     private static final double kF = 0;
     private static final double kP = 0.45;
     private static final double kI = 0;
@@ -26,34 +29,34 @@ public class Wrist extends SubsystemBase {
     private static final double MAX_OUTPUT = 0.4;
     private static final double MIN_OUTPUT = -0.2;
 
-    // Angle of the arm relative to horizontal ground (degrees)
-    // Currently a constant as arm prototype is stationary
-    private static final double ARM_ANGLE = 1.6;
-
     // Function to convert from potentiometer volts to arm degrees above horizontal
     // Slope: degrees per volt
     // Constant: the degrees value at volts = 0
     private static final double VOLTS_TO_DEGREES_SLOPE = 67.95;
     private static final double VOLTS_TO_DEGREES_CONSTANT = -82.16;
 
-    // Voltage required to hold arm up at horizontal
-    // 0.075 is the experimentally determined motor percentage that does that
+    // Motor voltage required to hold arm up at horizontal
+    // 0.075 is the experimentally determined motor percentage that does that, so convert % to volts:
     private static final double GRAVITY_COMPENSATION = 0.075 * 12;
 
-    // Wrist angle
+    // Target angle and volts
+    // Angle is relative to horizontal, so volts accounts for arm angle
     private double targetAngle;
+    private double targetVolts;
 
     public static final double TRANSPORT = 80;
     //PLACEHOLDER VALUE
     public static final double LOADING_STATION = 0;
-    public static final double GROUND = -40;
+    public static final double GROUND = -23;
     // Placeholder for testing, needs bettter calibration
     public static final double SCORE_CONE = -15;
 
-    public Wrist(CANSparkMax controller) {
+    public Wrist(CANSparkMax controller, Arm arm) {
         wristController = controller;
         forwardLimit = wristController.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
         reverseLimit = wristController.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+
+        this.arm = arm;
 
         pot = wristController.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
 
@@ -71,10 +74,12 @@ public class Wrist extends SubsystemBase {
 
         // Initialize angle to where wrist is so it doesn't try to move on enable
         targetAngle = getCurrentAngle();
+        targetVolts = convertAngleToVolts(targetAngle);
 
         controller.setSmartCurrentLimit(15, 35, 50);
         // TODO: Adjust ramp rate for best performance/jerk tradeoff
         controller.setClosedLoopRampRate(1);
+
     }
 
     /**
@@ -83,12 +88,7 @@ public class Wrist extends SubsystemBase {
      */
     public double getCurrentAngle() {
         double potVoltage = pot.getPosition();
-        return potVoltage * VOLTS_TO_DEGREES_SLOPE + VOLTS_TO_DEGREES_CONSTANT + ARM_ANGLE;
-    }
-
-    public double convertAngleToVolts(double angle) {
-        // I hate algebra
-        return angle * (1 / VOLTS_TO_DEGREES_SLOPE) - VOLTS_TO_DEGREES_CONSTANT * (1 / VOLTS_TO_DEGREES_SLOPE);
+        return potVoltage * VOLTS_TO_DEGREES_SLOPE + VOLTS_TO_DEGREES_CONSTANT + arm.getCurrentAngle();
     }
 
     /**
@@ -97,21 +97,38 @@ public class Wrist extends SubsystemBase {
      */
     public void setTargetAngle(double angle) { // abc1239+10=21 road work ahead, i sure hope it does. David was here.......
         this.targetAngle = angle;
+        this.targetVolts = convertAngleToVolts(targetAngle);
     }
 
+    /**
+     * 
+     * @param angle desired angle above horizontal (degrees)
+     * @return pot position at this angle. this accounts for current arm angle
+     */
+    private double convertAngleToVolts(double angle) {
+        // I hate algebra
+        return angle * (1 / VOLTS_TO_DEGREES_SLOPE) - VOLTS_TO_DEGREES_CONSTANT * (1 / VOLTS_TO_DEGREES_SLOPE);
+    }
+
+    /**
+     * 
+     * @return  motor volts needed to "cancel out" gravity: (Gravity compensation constant) * cos(current angle)
+     */
     private double getArbitraryFeedforward() {
-        // Return volts needed to "cancel out" gravity: (Gravity compensation constant) * cos(current angle)
         return GRAVITY_COMPENSATION * Math.cos(Math.toRadians(getCurrentAngle()));
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("wrist target angle", targetAngle);
-        SmartDashboard.putNumber("wrist target volts", convertAngleToVolts(targetAngle));
+        SmartDashboard.putNumber("wrist target deg horizontal", targetAngle);
+        SmartDashboard.putNumber("wrist target pot volts", targetVolts);
         SmartDashboard.putNumber("wrist AFF", getArbitraryFeedforward());
 
-        SmartDashboard.putNumber("wrist current angle", getCurrentAngle());
-        SmartDashboard.putNumber("wrist current volts", pot.getPosition());
+        SmartDashboard.putNumber("arm curent", arm.getCurrentAngle());
+
+        SmartDashboard.putNumber("wrist current deg horizontal", getCurrentAngle());
+        SmartDashboard.putNumber("wrist current pot volts", pot.getPosition());
+
 
         // Let gravity lower arm to ground instead of slamming:
         // Stop pidcontroller if target angle is low, and arm is low enough to fall naturally
@@ -119,7 +136,7 @@ public class Wrist extends SubsystemBase {
             wristController.set(0);
         } else {
             // Otherwise, continuously set wrist pid to target angle (must be continuous to update feedforward as angle changes)
-            pidController.setReference(convertAngleToVolts(targetAngle), ControlType.kPosition, 0, getArbitraryFeedforward());
+            pidController.setReference(targetVolts, ControlType.kPosition, 0, getArbitraryFeedforward());
         }
     }
 }
