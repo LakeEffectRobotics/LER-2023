@@ -102,10 +102,11 @@ public class OI {
 
     private static double processDriveInput(double raw) {
         // TODO: Configure input processing to suit your liking
-        if (Math.abs(raw) < 0.2)
+        if (Math.abs(raw) < 0.1)
             raw = 0;
-        // raw = Math.pow(raw, [EXPONENT]);
-         raw *= 0.9;
+        // Signum function is -1 for x < 0, 1 for x > 0
+        raw = Math.pow(raw, 2) * Math.signum(raw);
+        raw *= 0.9;
         return -raw;
     }
 
