@@ -120,7 +120,11 @@ public class RobotMap {
         rightController2.follow(rightController1);
         rightController3.follow(rightController1);
 
-        rightController1.setInverted(false);
+        rightController1.setInverted(true);
+        leftController1.setInverted(false);
+
+        rightController1.setIdleMode(IdleMode.kBrake);
+        leftController1.setIdleMode(IdleMode.kBrake);
 
         leftController1.setClosedLoopRampRate(0.15);
         rightController1.setClosedLoopRampRate(0.15);

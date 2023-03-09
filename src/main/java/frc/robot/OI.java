@@ -106,7 +106,7 @@ public class OI {
             raw = 0;
         // Signum function is -1 for x < 0, 1 for x > 0
         raw = Math.pow(raw, 2) * Math.signum(raw);
-        raw *= 0.9;
+        raw *= 1;
         return -raw;
     }
 
