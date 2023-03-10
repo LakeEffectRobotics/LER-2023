@@ -1,12 +1,15 @@
 package frc.robot.pathplannerUtils;
 
 import java.util.HashMap;
+import java.util.function.Supplier;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPoint;
 import com.pathplanner.lib.auto.RamseteAutoBuilder;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
+import com.pathplanner.lib.commands.PPRamseteCommand;
 
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -41,7 +44,7 @@ public class CreatePathUtils {
      * @param pathName        Name of the path file (without the ".path")
      * @param maxVelocity     (m/s)
      * @param maxAcceleration (m/s)
-     * @return command that automatically follows the path
+     * @return command that automatically follows the path without executing events
      */
     public Command createPathCommand(String pathName, double maxVelocity, double maxAcceleration) {
 
@@ -57,6 +60,22 @@ public class CreatePathUtils {
                 drivetrain.kinematics, drivetrain::velocityTankDrive, true, drivetrain);
 
         return autoFollowPathCommand;
+    }
+
+    /**
+     * 
+     * @param pathName
+     * @param maxVelocity
+     * @param maxAcceleration
+     * @return command that auto follows the path and executes its events
+     */
+    public Command createPathWithEventsCommand(String pathName, double maxVelocity, double maxAcceleration) {
+        // Load the path from the .path file created by pathplanner
+        PathPlannerTrajectory path = PathPlanner.loadPath("drivearound", new PathConstraints(maxVelocity, maxAcceleration));
+
+        Command pathCommand = createPathCommand(pathName, maxVelocity, maxAcceleration);
+
+        return new FollowPathWithEvents(pathCommand, path.getMarkers(), eventMap);
     }
 
     /**
