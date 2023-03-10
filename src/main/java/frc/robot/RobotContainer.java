@@ -4,15 +4,6 @@
 
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.List;
-
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.auto.RamseteAutoBuilder;
-
-import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import frc.robot.commands.CurtisDriveCommand;
 import frc.robot.commands.DiscoCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.pathplannerUtils.CreatePathUtils;
 import frc.robot.commands.SpinClawCommand;
 import frc.robot.commands.SpinClawCommand.Direction;
 import frc.robot.commands.instant.SetClawCommand;
@@ -54,19 +46,11 @@ public class RobotContainer {
   public static final Lights lights = new Lights();
   public final Wrist wrist = new Wrist(RobotMap.wristController, arm);
 
+  // path utils
+  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight);
+
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
-
-  // Path planner
-  List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("drivearound", new PathConstraints(2, 1));
-  HashMap<String, Command> eventMap = new HashMap<>();
-
-  // Create path planner auto builder
-  RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(drivetrain::getPose, drivetrain::resetPose,
-      new RamseteController(), drivetrain.kinematics, drivetrain::velocityTankDrive, eventMap, drivetrain);
-
-  // Create path command
-  Command autoFollowPathCommand = autoBuilder.fullAuto(pathGroup);
 
   // Create robotContainer
   public RobotContainer() {
@@ -74,7 +58,6 @@ public class RobotContainer {
     gyro.setDefaultCommand(new GyroCommand(gyro));
 
     // Put autonomous chooser on dashboard
-    autoChooser.addOption("new path", autoFollowPathCommand);
     autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
 
     SmartDashboard.putData(autoChooser);
