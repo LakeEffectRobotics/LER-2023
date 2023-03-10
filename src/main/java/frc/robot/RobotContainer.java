@@ -4,6 +4,16 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+import java.util.List;
+
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.RamseteAutoBuilder;
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -64,6 +74,8 @@ public class RobotContainer {
     configureBindings();
 
     lights.setBoth(Colour.PURPLE);
+
+    CameraServer.startAutomaticCapture();
   }
 
   // Create button bindings
