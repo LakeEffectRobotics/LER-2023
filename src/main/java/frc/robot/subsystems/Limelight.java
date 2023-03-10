@@ -10,12 +10,22 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Limelight extends SubsystemBase {
   private NetworkTable table;
 
-  private static final int LIMELIGHT_PIPELINE = 0;
-  private static final int APRILTAG_PIPELINE = 1;
+    public enum Pipeline {
+        LIMELIGHT(0),
+        APRILTAG(1),
+        CUBE(3),
+        CONE(4);
+
+       private final double pipelineId;
+
+        Pipeline(double pipelineId) {
+            this.pipelineId = pipelineId;
+        }
+    }
 
   public Limelight() {
     table = NetworkTableInstance.getDefault().getTable("limelight");
-    useApriltagPipeline();
+    setPipeline(Pipeline.APRILTAG);
   }
 
   @Override
@@ -48,20 +58,12 @@ public class Limelight extends SubsystemBase {
     }
   }
 
-  /**
-   * Make limelight look for apriltags
-   * 
-   */
-  public void useApriltagPipeline() {
-    table.getEntry("pipeline").setDouble(APRILTAG_PIPELINE);
-  }
-
-  /**
-   * Make limelight look for retroreflective
-   * 
-   */
-  public void useLimelightPipeline() {
-    table.getEntry("pipeline").setDouble(LIMELIGHT_PIPELINE);
+/**
+ * set limelight pipeline 
+ * @param pipeline enum of pipeline
+ */
+  public void setPipeline(Pipeline pipeline) {
+    table.getEntry("pipeline").setDouble(pipeline.pipelineId);
   }
 
   /**
