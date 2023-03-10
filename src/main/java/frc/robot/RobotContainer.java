@@ -69,6 +69,8 @@ public class RobotContainer {
 
     // Put autonomous chooser on dashboard
     autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
+    autoChooser.addOption("flat 2 cube", createPathUtils.createPathCommand("flat 2 cube", 1, 2));
+    autoChooser.addOption("bump 2 cube", createPathUtils.createPathCommand("bump 2 cube", 1, 2));
 
     SmartDashboard.putData(autoChooser);
     configureBindings();
