@@ -50,7 +50,12 @@ public class CreatePathUtils {
                 new PathConstraints(maxVelocity, maxAcceleration));
 
         // Build and return path command
-        Command autoFollowPathCommand = autoBuilder.fullAuto(path);
+        // Command autoFollowPathCommand = autoBuilder.fullAuto(path);
+
+        // try using pathplanner's ramsetecommand
+        Command autoFollowPathCommand = new PPRamseteCommand(path, drivetrain::getPose, new RamseteController(),
+                drivetrain.kinematics, drivetrain::velocityTankDrive, true, drivetrain);
+
         return autoFollowPathCommand;
     }
 
