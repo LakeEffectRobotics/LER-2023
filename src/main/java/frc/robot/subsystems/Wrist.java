@@ -29,11 +29,11 @@ public class Wrist extends SubsystemBase {
     private static final double MAX_OUTPUT = 0.4;
     private static final double MIN_OUTPUT = -0.2;
 
-    // Function to convert from potentiometer volts to arm degrees above horizontal
+    // Function to convert from potentiometer volts to arm degrees above horizontal, obtained experimentally
     // Slope: degrees per volt
     // Constant: the degrees value at volts = 0
-    private static final double VOLTS_TO_DEGREES_SLOPE = 67.95;
-    private static final double VOLTS_TO_DEGREES_CONSTANT = -82.16;
+    private static final double VOLTS_TO_DEGREES_SLOPE = 66.0198;
+    private static final double VOLTS_TO_DEGREES_CONSTANT = -93.6532;
 
     // Motor voltage required to hold arm up at horizontal
     // 0.075 is the experimentally determined motor percentage that does that, so convert % to volts:
@@ -44,7 +44,7 @@ public class Wrist extends SubsystemBase {
     private double targetAngle;
     private double targetVolts;
 
-    public static final double TRANSPORT = 80;
+    public static final double TRANSPORT = 100;
     //PLACEHOLDER VALUE
     public static final double LOADING_STATION = 0;
     public static final double GROUND = -23;
@@ -132,7 +132,7 @@ public class Wrist extends SubsystemBase {
 
         // Let gravity lower arm to ground instead of slamming:
         // Stop pidcontroller if target angle is low, and arm is low enough to fall naturally
-        if (getCurrentAngle() < 0 && targetAngle < -15) {
+        if (getCurrentAngle() < 0 && targetAngle < -25) {
             wristController.set(0);
         } else {
             // Otherwise, continuously set wrist pid to target angle (must be continuous to update feedforward as angle changes)
