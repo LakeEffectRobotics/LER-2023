@@ -43,6 +43,7 @@ public class Drivetrain extends SubsystemBase {
 
     // Max speed in m/s
     public final double MAX_SPEED = 4;
+    public double speedMultiplier = 1;
 
     // Robot track width 19"
     public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(19));
@@ -129,6 +130,14 @@ public class Drivetrain extends SubsystemBase {
     public void tankDrive(double left, double right) {
         leftLeadController.set(left);
         rightLeadController.set(right);
+    }
+
+    /**
+     * Set speed multiplier to slow down driving on velocity drive
+     * @param multiplier [0, 1]
+     */
+    public void setSpeedMultiplier(double multiplier) {
+        speedMultiplier = multiplier;
     }
 
     public void stop() {

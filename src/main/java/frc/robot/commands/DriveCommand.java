@@ -36,14 +36,10 @@ public class DriveCommand extends CommandBase {
             leftInput = rightInput;
         }
 
-        final double leftSpeed = leftInput * drivetrain.MAX_SPEED;
-        final double rightSpeed = rightInput * drivetrain.MAX_SPEED;
-        SmartDashboard.putNumber("leftspeed target", leftSpeed);
-        SmartDashboard.putNumber("rightspeed target", rightSpeed);
+        final double leftSpeed = leftInput * drivetrain.MAX_SPEED * drivetrain.speedMultiplier;
+        final double rightSpeed = rightInput * drivetrain.MAX_SPEED * drivetrain.speedMultiplier;
+
         drivetrain.velocityTankDrive(leftSpeed, rightSpeed);
-
-        SmartDashboard.putNumber("joystik left", leftSupplier.getAsDouble());
-
     }
 
     @Override
