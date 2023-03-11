@@ -16,6 +16,7 @@ import frc.robot.commands.CurtisDriveCommand;
 import frc.robot.commands.DefaultLightCommand;
 import frc.robot.commands.DiscoCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.DriveSlowCommand;
 import frc.robot.pathplannerUtils.CreatePathUtils;
 import frc.robot.commands.SpinClawCommand;
 import frc.robot.commands.TurnToAngleCommand;
@@ -88,12 +89,17 @@ public class RobotContainer {
 
   // Create button bindings
   private void configureBindings() {
+    // right joystick
     OI.aimButton.whileTrue(new ApriltagAimCommand(limelight, drivetrain));
     OI.resetPoseButton.whileTrue(new ApriltagPoseCommand(limelight, drivetrain));
     
     OI.turnButton.whileTrue(new TurnToAngleCommand(gyro, drivetrain, 0));
     OI.curtisStraightButton.whileTrue(new CurtisDriveCommand(drivetrain));
 
+    // left joystick
+    OI.slowButton.whileTrue(new DriveSlowCommand(drivetrain));
+
+    // operator
     OI.openClawButton.onTrue(new SetClawCommand(claw, Position.OPEN));
     OI.closeClawButton.onTrue(new SetClawCommand(claw, Position.CLOSED));
     OI.spinInButton.whileTrue(new SpinClawCommand(claw, Direction.IN, OI.clawInSpeedSupplier));
