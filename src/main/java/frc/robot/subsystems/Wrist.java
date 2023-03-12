@@ -132,7 +132,9 @@ public class Wrist extends SubsystemBase {
 
         // Let gravity lower arm to ground instead of slamming:
         // Stop pidcontroller if target angle is low, and arm is low enough to fall naturally
-        if (getCurrentAngle() < 0 && targetAngle < -25) {
+        if (getCurrentAngle() < -25 && targetAngle < -25) {
+            wristController.set(0);
+        } else if (getCurrentAngle() > 110 && targetAngle > 115) {
             wristController.set(0);
         } else {
             // Otherwise, continuously set wrist pid to target angle (must be continuous to update feedforward as angle changes)
