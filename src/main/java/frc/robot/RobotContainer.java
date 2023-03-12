@@ -11,6 +11,7 @@ import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.RamseteAutoBuilder;
+import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.controller.RamseteController;
@@ -27,6 +28,8 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.pathplannerUtils.CreatePathUtils;
 import frc.robot.commands.SpinClawCommand;
 import frc.robot.commands.SpinClawCommand.Direction;
+import frc.robot.commands.autonomous.AutoIntakeCommand;
+import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
 import frc.robot.commands.instant.SetClawCommand;
 import frc.robot.commands.instant.LowerArmCommand;
 import frc.robot.commands.instant.RaiseArmCommand;
@@ -57,7 +60,7 @@ public class RobotContainer {
   public final Wrist wrist = new Wrist(RobotMap.wristController, arm);
 
   // path utils
-  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight);
+  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight, arm, wrist, claw);
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -69,8 +72,12 @@ public class RobotContainer {
 
     // Put autonomous chooser on dashboard
     autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
-    autoChooser.addOption("flat 2 cube", createPathUtils.createPathCommand("flat 2 cube", 1, 2));
-    autoChooser.addOption("bump 2 cube", createPathUtils.createPathCommand("bump 2 cube", 1, 2));
+    
+    autoChooser.addOption("flat 2 cube events", createPathUtils.createPathCommand("flat 2 cube", 2, 2));
+    autoChooser.addOption("bump 2 cube events", createPathUtils.createPathCommand("bump 2 cube", 2, 2));
+
+    autoChooser.addOption("outtake", new AutoShootBackwardsCommand(arm, wrist, claw));
+    autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw));
 
     SmartDashboard.putData(autoChooser);
     configureBindings();
@@ -78,6 +85,10 @@ public class RobotContainer {
     lights.setBoth(Colour.PURPLE);
 
     CameraServer.startAutomaticCapture();
+
+    // Start pathplanner visualizer server
+    // DISABLE FOR COMPETITION to save on network
+    //PathPlannerServer.startServer(5811);
   }
 
   // Create button bindings
