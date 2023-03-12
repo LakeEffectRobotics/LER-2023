@@ -22,8 +22,8 @@ public class Arm extends SubsystemBase {
 
     private Double currentAngle = DOWN_ANGLE;
 
-    private static final double UP_ANGLE = 33;
-    private static final double DOWN_ANGLE = 1.6;
+    private static final double UP_ANGLE = 34;
+    private static final double DOWN_ANGLE = -0.4;
 
     SparkMaxPIDController pidController;
 
