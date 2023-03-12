@@ -32,7 +32,7 @@ public class CreatePathUtils {
         this.limelight = limelight;
 
         autoBuilder = new RamseteAutoBuilder(drivetrain::getPose, drivetrain::resetPose,
-                new RamseteController(), drivetrain.kinematics, drivetrain::velocityTankDrive, eventMap, drivetrain);
+               new RamseteController(), drivetrain.kinematics, drivetrain::velocityTankDrive, eventMap, true, drivetrain);
 
         // Global event map
         // Add all the predefined events used by paths to the global event map
@@ -49,15 +49,17 @@ public class CreatePathUtils {
     public Command createPathCommand(String pathName, double maxVelocity, double maxAcceleration) {
 
         // Load the path from the .path file created by pathplanner
-        PathPlannerTrajectory path = PathPlanner.loadPath("drivearound",
-                new PathConstraints(maxVelocity, maxAcceleration));
+        PathPlannerTrajectory path = PathPlanner.loadPath(pathName, new PathConstraints(maxVelocity, maxAcceleration));
 
         // Build and return path command
         // Command autoFollowPathCommand = autoBuilder.fullAuto(path);
 
-        // try using pathplanner's ramsetecommand
-        Command autoFollowPathCommand = new PPRamseteCommand(path, drivetrain::getPose, new RamseteController(),
-                drivetrain.kinematics, drivetrain::velocityTankDrive, true, drivetrain);
+
+         Command autoFollowPathCommand = autoBuilder.fullAuto(path);
+
+        // try using pathplanner's ramsetecommand ****** DOES NOT APPEAR TO WORK CURRENTLY FOR SOME REASON ******
+        // Command autoFollowPathCommand = new PPRamseteCommand(path, drivetrain::getPose, new RamseteController(),
+        //       drivetrain.kinematics, drivetrain::velocityTankDrive, true, drivetrain);
 
         return autoFollowPathCommand;
     }
