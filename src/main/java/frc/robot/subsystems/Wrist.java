@@ -44,12 +44,13 @@ public class Wrist extends SubsystemBase {
     private double targetAngle;
     private double targetVolts;
 
-    public static final double TRANSPORT = 100;
+    public static final double TRANSPORT = 116;
     //PLACEHOLDER VALUE
     public static final double LOADING_STATION = 0;
-    public static final double GROUND = -23;
+    public static final double GROUND = -40;
     // Placeholder for testing, needs bettter calibration
     public static final double SCORE_CONE = -15;
+    public static final double SCORE_CUBE_BACKWARDS = 100;
 
     public Wrist(CANSparkMax controller, Arm arm) {
         wristController = controller;
