@@ -23,7 +23,6 @@ import frc.robot.subsystems.Arm.ArmPosition;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoShootBackwardsCommand extends SequentialCommandGroup {
   
-  private static final double WRIST_ANGLE = 100;
   private static final double CLAW_SPEED = 1;
   
   /** Creates a new AutoShootBackwardsCommand. */
@@ -33,13 +32,13 @@ public class AutoShootBackwardsCommand extends SequentialCommandGroup {
     addCommands(
       // Raise arm and set wrist to correct angle
       new RaiseArmCommand(arm),
-      new SetWristAngleCommand(wrist, WRIST_ANGLE),
+      new SetWristAngleCommand(wrist, Wrist.SCORE_CUBE_BACKWARDS),
       
       // Wait 1 second for arm + wrist to be in position
-      andThen(new WaitCommand(1)),
+      new WaitCommand(1),
       
       // Spin the claw for 1 second at 100% power to shoot the cube
-      new SpinClawCommand(claw, Direction.OUT, () -> CLAW_SPEED).withTimeout(1),
+      new SpinClawCommand(claw, Direction.OUT, () -> CLAW_SPEED).withTimeout(0.5),
       
       // Set arm and wrist to transport position
       new SetWristAngleCommand(wrist, Wrist.TRANSPORT),

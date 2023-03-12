@@ -23,7 +23,6 @@ import frc.robot.subsystems.Wrist;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoIntakeCommand extends SequentialCommandGroup {
   
-  private static final double DRIVE_SPEED = 0.25;
   // Note that the claw subsystem applies it's own scaling, so 100% should be the optimal speed
   private static final double CLAW_SPEED = 1;
 
@@ -37,12 +36,11 @@ public class AutoIntakeCommand extends SequentialCommandGroup {
       // Lower the wrist and arm, 
       new SetWristAngleCommand(wrist, Wrist.GROUND),
       new LowerArmCommand(arm),
-      new WaitCommand(1),
 
       // Spin claw and drive forward until limit switch is pressed
       new ParallelCommandGroup(
-        new SpinClawCommand(claw, Direction.IN, () -> 1), 
-        new DriveCommand(drivetrain, () -> 0.25, () -> 0.25)
+       // new DriveCommand(drivetrain, () -> 0.25, () -> 0.25)
+        new SpinClawCommand(claw, Direction.IN, () -> CLAW_SPEED)//, 
       ).until(() -> claw.GetLimitPressed()).withTimeout(TIMEOUT),
 
       // Raise wrist to transport position
