@@ -58,7 +58,7 @@ public class RobotContainer {
   public final Wrist wrist = new Wrist(RobotMap.wristController, arm);
 
   // path utils
-  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight);
+  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight, arm, wrist, claw, gyro);
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
