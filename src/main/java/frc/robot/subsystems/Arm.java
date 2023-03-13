@@ -90,7 +90,7 @@ public class Arm extends SubsystemBase {
         currentPosition = ArmPosition.DOWN;
         currentAngle = DOWN_ANGLE;
 
-        // leftSolenoid.set(ArmPosition.DOWN.value);
+        leftSolenoid.set(ArmPosition.DOWN.value);
         rightSolenoid.set(ArmPosition.DOWN.value);
     }
 
