@@ -125,4 +125,9 @@ public class OI {
     public static DoubleSupplier clawOutSpeedSupplier = () -> {
         return xboxController.getRawAxis(OPERATOR_MAP.SPIT_OUT_TRIGGER);
     };
+
+    public static DoubleSupplier manualMoveWristSupplier = () -> {
+        return xboxController.getRightY();
+    } ;
+    
 }

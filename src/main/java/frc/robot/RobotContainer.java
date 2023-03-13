@@ -39,6 +39,7 @@ import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.Arm.ArmPosition;
 import frc.robot.subsystems.Lights.Colour;
 import frc.robot.commands.GyroCommand;
+import frc.robot.commands.ManualMoveWristCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Gyro;
@@ -66,6 +67,7 @@ public class RobotContainer {
   public RobotContainer() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
     gyro.setDefaultCommand(new GyroCommand(gyro));
+    wrist.setDefaultCommand(new ManualMoveWristCommand(wrist, OI.manualMoveWristSupplier));
 
     // Put autonomous chooser on dashboard
     autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
