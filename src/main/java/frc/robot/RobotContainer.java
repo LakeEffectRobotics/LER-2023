@@ -4,16 +4,7 @@
 
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.List;
-
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.auto.RamseteAutoBuilder;
-
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,7 +17,10 @@ import frc.robot.commands.DiscoCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.pathplannerUtils.CreatePathUtils;
 import frc.robot.commands.SpinClawCommand;
+import frc.robot.commands.TurnToAngleCommand;
 import frc.robot.commands.SpinClawCommand.Direction;
+import frc.robot.commands.autonomous.AutoIntakeCommand;
+import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
 import frc.robot.commands.instant.SetClawCommand;
 import frc.robot.commands.instant.LowerArmCommand;
 import frc.robot.commands.instant.RaiseArmCommand;
@@ -40,8 +34,6 @@ import frc.robot.subsystems.Arm.ArmPosition;
 import frc.robot.subsystems.Lights.Colour;
 import frc.robot.commands.GyroCommand;
 import frc.robot.commands.ManualMoveWristCommand;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Claw.Position;
 import frc.robot.subsystems.Lights;
@@ -49,16 +41,16 @@ import frc.robot.subsystems.Lights;
 public class RobotContainer {
 
   // Initialize subsystems
-  private Drivetrain drivetrain = new Drivetrain(RobotMap.leftController1, RobotMap.rightController1);
+  public Drivetrain drivetrain = new Drivetrain(RobotMap.leftController1, RobotMap.rightController1);
   public final Limelight limelight = new Limelight();
-  private Gyro gyro = new Gyro();
+  public Gyro gyro = new Gyro();
   public final Arm arm = new Arm(RobotMap.telescopeController1, RobotMap.telescopeController2, RobotMap.leftArmSolenoid, RobotMap.rightArmSolenoid);
-  private Claw claw = new Claw(RobotMap.rightClawController, RobotMap.leftClawSolenoid, RobotMap.rightClawSolenoid);
+  public Claw claw = new Claw(RobotMap.rightClawController, RobotMap.leftClawSolenoid, RobotMap.rightClawSolenoid);
   public static final Lights lights = new Lights();
   public final Wrist wrist = new Wrist(RobotMap.wristController, arm);
 
   // path utils
-  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight);
+  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight, arm, wrist, claw, gyro);
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -71,6 +63,14 @@ public class RobotContainer {
 
     // Put autonomous chooser on dashboard
     autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
+    
+    autoChooser.addOption("flat 2 cube", createPathUtils.createPathCommand("flat 2 cube", 2.5, 1));
+    autoChooser.addOption("bump 2 cube turn", createPathUtils.createPathCommand("bump 2 cube turn", 1, 1));
+    autoChooser.addOption("balance 1 cube", createPathUtils.createPathCommand("balance 1 cube", 2.5, 1));
+    autoChooser.addOption("balance 2 cube", createPathUtils.createPathCommand("balance 2 cube", 2.5, 1));
+
+    autoChooser.addOption("outtake", new AutoShootBackwardsCommand(arm, wrist, claw));
+    autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw));
 
     SmartDashboard.putData(autoChooser);
     configureBindings();
@@ -85,6 +85,7 @@ public class RobotContainer {
     OI.aimButton.whileTrue(new ApriltagAimCommand(limelight, drivetrain));
     OI.resetPoseButton.whileTrue(new ApriltagPoseCommand(limelight, drivetrain));
     
+    OI.turnButton.whileTrue(new TurnToAngleCommand(gyro, drivetrain, 0));
     OI.curtisStraightButton.whileTrue(new CurtisDriveCommand(drivetrain));
 
     OI.openClawButton.onTrue(new SetClawCommand(claw, Position.OPEN));

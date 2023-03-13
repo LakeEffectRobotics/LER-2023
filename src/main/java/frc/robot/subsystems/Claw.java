@@ -51,7 +51,6 @@ public class Claw extends SubsystemBase {
             speed = speed / 2;
         }
         leadController.set(speed);
-        
     }
 
     // Solenoids
@@ -63,5 +62,9 @@ public class Claw extends SubsystemBase {
 
     public Position getPosition() {
         return currentPosition;
+    }
+
+    public boolean GetLimitPressed() {
+        return clawLimitSwitch.isPressed();
     }
 }

@@ -112,7 +112,7 @@ public class Wrist extends SubsystemBase {
             this.targetAngle = angle;
         }
 
-        this.targetVolts = convertAngleToVolts(this.targetAngle);
+        this.targetVolts = convertAngleToVolts(this.targetAngle - arm.getCurrentAngle());
     }
 
     /**

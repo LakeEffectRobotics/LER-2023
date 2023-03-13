@@ -48,6 +48,10 @@ public class Gyro extends SubsystemBase {
     public double getAngle() {
         return -RobotMap.gyro.getAngle() - prev_sample;// - (Tools.getTimeSeconds() - reset_time) * offset_per_second; // it is negative to make counterclockwise motion increase the angle like normal math
     }
+
+	public double getPitch() {
+		return RobotMap.gyro.getRoll();
+	}
     
     public double getAbsoluteAngle() {
     	return -RobotMap.gyro.getAngle();
