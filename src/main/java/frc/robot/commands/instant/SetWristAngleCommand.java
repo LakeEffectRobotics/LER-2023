@@ -8,6 +8,7 @@ public class SetWristAngleCommand extends InstantCommand {
     double angle;
 
     public SetWristAngleCommand(Wrist wrist, double angle) {
+        addRequirements(wrist);
         this.wrist = wrist;
         this.angle = angle;
     }

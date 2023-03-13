@@ -29,8 +29,8 @@ public class Wrist extends SubsystemBase {
     private static final double MAX_OUTPUT = 0.4;
     private static final double MIN_OUTPUT = -0.2;
 
-    private static final double MIN_ANGLE = -23;
-    private static final double MAX_ANGLE = 90;
+    private static final double MIN_ANGLE = -50;
+    private static final double MAX_ANGLE = 110;
 
     // Function to convert from potentiometer volts to arm degrees above horizontal, obtained experimentally
     // Slope: degrees per volt
@@ -95,6 +95,10 @@ public class Wrist extends SubsystemBase {
         return potVoltage * VOLTS_TO_DEGREES_SLOPE + VOLTS_TO_DEGREES_CONSTANT + arm.getCurrentAngle();
     }
 
+    public double getTargetAngle() {
+        return targetAngle;
+    }
+    
     /**
      * 
      * @param angle desired degrees above horizontal

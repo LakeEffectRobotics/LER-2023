@@ -8,6 +8,7 @@ import frc.robot.subsystems.Wrist;
 public class ManualMoveWristCommand extends CommandBase {
     Wrist wrist;
     DoubleSupplier incrementSupplier;
+    double inc;
 
     public ManualMoveWristCommand(Wrist wrist, DoubleSupplier incrementSupplier) {
         addRequirements(wrist);
@@ -22,9 +23,14 @@ public class ManualMoveWristCommand extends CommandBase {
     
     @Override
     public void execute() {
-        double currentAngle = wrist.getCurrentAngle();
-        
-        // increase wrist target by joystick
-        wrist.setTargetAngle( currentAngle + incrementSupplier.getAsDouble());
+        // axis deadzone
+        if (Math.abs(incrementSupplier.getAsDouble()) < 0.2) {
+            inc = 0;
+        } else {
+            inc = incrementSupplier.getAsDouble();
+        }
+
+        // increase wrist target by joystick inc
+        wrist.setTargetAngle( wrist.getTargetAngle() + inc);
     }
 }
