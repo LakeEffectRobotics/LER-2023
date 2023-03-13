@@ -51,7 +51,6 @@ public class Claw extends SubsystemBase {
             speed = speed / 2;
         }
         leadController.set(speed);
-        
     }
 
     // Solenoids
