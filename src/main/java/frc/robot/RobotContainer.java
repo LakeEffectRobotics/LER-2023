@@ -26,7 +26,10 @@ import frc.robot.commands.DiscoCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.pathplannerUtils.CreatePathUtils;
 import frc.robot.commands.SpinClawCommand;
+import frc.robot.commands.TurnToAngleCommand;
 import frc.robot.commands.SpinClawCommand.Direction;
+import frc.robot.commands.autonomous.AutoIntakeCommand;
+import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
 import frc.robot.commands.instant.SetClawCommand;
 import frc.robot.commands.instant.LowerArmCommand;
 import frc.robot.commands.instant.RaiseArmCommand;
@@ -71,6 +74,14 @@ public class RobotContainer {
 
     // Put autonomous chooser on dashboard
     autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
+    
+    autoChooser.addOption("flat 2 cube", createPathUtils.createPathCommand("flat 2 cube", 2.5, 1));
+    autoChooser.addOption("bump 2 cube turn", createPathUtils.createPathCommand("bump 2 cube turn", 1, 1));
+    autoChooser.addOption("balance 1 cube", createPathUtils.createPathCommand("balance 1 cube", 2.5, 1));
+    autoChooser.addOption("balance 2 cube", createPathUtils.createPathCommand("balance 2 cube", 2.5, 1));
+
+    autoChooser.addOption("outtake", new AutoShootBackwardsCommand(arm, wrist, claw));
+    autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw));
 
     SmartDashboard.putData(autoChooser);
     configureBindings();
