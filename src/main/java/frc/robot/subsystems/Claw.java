@@ -64,4 +64,8 @@ public class Claw extends SubsystemBase {
     public Position getPosition() {
         return currentPosition;
     }
+
+    public boolean GetLimitPressed() {
+        return clawLimitSwitch.isPressed();
+    }
 }
