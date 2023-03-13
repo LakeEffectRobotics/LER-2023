@@ -4,16 +4,7 @@
 
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.List;
-
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.auto.RamseteAutoBuilder;
-
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -43,8 +34,6 @@ import frc.robot.subsystems.Arm.ArmPosition;
 import frc.robot.subsystems.Lights.Colour;
 import frc.robot.commands.GyroCommand;
 import frc.robot.commands.ManualMoveWristCommand;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Claw.Position;
 import frc.robot.subsystems.Lights;
@@ -52,7 +41,7 @@ import frc.robot.subsystems.Lights;
 public class RobotContainer {
 
   // Initialize subsystems
-  private Drivetrain drivetrain = new Drivetrain(RobotMap.leftController1, RobotMap.rightController1);
+  public Drivetrain drivetrain = new Drivetrain(RobotMap.leftController1, RobotMap.rightController1);
   public final Limelight limelight = new Limelight();
   public Gyro gyro = new Gyro();
   public final Arm arm = new Arm(RobotMap.telescopeController1, RobotMap.telescopeController2, RobotMap.leftArmSolenoid, RobotMap.rightArmSolenoid);
@@ -96,6 +85,7 @@ public class RobotContainer {
     OI.aimButton.whileTrue(new ApriltagAimCommand(limelight, drivetrain));
     OI.resetPoseButton.whileTrue(new ApriltagPoseCommand(limelight, drivetrain));
     
+    OI.turnButton.whileTrue(new TurnToAngleCommand(gyro, drivetrain, 0));
     OI.curtisStraightButton.whileTrue(new CurtisDriveCommand(drivetrain));
 
     OI.openClawButton.onTrue(new SetClawCommand(claw, Position.OPEN));
