@@ -37,6 +37,7 @@ public class OI {
         private static final int TURN_BUTTON = 4;
 
         private static final int SLOW_BUTTON = 1;
+        private static final int TURN_BUTTON = 4;
     }
 
     /** Buttons on the operator controller */
@@ -85,6 +86,7 @@ public class OI {
     public static final JoystickButton turnButton = new JoystickButton(leftJoystick, DRIVER_MAP.TURN_BUTTON);
     // left joystick
     public static final Trigger slowButton = new JoystickButton(leftJoystick, DRIVER_MAP.SLOW_BUTTON);
+    public static final JoystickButton turnButton = new JoystickButton(leftJoystick, DRIVER_MAP.TURN_BUTTON);
 
     // Operator xbox controller
     public static final Trigger transportButton = new JoystickButton(xboxController, OPERATOR_MAP.TRANSPORT_BUTTON);
