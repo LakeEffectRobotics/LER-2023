@@ -39,6 +39,7 @@ import frc.robot.subsystems.TargetSelection.Height;
 import frc.robot.commands.GyroCommand;
 import frc.robot.commands.GyroDriveStraightCommand;
 import frc.robot.commands.ManualMoveWristCommand;
+import frc.robot.commands.ShootScoreCommand;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Claw.Position;
 import frc.robot.subsystems.Lights;
@@ -123,8 +124,9 @@ public class RobotContainer {
       )
     );
     
-    // Temp scoring position for early testing
-    // OI.scorePositionButton.onTrue(new RaiseArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.SCORE_CONE)));
+    // move wrist into scoring forward position, used for scoring mid and high cube
+    OI.scorePositionButton.onTrue(new SetWristAngleCommand(wrist, Wrist.SCORE_CUBE_FORWARD));
+    OI.shootScoreButton.onTrue(new ShootScoreCommand(targetSelection, claw));
 
     OI.dicoButton.whileTrue(new DiscoCommand(lights));
 

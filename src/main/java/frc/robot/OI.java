@@ -61,6 +61,8 @@ public class OI {
         private static final int DOWN_SELECTION_BUTTON = 0;
         private static final int LEFT_SELECTION_BUTTON = 270;
 
+        private static final int SHOOT_SCORE_BUTTON = XboxController.Button.kStart.value;
+
        // private static final int SCORING_HEIGHT_SELECTION = XboxController.Axis.;
       //  private static final int GROUND_BUTTON = XboxController.Button.kA.value;
 
@@ -106,6 +108,7 @@ public class OI {
     public static final Trigger downSelectionButton = new POVButton(xboxController, OPERATOR_MAP.DOWN_SELECTION_BUTTON);
     public static final Trigger leftSelectionButton = new POVButton(xboxController, OPERATOR_MAP.LEFT_SELECTION_BUTTON);
     
+    public static final Trigger shootScoreButton = new JoystickButton(xboxController, OPERATOR_MAP.SHOOT_SCORE_BUTTON);
 
     //public static final Trigger groundIntakeButton = new JoystickButton(xboxController, OPERATOR_MAP.GROUND_BUTTON);
    // public static final Trigger groundIntakeButton = new JoystickButton(xboxController, OPERATOR_MAP.GROUND_BUTTON);
