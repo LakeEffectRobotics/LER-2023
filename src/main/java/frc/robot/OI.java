@@ -130,7 +130,7 @@ public class OI {
     };
 
     public static DoubleSupplier manualMoveWristSupplier = () -> {
-        return xboxController.getRightY();
+        return -xboxController.getRightY();
     } ;
     
 }
