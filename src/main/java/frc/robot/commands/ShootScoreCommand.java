@@ -4,12 +4,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.TargetSelection;
 import frc.robot.subsystems.TargetSelection.Height;
+import frc.robot.subsystems.TargetSelection.Node;
 
 /**
  * spin claw out for time and speed depending on selected target
  */
 public class ShootScoreCommand extends CommandBase {
-    TargetSelection targetSelection;
     Claw claw;
 
     
@@ -17,15 +17,32 @@ public class ShootScoreCommand extends CommandBase {
     double speed;
     double startTime;
     Height height;
+    Node node;
 
+    /**
+     * shoot score 
+     * @param targetSelection
+     * @param claw
+     */
     public ShootScoreCommand(TargetSelection targetSelection, Claw claw) {
-        this.targetSelection = targetSelection;
+        this.node = targetSelection.getSelectedNode();
+        this.claw = claw;
+    }
+
+    /**
+     * shoot score given a specific node, for use in autonomous
+     * @param node
+     * @param claw
+     */
+    public ShootScoreCommand(Node node, Claw claw) {
+        this.node = node;
         this.claw = claw;
     }
 
     @Override
     public void initialize() {
-        this.height = targetSelection.getSelectedNode().getHeight();
+        this.height = node.getHeight();
+
         // set for score mid/high cube forwards
         if (height == Height.HIGH) {
             speed = 0.85;
