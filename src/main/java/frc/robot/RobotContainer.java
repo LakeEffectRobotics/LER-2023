@@ -74,7 +74,7 @@ public class RobotContainer {
     autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
     
     autoChooser.addOption("flat 2 cube", createPathUtils.createPathCommand("flat 2 cube", 2.5, 1));
-    autoChooser.addOption("bump 2 cube turn", createPathUtils.createPathCommand("bump 2 cube turn", 1, 1));
+    autoChooser.addOption("bump 2 cube turn", createPathUtils.createPathCommand("bump 2 cube turn", 2, 1));
     autoChooser.addOption("balance 1 cube", createPathUtils.createPathCommand("balance 1 cube", 2.5, 1));
     autoChooser.addOption("balance 2 cube", createPathUtils.createPathCommand("balance 2 cube", 2.5, 1));
 

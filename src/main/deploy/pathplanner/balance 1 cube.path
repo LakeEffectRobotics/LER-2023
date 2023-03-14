@@ -20,7 +20,7 @@
           "outtake cube"
         ],
         "executionBehavior": "parallel",
-        "waitBehavior": "after",
+        "waitBehavior": "none",
         "waitTime": 0.5
       }
     },
