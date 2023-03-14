@@ -11,6 +11,7 @@ public class DefaultLightCommand extends CommandBase {
 
     public DefaultLightCommand(Lights lights, TargetSelection targetSelection) {
         this.lights = lights;
+        this.targetSelection = targetSelection;
         addRequirements(lights, targetSelection);
     }
 

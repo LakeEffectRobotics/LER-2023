@@ -83,6 +83,7 @@ public class TargetSelection extends SubsystemBase {
     public void selectionUp(){
         selectedRow = bound(selectedRow + 1, 0, GRID.length-1);
         selectedNode = GRID[selectedRow][selectedCol];
+        SmartDashboard.putString("HEIGHT", selectedNode.height.name());
     }
     
     /**
@@ -91,6 +92,7 @@ public class TargetSelection extends SubsystemBase {
     public void selectionDown(){
         selectedRow = bound(selectedRow - 1, 0, GRID.length-1);
         selectedNode = GRID[selectedRow][selectedCol];
+        SmartDashboard.putString("HEIGHT", selectedNode.height.name());
     }
     
     /**
