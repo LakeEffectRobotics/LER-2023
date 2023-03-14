@@ -53,9 +53,9 @@ public class OI {
         private static final int CLOSE_CLAW_BUTTON = XboxController.Button.kRightBumper.value;
 
         // XBoxController DPAD Buttons
-        private static final int UP_SELECTION_BUTTON = 0;
+        private static final int UP_SELECTION_BUTTON = 180;
         private static final int RIGHT_SELECTION_BUTTON = 90;
-        private static final int DOWN_SELECTION_BUTTON = 180;
+        private static final int DOWN_SELECTION_BUTTON = 0;
         private static final int LEFT_SELECTION_BUTTON = 270;
 
        // private static final int SCORING_HEIGHT_SELECTION = XboxController.Axis.;
