@@ -4,8 +4,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.ControlType;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -139,6 +141,16 @@ public class Drivetrain extends SubsystemBase {
      */
     public void setSpeedMultiplier(double multiplier) {
         speedMultiplier = multiplier;
+    }
+    
+    // Arcade drive
+    /**
+     * @param speed    linear velocity (m/s)
+     * @param rotation angular velocity (rad/s)
+     */
+    public void arcadeDrive(double speed, double rotation) {
+        DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(speed, 0, rotation));
+        velocityTankDrive(wheelSpeeds.leftMetersPerSecond, wheelSpeeds.rightMetersPerSecond);
     }
 
     public void stop() {

@@ -123,9 +123,10 @@ public class OI {
 
     // Supply processed drivetrain inputs
     public static DoubleSupplier rightDriveSupplier = () -> {
-        double raw = rightJoystick.getY();
+        double raw = rightJoystick.getX();
         // Todo: process raw input ?
-        return processDriveInput(raw);
+        return -raw;
+        //processDriveInput(raw);
     };
 
     private static double processDriveInput(double raw) {
