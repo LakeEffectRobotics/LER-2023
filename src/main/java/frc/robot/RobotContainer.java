@@ -37,6 +37,7 @@ import frc.robot.subsystems.Arm.ArmPosition;
 import frc.robot.subsystems.Lights.Colour;
 import frc.robot.subsystems.TargetSelection.Height;
 import frc.robot.commands.GyroCommand;
+import frc.robot.commands.GyroDriveStraightCommand;
 import frc.robot.commands.ManualMoveWristCommand;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Claw.Position;
@@ -100,6 +101,8 @@ public class RobotContainer {
     OI.slowButton.whileTrue(new DriveSlowCommand(drivetrain));
 
     // operator
+    OI.driveStraightButton.whileTrue(new GyroDriveStraightCommand(drivetrain, gyro, OI.rightDriveSupplier));
+
     OI.openClawButton.onTrue(new SetClawCommand(claw, Position.OPEN));
     OI.closeClawButton.onTrue(new SetClawCommand(claw, Position.CLOSED));
     OI.spinInButton.whileTrue(new SpinClawCommand(claw, Direction.IN, OI.clawInSpeedSupplier));
