@@ -65,7 +65,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
     gyro.setDefaultCommand(new GyroCommand(gyro));
     wrist.setDefaultCommand(new ManualMoveWristCommand(wrist, OI.manualMoveWristSupplier));
-    lights.setDefaultCommand(new DefaultLightCommand(lights, targetSelection));
+    lights.setDefaultCommand(new DefaultLightCommand(lights, targetSelection, claw));
 
     // Put autonomous chooser on dashboard
     autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
