@@ -13,6 +13,7 @@ import frc.robot.commands.ApriltagPoseCommand;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import frc.robot.commands.CurtisDriveCommand;
+import frc.robot.commands.DefaultLightCommand;
 import frc.robot.commands.DiscoCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.pathplannerUtils.CreatePathUtils;
@@ -29,9 +30,11 @@ import frc.robot.subsystems.Claw;
 import frc.robot.commands.instant.SetWristAngleCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.TargetSelection;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.Arm.ArmPosition;
 import frc.robot.subsystems.Lights.Colour;
+import frc.robot.subsystems.TargetSelection.Height;
 import frc.robot.commands.GyroCommand;
 import frc.robot.commands.ManualMoveWristCommand;
 import frc.robot.subsystems.Gyro;
@@ -51,6 +54,8 @@ public class RobotContainer {
 
   // path utils
   CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight, arm, wrist, claw, gyro);
+  
+  private TargetSelection targetSelection = new TargetSelection();
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -60,6 +65,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
     gyro.setDefaultCommand(new GyroCommand(gyro));
     wrist.setDefaultCommand(new ManualMoveWristCommand(wrist, OI.manualMoveWristSupplier));
+    lights.setDefaultCommand(new DefaultLightCommand(lights, targetSelection));
 
     // Put autonomous chooser on dashboard
     autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
@@ -112,6 +118,11 @@ public class RobotContainer {
     // OI.scorePositionButton.onTrue(new RaiseArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.SCORE_CONE)));
 
     OI.dicoButton.whileTrue(new DiscoCommand(lights));
+
+    OI.upSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionUp()));
+    OI.rightSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionRight()));
+    OI.downSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionDown()));
+    OI.leftSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionLeft()));
   }
 
   // Set autonomous command from dashboard choice

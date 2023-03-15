@@ -2,9 +2,12 @@ package frc.robot;
 
 import java.util.function.DoubleSupplier;
 
+import javax.print.DocFlavor.STRING;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -49,6 +52,12 @@ public class OI {
         private static final int SPIN_IN_TRIGGER = XboxController.Axis.kRightTrigger.value;
         private static final int CLOSE_CLAW_BUTTON = XboxController.Button.kRightBumper.value;
 
+        // XBoxController DPAD Buttons
+        private static final int UP_SELECTION_BUTTON = 180;
+        private static final int RIGHT_SELECTION_BUTTON = 90;
+        private static final int DOWN_SELECTION_BUTTON = 0;
+        private static final int LEFT_SELECTION_BUTTON = 270;
+
        // private static final int SCORING_HEIGHT_SELECTION = XboxController.Axis.;
       //  private static final int GROUND_BUTTON = XboxController.Button.kA.value;
 
@@ -84,6 +93,12 @@ public class OI {
 
     public static final Trigger spinInButton = new Trigger(() -> xboxController.getRawAxis(OPERATOR_MAP.SPIN_IN_TRIGGER) >= XBOX_TRIGGER_THRESHOLD);
     public static final Trigger closeClawButton = new JoystickButton(xboxController, OPERATOR_MAP.CLOSE_CLAW_BUTTON);
+
+    public static final Trigger upSelectionButton = new POVButton(xboxController, OPERATOR_MAP.UP_SELECTION_BUTTON);
+    public static final Trigger rightSelectionButton = new POVButton(xboxController, OPERATOR_MAP.RIGHT_SELECTION_BUTTON);
+    public static final Trigger downSelectionButton = new POVButton(xboxController, OPERATOR_MAP.DOWN_SELECTION_BUTTON);
+    public static final Trigger leftSelectionButton = new POVButton(xboxController, OPERATOR_MAP.LEFT_SELECTION_BUTTON);
+    
 
     //public static final Trigger groundIntakeButton = new JoystickButton(xboxController, OPERATOR_MAP.GROUND_BUTTON);
    // public static final Trigger groundIntakeButton = new JoystickButton(xboxController, OPERATOR_MAP.GROUND_BUTTON);
