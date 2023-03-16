@@ -86,7 +86,7 @@ public class RobotContainer {
 
     lights.setBoth(Colour.PURPLE);
 
-    CameraServer.startAutomaticCapture();
+   // CameraServer.startAutomaticCapture();
   }
 
   // Create button bindings

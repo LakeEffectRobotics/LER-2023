@@ -12,6 +12,7 @@ public class TurnToAngleCommand extends CommandBase {
     double targetAngle;
     double heading_error;
 
+    // motor percents
     final double MIN_SPEED = 0.01;
     final double MAX_SPEED = 0.3;
     
@@ -48,7 +49,11 @@ public class TurnToAngleCommand extends CommandBase {
             steering_adjust = Math.signum(steering_adjust) * MIN_SPEED;
           }
 
-        drivetrain.tankDrive(steering_adjust, -steering_adjust);
+          final double speed = steering_adjust * drivetrain.MAX_SPEED;
+
+          drivetrain.velocityTankDrive(speed, -speed);
+
+        //drivetrain.tankDrive(steering_adjust, -steering_adjust);
     }   
 
     @Override
