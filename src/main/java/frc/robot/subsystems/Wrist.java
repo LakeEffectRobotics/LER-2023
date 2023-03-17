@@ -23,34 +23,34 @@ public class Wrist extends SubsystemBase {
     private Arm arm; 
 
     private static final double kF = 0;
-    private static final double kP = 0.45;
+    private static final double kP = 0.5;
     private static final double kI = 0;
     private static final double kD = 0;
-    private static final double MAX_OUTPUT = 0.4;
-    private static final double MIN_OUTPUT = -0.2;
+    private static final double MAX_OUTPUT = 0.7;
+    private static final double MIN_OUTPUT = -0.4;
 
     private static final double MIN_ANGLE = -50;
-    private static final double MAX_ANGLE = 110;
+    private static final double MAX_ANGLE = 122;
 
     // Function to convert from potentiometer volts to arm degrees above horizontal, obtained experimentally
     // Slope: degrees per volt
     // Constant: the degrees value at volts = 0
-    private static final double VOLTS_TO_DEGREES_SLOPE = 66.0198;
-    private static final double VOLTS_TO_DEGREES_CONSTANT = -93.6532;
+    private static final double VOLTS_TO_DEGREES_SLOPE = 70.5821;
+    private static final double VOLTS_TO_DEGREES_CONSTANT = -106.185;
 
     // Motor voltage required to hold arm up at horizontal
     // 0.075 is the experimentally determined motor percentage that does that, so convert % to volts:
-    private static final double GRAVITY_COMPENSATION = 0.075 * 12;
+    private static final double GRAVITY_COMPENSATION = 0.13 * 12;
 
     // Target angle and volts
     // Angle is relative to horizontal, so volts accounts for arm angle
     private double targetAngle;
     private double targetVolts;
 
-    public static final double TRANSPORT = 116;
+    public static final double TRANSPORT = 120;
     //PLACEHOLDER VALUE
     public static final double LOADING_STATION = 0;
-    public static final double GROUND = -40;
+    public static final double GROUND = -48;
     // Placeholder for testing, needs bettter calibration
     public static final double SCORE_CONE = -15;
     public static final double SCORE_CUBE_BACKWARDS = 100;
@@ -83,7 +83,7 @@ public class Wrist extends SubsystemBase {
 
         controller.setSmartCurrentLimit(15, 35, 50);
         // TODO: Adjust ramp rate for best performance/jerk tradeoff
-        controller.setClosedLoopRampRate(1);
+        controller.setClosedLoopRampRate(0.5);
 
     }
 
@@ -138,9 +138,6 @@ public class Wrist extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("wrist target deg horizontal", targetAngle);
         SmartDashboard.putNumber("wrist target pot volts", targetVolts);
-        SmartDashboard.putNumber("wrist AFF", getArbitraryFeedforward());
-
-        SmartDashboard.putNumber("arm curent", arm.getCurrentAngle());
 
         SmartDashboard.putNumber("wrist current deg horizontal", getCurrentAngle());
         SmartDashboard.putNumber("wrist current pot volts", pot.getPosition());
@@ -148,11 +145,14 @@ public class Wrist extends SubsystemBase {
 
         // Let gravity lower arm to ground instead of slamming:
         // Stop pidcontroller if target angle is low, and arm is low enough to fall naturally
-        if (getCurrentAngle() < -25 && targetAngle < -25) {
+        if (getCurrentAngle() < -46 && targetAngle < -44) {
             wristController.set(0);
-        } else if (getCurrentAngle() > 110 && targetAngle > 115) {
+        } else if (getCurrentAngle() > 118 && targetAngle > 118) {
             wristController.set(0);
-        } else {
+        } else if (targetAngle < 0) {
+            // dont need ff help on way down
+            pidController.setReference(targetVolts, ControlType.kPosition, 0);
+        }  else {
             // Otherwise, continuously set wrist pid to target angle (must be continuous to update feedforward as angle changes)
             pidController.setReference(targetVolts, ControlType.kPosition, 0, getArbitraryFeedforward());
         }

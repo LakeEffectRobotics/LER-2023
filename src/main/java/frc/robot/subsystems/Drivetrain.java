@@ -35,9 +35,10 @@ public class Drivetrain extends SubsystemBase {
     RelativeEncoder rightEncoder;
 
     // kV from characterization tool , divide by 12 to get percentage
-    private static final double kF = 2.439 / 12;
+    private static final double kF = 2.3589 / 12;
     // PID
-    private static final double kP = 0.11;
+  //  private static final double kP = 0.5914;
+    private static final double kP = 0.096;
     private static final double kI = 0;
     private static final double kD = 0;
 
@@ -80,7 +81,7 @@ public class Drivetrain extends SubsystemBase {
         rightLeadController.getPIDController().setP(kP);
 
         SmartDashboard.putData("Field View", field);
-        SmartDashboard.putNumber("auto speed", 0);
+
         resetPose(new Pose2d(0, 0, new Rotation2d(0)));
         gyro.reset();
     }
@@ -151,9 +152,7 @@ public class Drivetrain extends SubsystemBase {
         field.setRobotPose(getPose());
         SmartDashboard.putNumber("Right velocity", rightEncoder.getVelocity());
         SmartDashboard.putNumber("Left velocity", leftEncoder.getVelocity());
-
-        SmartDashboard.putNumber("left position", leftEncoder.getPosition());
-        SmartDashboard.putNumber("right position", rightEncoder.getPosition());
+        
         odometry.update(
                 gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition());
     }

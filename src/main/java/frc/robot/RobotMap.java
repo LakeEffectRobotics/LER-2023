@@ -140,10 +140,12 @@ public class RobotMap {
 
         // Claw motors
         rightClawController.setIdleMode(IdleMode.kBrake);
+        leftClawController.setIdleMode(IdleMode.kBrake);
         leftClawController.follow(rightClawController, true);
         
         // Wrist use brake mode
         wristController.setIdleMode(IdleMode.kBrake);
+        wristController.setInverted(true);
 
         // Arm motors
         telescopeController2.follow(telescopeController1);
