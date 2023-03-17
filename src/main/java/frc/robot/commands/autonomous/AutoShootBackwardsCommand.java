@@ -35,7 +35,7 @@ public class AutoShootBackwardsCommand extends SequentialCommandGroup {
       new SetWristAngleCommand(wrist, Wrist.SCORE_CUBE_BACKWARDS),
       
       // Wait 1 second for arm + wrist to be in position
-      new WaitCommand(1),
+      new WaitCommand(1.6),
       
       // Spin the claw for 1 second at 100% power to shoot the cube
       new SpinClawCommand(claw, Direction.OUT, () -> CLAW_SPEED).withTimeout(0.3),
