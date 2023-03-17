@@ -16,6 +16,7 @@ import frc.robot.commands.CurtisDriveCommand;
 import frc.robot.commands.DefaultLightCommand;
 import frc.robot.commands.DiscoCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.DriveSlowCommand;
 import frc.robot.pathplannerUtils.CreatePathUtils;
 import frc.robot.commands.SpinClawCommand;
 import frc.robot.commands.TurnToAngleCommand;
@@ -36,7 +37,9 @@ import frc.robot.subsystems.Arm.ArmPosition;
 import frc.robot.subsystems.Lights.Colour;
 import frc.robot.subsystems.TargetSelection.Height;
 import frc.robot.commands.GyroCommand;
+import frc.robot.commands.GyroDriveStraightCommand;
 import frc.robot.commands.ManualMoveWristCommand;
+import frc.robot.commands.ShootScoreCommand;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Claw.Position;
 import frc.robot.subsystems.Lights;
@@ -88,11 +91,18 @@ public class RobotContainer {
 
   // Create button bindings
   private void configureBindings() {
+    // right joystick
     OI.aimButton.whileTrue(new ApriltagAimCommand(limelight, drivetrain));
     OI.resetPoseButton.whileTrue(new ApriltagPoseCommand(limelight, drivetrain));
     
     OI.turnButton.whileTrue(new TurnToAngleCommand(gyro, drivetrain, 0));
     OI.curtisStraightButton.whileTrue(new CurtisDriveCommand(drivetrain));
+
+    // left joystick
+    OI.slowButton.whileTrue(new DriveSlowCommand(drivetrain));
+
+    // operator
+    OI.driveStraightButton.whileTrue(new GyroDriveStraightCommand(drivetrain, gyro, OI.rightDriveSupplier));
 
     OI.openClawButton.onTrue(new SetClawCommand(claw, Position.OPEN));
     OI.closeClawButton.onTrue(new SetClawCommand(claw, Position.CLOSED));
@@ -114,8 +124,9 @@ public class RobotContainer {
       )
     );
     
-    // Temp scoring position for early testing
-    // OI.scorePositionButton.onTrue(new RaiseArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.SCORE_CONE)));
+    // move wrist into scoring forward position, used for scoring mid and high cube
+    OI.scorePositionButton.onTrue(new SetWristAngleCommand(wrist, Wrist.SCORE_CUBE_FORWARD));
+    OI.shootScoreButton.onTrue(new ShootScoreCommand(targetSelection, claw));
 
     OI.dicoButton.whileTrue(new DiscoCommand(lights));
 

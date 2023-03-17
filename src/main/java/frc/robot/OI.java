@@ -35,6 +35,9 @@ public class OI {
         private static final int RESET_POSE_BUTTON = 6;
         private static final int DISO_BUTTON = 2;
         private static final int TURN_BUTTON = 4;
+
+        private static final int SLOW_BUTTON = 1;
+        private static final int DRIVE_STRAIGHT_BUTTON = 2;
     }
 
     /** Buttons on the operator controller */
@@ -58,6 +61,8 @@ public class OI {
         private static final int DOWN_SELECTION_BUTTON = 0;
         private static final int LEFT_SELECTION_BUTTON = 270;
 
+        private static final int SHOOT_SCORE_BUTTON = XboxController.Button.kStart.value;
+
        // private static final int SCORING_HEIGHT_SELECTION = XboxController.Axis.;
       //  private static final int GROUND_BUTTON = XboxController.Button.kA.value;
 
@@ -69,6 +74,7 @@ public class OI {
      */
     private static final double XBOX_TRIGGER_THRESHOLD = 0.2;
 
+    // right joystick
     public static final Trigger aimButton = new JoystickButton(rightJoystick, DRIVER_MAP.AIM_BUTTON);
     public static final Trigger resetPoseButton = new JoystickButton(xboxController, DRIVER_MAP.RESET_POSE_BUTTON);
     public static final JoystickButton curtisStraightButton = new JoystickButton(rightJoystick,
@@ -80,6 +86,9 @@ public class OI {
     public static final JoystickButton dicoButton = new JoystickButton(rightJoystick, DRIVER_MAP.DISO_BUTTON);
 
     public static final JoystickButton turnButton = new JoystickButton(leftJoystick, DRIVER_MAP.TURN_BUTTON);
+    // left joystick
+    public static final Trigger slowButton = new JoystickButton(leftJoystick, DRIVER_MAP.SLOW_BUTTON);
+    public static final JoystickButton driveStraightButton = new JoystickButton(rightJoystick, DRIVER_MAP.DRIVE_STRAIGHT_BUTTON);
 
     // Operator xbox controller
     public static final Trigger transportButton = new JoystickButton(xboxController, OPERATOR_MAP.TRANSPORT_BUTTON);
@@ -99,6 +108,7 @@ public class OI {
     public static final Trigger downSelectionButton = new POVButton(xboxController, OPERATOR_MAP.DOWN_SELECTION_BUTTON);
     public static final Trigger leftSelectionButton = new POVButton(xboxController, OPERATOR_MAP.LEFT_SELECTION_BUTTON);
     
+    public static final Trigger shootScoreButton = new JoystickButton(xboxController, OPERATOR_MAP.SHOOT_SCORE_BUTTON);
 
     //public static final Trigger groundIntakeButton = new JoystickButton(xboxController, OPERATOR_MAP.GROUND_BUTTON);
    // public static final Trigger groundIntakeButton = new JoystickButton(xboxController, OPERATOR_MAP.GROUND_BUTTON);
