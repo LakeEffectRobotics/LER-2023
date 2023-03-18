@@ -149,8 +149,9 @@ public class Wrist extends SubsystemBase {
             wristController.set(0);
         } else if (getCurrentAngle() > 118 && targetAngle > 118) {
             wristController.set(0);
-        } else if (targetAngle < 0 && getCurrentAngle() < 0) {
+        } else if (targetAngle < -30 && getCurrentAngle() < 0) {
             // dont need ff help on way down, but do need it to swing from 120 to past 90 deg
+            // use -30 in case we want to hold at 0deg for example, assume <-30 means we are going to ground
             pidController.setReference(targetVolts, ControlType.kPosition, 0);
         }  else {
             // Otherwise, continuously set wrist pid to target angle (must be continuous to update feedforward as angle changes)

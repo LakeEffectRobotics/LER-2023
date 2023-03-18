@@ -23,7 +23,7 @@ import frc.robot.subsystems.Arm.ArmPosition;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoShootBackwardsCommand extends SequentialCommandGroup {
   
-  private static final double CLAW_SPEED = 0.73;
+  private static final double CLAW_SPEED = 0.79;
   
   /** Creates a new AutoShootBackwardsCommand. */
   public AutoShootBackwardsCommand(Arm arm, Wrist wrist, Claw claw) {
