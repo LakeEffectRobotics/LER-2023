@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Arm.ArmPosition;
 
 public class Wrist extends SubsystemBase {
-    CANSparkMax wristController;
+    public CANSparkMax wristController;
 
     public SparkMaxLimitSwitch forwardLimit;
     public SparkMaxLimitSwitch reverseLimit;
@@ -40,7 +40,7 @@ public class Wrist extends SubsystemBase {
 
     // Motor voltage required to hold arm up at horizontal
     // 0.075 is the experimentally determined motor percentage that does that, so convert % to volts:
-    private static final double GRAVITY_COMPENSATION = 0.075 * 12;
+    private static final double GRAVITY_COMPENSATION = 0.08 * 12;
 
     // Target angle and volts
     // Angle is relative to horizontal, so volts accounts for arm angle
