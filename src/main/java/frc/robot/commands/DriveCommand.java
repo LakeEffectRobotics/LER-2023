@@ -36,10 +36,11 @@ public class DriveCommand extends CommandBase {
             leftInput = rightInput;
         }
 
-        final double leftSpeed = leftInput * drivetrain.MAX_SPEED * drivetrain.speedMultiplier;
-        final double rightSpeed = rightInput * drivetrain.MAX_SPEED * drivetrain.speedMultiplier;
+      //  final double leftSpeed = leftInput * drivetrain.MAX_SPEED * drivetrain.speedMultiplier;
+      //  final double rightSpeed = rightInput * drivetrain.MAX_SPEED * drivetrain.speedMultiplier;
 
-        drivetrain.velocityTankDrive(leftSpeed, rightSpeed);
+      //  drivetrain.velocityTankDrive(leftSpeed, rightSpeed);
+      drivetrain.tankDrive(leftInput, rightInput);
     }
 
     @Override
