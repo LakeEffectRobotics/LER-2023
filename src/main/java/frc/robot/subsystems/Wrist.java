@@ -149,7 +149,7 @@ public class Wrist extends SubsystemBase {
             wristController.set(0);
         } else if (getCurrentAngle() > 118 && targetAngle > 118) {
             wristController.set(0);
-        } else if (targetAngle < 0) {
+        } else if (targetAngle < 0 && getCurrentAngle() < 0) {
             // dont need ff help on way down
             pidController.setReference(targetVolts, ControlType.kPosition, 0);
         }  else {
