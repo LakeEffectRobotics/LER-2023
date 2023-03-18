@@ -91,7 +91,7 @@ public class RobotContainer {
    // CameraServer.startAutomaticCapture();
     CameraServer.startAutomaticCapture();
 
-    PathPlannerServer.startServer(5811);
+    //PathPlannerServer.startServer(5811);
   }
 
   // Create button bindings
