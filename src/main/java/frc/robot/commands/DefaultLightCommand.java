@@ -27,11 +27,11 @@ public class DefaultLightCommand extends CommandBase {
     if (claw.GetLimitPressed()) {
         System.out.println("PRESSED");
         lights.setBoth(Colour.GREEN);
-    } else if (targetSelection.getSelectedNode().getType() == Type.CUBE) {
+    } else if (targetSelection.getSelectedNode().getType() == Type.CONE) {
         // otherwise, set to target selection color
-        lights.setBoth(Colour.PURPLE);
-    } else {
         lights.setBoth(Colour.YELLOW);
+    } else {
+        lights.setBoth(Colour.PURPLE);
     }
    }
     
