@@ -18,6 +18,7 @@ public class ShootScoreCommand extends CommandBase {
     double startTime;
     Height height;
     Node node;
+    TargetSelection targetSelection;
 
     /**
      * shoot score 
@@ -25,8 +26,8 @@ public class ShootScoreCommand extends CommandBase {
      * @param claw
      */
     public ShootScoreCommand(TargetSelection targetSelection, Claw claw) {
-        this.node = targetSelection.getSelectedNode();
         this.claw = claw;
+        this.targetSelection = targetSelection;
     }
 
     /**
@@ -41,7 +42,13 @@ public class ShootScoreCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        this.height = node.getHeight();
+        // if initalized in auto with a node, height is node height
+        if (node != null) {
+            this.height = node.getHeight();
+        } else {
+            // otherwise, get CURRENT LIVE targetselection height
+            this.height = targetSelection.getSelectedNode().getHeight();
+        }
 
         // set for score mid/high cube forwards
         if (height == Height.HIGH) {
