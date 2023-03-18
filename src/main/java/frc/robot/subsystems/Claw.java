@@ -22,8 +22,8 @@ public class Claw extends SubsystemBase {
         this.rightSolenoid = rightSolenoid;
         this.leftSolenoid = leftSolenoid;
 
-        this.clawLimitSwitch = leadController.getForwardLimitSwitch(Type.kNormallyOpen);
-        clawLimitSwitch.enableLimitSwitch(false);
+        this.clawLimitSwitch = leadController.getReverseLimitSwitch(Type.kNormallyOpen);
+        clawLimitSwitch.enableLimitSwitch(true);
 
         
     }

@@ -21,8 +21,11 @@ public class DefaultLightCommand extends CommandBase {
 
    @Override
    public void execute() {
+    System.out.println(claw.GetLimitPressed());
+    
     // if claw limit switch is pressed, green to show successfully picked up piece
     if (claw.GetLimitPressed()) {
+        System.out.println("PRESSED");
         lights.setBoth(Colour.GREEN);
     } else if (targetSelection.getSelectedNode().getType() == Type.CUBE) {
         // otherwise, set to target selection color
