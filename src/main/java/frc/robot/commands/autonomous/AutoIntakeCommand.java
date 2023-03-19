@@ -26,7 +26,7 @@ public class AutoIntakeCommand extends SequentialCommandGroup {
   // Note that the claw subsystem applies it's own scaling, so 100% should be the optimal speed
   private static final double CLAW_SPEED = 1;
 
-  private static final double TIMEOUT = 3;
+  private static final double TIMEOUT = 5;
 
   /** Creates a new AutoIntakeCommand. */
   public AutoIntakeCommand(Drivetrain drivetrain, Arm arm, Wrist wrist, Claw claw) {
@@ -34,9 +34,9 @@ public class AutoIntakeCommand extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       // Lower the wrist and arm, 
-      new SetWristAngleCommand(wrist, Wrist.GROUND),
       new LowerArmCommand(arm),
-      new WaitCommand(1),
+      new SetWristAngleCommand(wrist, Wrist.GROUND),
+      new WaitCommand(0.5),
 
       // Spin claw and drive forward until limit switch is pressed
       new ParallelCommandGroup(
