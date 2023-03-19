@@ -51,11 +51,11 @@
     },
     {
       "anchorPoint": {
-        "x": 3.92,
+        "x": 3.95,
         "y": 2.74
       },
       "prevControl": {
-        "x": 5.26056037413483,
+        "x": 5.29056037413483,
         "y": 2.74
       },
       "nextControl": null,
@@ -68,11 +68,14 @@
         "names": [
           "balance reversed"
         ],
-        "executionBehavior": "sequential",
+        "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
       }
     }
   ],
+  "maxVelocity": 1.5,
+  "maxAcceleration": 1.0,
+  "isReversed": null,
   "markers": []
 }

@@ -9,7 +9,7 @@ public class AutoBalanceCommand extends CommandBase {
     Gyro gyro;
     Drivetrain drivetrain;
     double currentSpeed = 0.1;
-    double multiplier = 0.55;
+    double multiplier = 0.75;
     double currentSign = 1;
     double minSpeed = 0.05;
     boolean isBackwards = false;
@@ -51,6 +51,7 @@ public class AutoBalanceCommand extends CommandBase {
 
         // TODO: figure out proper stopping condition
         // this logic would run true everytime the robot passes 0deg? for now it works regardless
+        // needs to be small number or else it stops at not quite engaged :(
         if (Math.abs(gyro.getPitch()) < 3) {
             drivetrain.stop();
         } else {
