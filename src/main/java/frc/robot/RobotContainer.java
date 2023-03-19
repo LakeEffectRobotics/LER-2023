@@ -75,10 +75,10 @@ public class RobotContainer {
     // Put autonomous chooser on dashboard
     autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
     
-    autoChooser.addOption("flat 2 cube", createPathUtils.createPathCommand("flat 2 cube", 1.5, 1));
-    autoChooser.addOption("bump 2 cube turn", createPathUtils.createPathCommand("bump 2 cube turn", 1.5, 1));
+    autoChooser.addOption("flat 2 cube", createPathUtils.createPathCommand("flat 2 cube", 1.7, 1));
+    autoChooser.addOption("bump 2 cube turn", createPathUtils.createPathCommand("bump 2 cube turn", 1.7, 1));
     autoChooser.addOption("balance 1 cube", createPathUtils.createPathCommand("balance 1 cube", 1.5, 1));
-    autoChooser.addOption("balance 2 cube", createPathUtils.createPathCommand("balance 2 cube", 1.5, 1));
+    autoChooser.addOption("balance 2 cube", createPathUtils.createPathCommand("balance 2 cube", 1.7, 1));
 
     autoChooser.addOption("outtake", new AutoShootBackwardsCommand(arm, wrist, claw));
     autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw));
