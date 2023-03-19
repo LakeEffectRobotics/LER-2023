@@ -33,8 +33,8 @@ public class AutoBalanceCommand extends CommandBase {
     @Override
     public void execute() {
         // if bot gets within 10deg horizontal
-        if ((currentSign < 0 && gyro.getPitch() > -10) 
-         || (currentSign > 0 && gyro.getPitch() < 10)) {
+        if ((currentSign < 0 && gyro.getPitch() > -7) 
+         || (currentSign > 0 && gyro.getPitch() < 7)) {
             // change direction and slow speed by multiplier
             currentSpeed *= -multiplier;
 
