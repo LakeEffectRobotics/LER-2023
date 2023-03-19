@@ -1,0 +1,51 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 1.8983607197983627,
+        "y": 4.430637237342851
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.8983607197983616,
+        "y": 4.430637237342851
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [
+          "outtake cube"
+        ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 4.661799409068904,
+        "y": 4.864565626567151
+      },
+      "prevControl": {
+        "x": 3.3942203091577943,
+        "y": 4.864565626567151
+      },
+      "nextControl": null,
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "markers": []
+}

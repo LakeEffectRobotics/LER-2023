@@ -83,6 +83,15 @@ public class RobotContainer {
     autoChooser.addOption("outtake", new AutoShootBackwardsCommand(arm, wrist, claw));
     autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw));
 
+    // simple autos
+    autoChooser.addOption("balance 1 cube mobility", createPathUtils.createPathCommand("balance 1 cube mobility", 1.65, 1));
+  
+    autoChooser.addOption("bump 1 cube mobility", createPathUtils.createPathCommand("bump 1 cube mobility", 1.65, 1));
+    autoChooser.addOption("bump 2 cube simple", createPathUtils.createPathCommand("bump 2 cube simple", 1.65, 1));
+  
+    autoChooser.addOption("flat 1 cube mobility", createPathUtils.createPathCommand("flat 1 cube mobility", 1.65, 1));
+    autoChooser.addOption("flat 2 cube simple", createPathUtils.createPathCommand("flat 2 cube simple", 1.65, 1));
+
     SmartDashboard.putData(autoChooser);
     configureBindings();
 
