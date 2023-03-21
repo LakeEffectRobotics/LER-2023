@@ -125,19 +125,19 @@ public class OI {
     public static DoubleSupplier rightDriveSupplier = () -> {
         double raw = rightJoystick.getX();
         // Todo: process raw input ?
-        return -raw;
-        //processDriveInput(raw);
+       // return -raw;
+        return processDriveInput(raw);
     };
 
     private static double processDriveInput(double raw) {
         // TODO: Configure input processing to suit your liking
-        if (Math.abs(raw) < 0.1) {
+        if (Math.abs(raw) < 0.05) {
             raw = 0;
         }
         
         // Signum function is -1 for x < 0, 1 for x > 0
         raw = Math.pow(raw, 2) * Math.signum(raw);
-        raw *= 0.8;
+       // raw *= 0.8;
         return -raw;
     }
 
