@@ -20,8 +20,6 @@ public class Limelight extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("limelightX", getX());
-    SmartDashboard.putNumber("LimelightY", getY());
   }
 
   public double getX() {

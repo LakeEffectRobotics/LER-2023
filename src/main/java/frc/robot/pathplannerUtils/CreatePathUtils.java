@@ -50,11 +50,14 @@ public class CreatePathUtils {
         // Global event map
         // Add all the predefined events used by paths to the global event map
         eventMap.put("apriltagpose", new ApriltagPoseCommand(limelight, drivetrain));
+        
         eventMap.put("intake cube", new AutoIntakeCommand(drivetrain, arm, wrist, claw));
         eventMap.put("outtake cube", new AutoShootBackwardsCommand(arm, wrist, claw));
+
         eventMap.put("balance reversed", new AutoBalanceCommand(gyro, drivetrain, true));
         eventMap.put("balance forward", new AutoBalanceCommand(gyro, drivetrain, false));
-        eventMap.put("turn right", new TurnToAngleCommand(gyro, drivetrain, 0));
+
+        eventMap.put("turn right", (new TurnToAngleCommand(gyro, drivetrain, 0)).withTimeout(0.7));
         eventMap.put("bump back", new AutoBumpBackCommand(70, drivetrain));
     }
 

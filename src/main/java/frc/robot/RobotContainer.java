@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.server.PathPlannerServer;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -68,18 +70,27 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
     gyro.setDefaultCommand(new GyroCommand(gyro));
     wrist.setDefaultCommand(new ManualMoveWristCommand(wrist, OI.manualMoveWristSupplier));
-    lights.setDefaultCommand(new DefaultLightCommand(lights, targetSelection));
+    lights.setDefaultCommand(new DefaultLightCommand(lights, targetSelection, claw));
 
     // Put autonomous chooser on dashboard
     autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
     
-    autoChooser.addOption("flat 2 cube", createPathUtils.createPathCommand("flat 2 cube", 2.5, 1));
-    autoChooser.addOption("bump 2 cube turn", createPathUtils.createPathCommand("bump 2 cube turn", 1, 1));
-    autoChooser.addOption("balance 1 cube", createPathUtils.createPathCommand("balance 1 cube", 2.5, 1));
-    autoChooser.addOption("balance 2 cube", createPathUtils.createPathCommand("balance 2 cube", 2.5, 1));
+    autoChooser.addOption("flat 2 cube", createPathUtils.createPathCommand("flat 2 cube", 1.7, 1));
+    autoChooser.addOption("bump 2 cube turn", createPathUtils.createPathCommand("bump 2 cube turn", 1.7, 1));
+    autoChooser.addOption("balance 1 cube", createPathUtils.createPathCommand("balance 1 cube", 1.5, 1));
+    autoChooser.addOption("balance 2 cube", createPathUtils.createPathCommand("balance 2 cube", 1.7, 1));
 
     autoChooser.addOption("outtake", new AutoShootBackwardsCommand(arm, wrist, claw));
     autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw));
+
+    // simple autos
+    autoChooser.addOption("balance 1 cube mobility", createPathUtils.createPathCommand("balance 1 cube mobility", 1, 1));
+  
+    autoChooser.addOption("bump 1 cube mobility", createPathUtils.createPathCommand("bump 1 cube mobility", 1.65, 1));
+    autoChooser.addOption("bump 2 cube simple", createPathUtils.createPathCommand("bump 2 cube simple", 1.65, 1));
+  
+    autoChooser.addOption("flat 1 cube mobility", createPathUtils.createPathCommand("flat 1 cube mobility", 1.65, 1));
+    autoChooser.addOption("flat 2 cube simple", createPathUtils.createPathCommand("flat 2 cube simple", 1.65, 1));
 
     SmartDashboard.putData(autoChooser);
     configureBindings();
@@ -87,6 +98,9 @@ public class RobotContainer {
     lights.setBoth(Colour.PURPLE);
 
    // CameraServer.startAutomaticCapture();
+    CameraServer.startAutomaticCapture();
+
+    //PathPlannerServer.startServer(5811);
   }
 
   // Create button bindings

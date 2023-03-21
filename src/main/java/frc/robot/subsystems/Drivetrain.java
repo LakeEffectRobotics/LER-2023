@@ -80,7 +80,7 @@ public class Drivetrain extends SubsystemBase {
         rightLeadController.getPIDController().setI(kI);
         rightLeadController.getPIDController().setP(kP);
 
-        SmartDashboard.putData("Field View", field);
+     //   SmartDashboard.putData("Field View", field);
 
         resetPose(new Pose2d(0, 0, new Rotation2d(0)));
         gyro.reset();
@@ -149,7 +149,7 @@ public class Drivetrain extends SubsystemBase {
     // Update the odometry every 20ms
     @Override
     public void periodic() {
-        field.setRobotPose(getPose());
+     //   field.setRobotPose(getPose());
         SmartDashboard.putNumber("Right velocity", rightEncoder.getVelocity());
         SmartDashboard.putNumber("Left velocity", leftEncoder.getVelocity());
         

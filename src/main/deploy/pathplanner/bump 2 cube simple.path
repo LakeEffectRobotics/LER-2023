@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.9097798879358443,
-        "y": 2.7748578574080227
+        "x": 1.8915254932647645,
+        "y": 1.0472543510407684
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.9097798879358443,
-        "y": 2.7748578574080227
+        "x": 2.891525493264763,
+        "y": 1.0472543510407684
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -20,22 +20,22 @@
           "outtake cube"
         ],
         "executionBehavior": "parallel",
-        "waitBehavior": "after",
-        "waitTime": 0.5
+        "waitBehavior": "none",
+        "waitTime": 0
       }
     },
     {
       "anchorPoint": {
-        "x": 7.09408222235248,
-        "y": 3.391492936832028
+        "x": 7.061153789766013,
+        "y": 0.942528915936693
       },
       "prevControl": {
-        "x": 5.50665355516808,
-        "y": 3.391492936832028
+        "x": 5.294720831721951,
+        "y": 0.9685996608097742
       },
       "nextControl": {
-        "x": 5.50665355516808,
-        "y": 3.391492936832028
+        "x": 5.294720831721951,
+        "y": 0.9685996608097742
       },
       "holonomicAngle": 0,
       "isReversal": true,
@@ -51,37 +51,12 @@
     },
     {
       "anchorPoint": {
-        "x": 2.7091216575595545,
-        "y": 2.2838336274963154
+        "x": 2.1580993280751417,
+        "y": 1.0567748451411407
       },
       "prevControl": {
-        "x": 3.0992474404152706,
-        "y": 2.9699169007942965
-      },
-      "nextControl": {
-        "x": 2.377965781572588,
-        "y": 1.7014560524847564
-      },
-      "holonomicAngle": 0,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 2.046809905585623,
-        "y": 1.0391443005108238
-      },
-      "prevControl": {
-        "x": 2.6638677722237993,
-        "y": 1.0391443005108238
+        "x": 2.754248676931111,
+        "y": 1.0567748451411407
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -101,9 +76,8 @@
   ],
   "markers": [
     {
-      "position": 0.5672727272727072,
+      "position": 0.3,
       "names": [
-        "event",
         "intake cube"
       ]
     }

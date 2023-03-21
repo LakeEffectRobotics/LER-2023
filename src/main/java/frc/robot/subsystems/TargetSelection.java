@@ -132,11 +132,11 @@ public class TargetSelection extends SubsystemBase {
 
         /**
          * Create a new Node
-         * This is private to prevent creation outside of TargetSelection
+         * This is public to allow for usage in autonomous
          * @param type Type of game piece scored on the node
          * @param height Height of the node
          */
-        private Node(Type type, Height height) {
+        public Node(Type type, Height height) {
             this.type = type;
             this.height = height;
         } 

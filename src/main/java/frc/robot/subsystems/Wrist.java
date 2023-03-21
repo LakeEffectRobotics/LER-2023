@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Arm.ArmPosition;
 
 public class Wrist extends SubsystemBase {
-    CANSparkMax wristController;
+    public CANSparkMax wristController;
 
     public SparkMaxLimitSwitch forwardLimit;
     public SparkMaxLimitSwitch reverseLimit;
@@ -26,8 +26,8 @@ public class Wrist extends SubsystemBase {
     private static final double kP = 0.5;
     private static final double kI = 0;
     private static final double kD = 0;
-    private static final double MAX_OUTPUT = 0.7;
-    private static final double MIN_OUTPUT = -0.4;
+    private static final double MAX_OUTPUT = 0.5;
+    private static final double MIN_OUTPUT = -0.2;
 
     private static final double MIN_ANGLE = -50;
     private static final double MAX_ANGLE = 122;
@@ -40,7 +40,7 @@ public class Wrist extends SubsystemBase {
 
     // Motor voltage required to hold arm up at horizontal
     // 0.075 is the experimentally determined motor percentage that does that, so convert % to volts:
-    private static final double GRAVITY_COMPENSATION = 0.13 * 12;
+    private static final double GRAVITY_COMPENSATION = 0.08 * 12;
 
     // Target angle and volts
     // Angle is relative to horizontal, so volts accounts for arm angle
@@ -83,7 +83,7 @@ public class Wrist extends SubsystemBase {
 
         controller.setSmartCurrentLimit(15, 35, 50);
         // TODO: Adjust ramp rate for best performance/jerk tradeoff
-        controller.setClosedLoopRampRate(0.5);
+        controller.setClosedLoopRampRate(1);
 
     }
 
@@ -145,12 +145,13 @@ public class Wrist extends SubsystemBase {
 
         // Let gravity lower arm to ground instead of slamming:
         // Stop pidcontroller if target angle is low, and arm is low enough to fall naturally
-        if (getCurrentAngle() < -46 && targetAngle < -44) {
+        if (getCurrentAngle() < -30 && targetAngle < -30) {
             wristController.set(0);
         } else if (getCurrentAngle() > 118 && targetAngle > 118) {
             wristController.set(0);
-        } else if (targetAngle < 0) {
-            // dont need ff help on way down
+        } else if (targetAngle < -30 && getCurrentAngle() < 0) {
+            // dont need ff help on way down, but do need it to swing from 120 to past 90 deg
+            // use -30 in case we want to hold at 0deg for example, assume <-30 means we are going to ground
             pidController.setReference(targetVolts, ControlType.kPosition, 0);
         }  else {
             // Otherwise, continuously set wrist pid to target angle (must be continuous to update feedforward as angle changes)
