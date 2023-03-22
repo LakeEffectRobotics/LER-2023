@@ -130,6 +130,10 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("arm target position", telescopeTargetPosition);
     }
 
+    public double getTelescopePosition() {
+        return telescopeController1.getEncoder().getPosition();
+    }
+
     @Override
     public void periodic() {
         // let arm gravity drop to transport position

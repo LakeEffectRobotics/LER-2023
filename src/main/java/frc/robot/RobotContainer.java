@@ -33,6 +33,7 @@ import frc.robot.commands.instant.ScoringPositionCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.commands.instant.SetWristAngleCommand;
+import frc.robot.commands.instant.TransportPositionCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.TargetSelection;
@@ -125,7 +126,7 @@ public class RobotContainer {
     OI.spitOutButton.whileTrue(new SpinClawCommand(claw, Direction.OUT, OI.clawOutSpeedSupplier, targetSelection));
     
     // Move arm and wrist into transport position
-    OI.transportButton.onTrue((new SetTelescopeCommand(arm, 0)).withTimeout(1.5).andThen(new LowerArmCommand(arm)));
+    OI.transportButton.onTrue(new TransportPositionCommand(arm, wrist));
 
     // Loading station position
     OI.loadingStationButton.onTrue(new RaiseArmCommand(arm, true).andThen(new SetWristAngleCommand(wrist, Wrist.LOADING_STATION)));
