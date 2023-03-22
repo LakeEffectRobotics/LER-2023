@@ -56,11 +56,10 @@ public class RobotContainer {
   public Claw claw = new Claw(RobotMap.rightClawController, RobotMap.leftClawSolenoid, RobotMap.rightClawSolenoid);
   public static final Lights lights = new Lights();
   public final Wrist wrist = new Wrist(RobotMap.wristController, arm);
+  public final TargetSelection targetSelection = new TargetSelection();
 
   // path utils
-  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight, arm, wrist, claw, gyro);
-  
-  private TargetSelection targetSelection = new TargetSelection();
+  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight, arm, wrist, claw, gyro, targetSelection);
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -81,8 +80,8 @@ public class RobotContainer {
     autoChooser.addOption("balance 1 cube", createPathUtils.createPathCommand("balance 1 cube", 1.5, 1));
     autoChooser.addOption("balance 2 cube", createPathUtils.createPathCommand("balance 2 cube", 1.7, 1));
 
-    autoChooser.addOption("outtake", new AutoShootBackwardsCommand(arm, wrist, claw));
-    autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw));
+    autoChooser.addOption("outtake", new AutoShootBackwardsCommand(arm, wrist, claw, targetSelection));
+    autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw, targetSelection));
 
     // simple autos
     autoChooser.addOption("balance 1 cube mobility", createPathUtils.createPathCommand("balance 1 cube mobility", 1, 1));
@@ -120,8 +119,8 @@ public class RobotContainer {
 
     OI.openClawButton.onTrue(new SetClawCommand(claw, Position.OPEN));
     OI.closeClawButton.onTrue(new SetClawCommand(claw, Position.CLOSED));
-    OI.spinInButton.whileTrue(new SpinClawCommand(claw, Direction.IN, OI.clawInSpeedSupplier));
-    OI.spitOutButton.whileTrue(new SpinClawCommand(claw, Direction.OUT, OI.clawOutSpeedSupplier));
+    OI.spinInButton.whileTrue(new SpinClawCommand(claw, Direction.IN, OI.clawInSpeedSupplier, targetSelection));
+    OI.spitOutButton.whileTrue(new SpinClawCommand(claw, Direction.OUT, OI.clawOutSpeedSupplier, targetSelection));
     
     // Move arm and wrist into transport position
     OI.transportButton.onTrue(new LowerArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.TRANSPORT)));
