@@ -1,11 +1,11 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
@@ -22,20 +22,26 @@ public class Arm extends SubsystemBase {
 
     private Double currentAngle = DOWN_ANGLE;
 
-    private static final double UP_ANGLE = 34;
-    private static final double DOWN_ANGLE = -2.1;
+    public double telescopeTargetPosition = 0;
 
     SparkMaxPIDController pidController;
 
-    private static final double kF = 0;
-    private static final double kP = 0;
+    // Arbitrary feedforward = (experimentally determined) voltage required to hold arm stationary against constant spring
+    private static final double AFF = 0.1 * 12;
+    private static final double kP = 1.5;
     private static final double kI = 0;
     private static final double kD = 0;
-    private static final double MAX_OUTPUT = 1;
-    private static final double MIN_OUTPUT = -1;
+    private static final double MAX_OUTPUT = 0.6;
+    private static final double MIN_OUTPUT = -0.05;
 
-    public Arm(CANSparkMax controller1, CANSparkMax controller2, DoubleSolenoid leftSolenoid,
-            DoubleSolenoid rightSolenoid) {
+    public static final double MAX_POSITION = 22;
+    public static final double MIN_POSITION = 0;
+
+    // PLACEHOLDERS for now
+    public static final double HIGH_CONE = 18;
+    public static final double MID_CONE = 10;
+
+    public Arm(CANSparkMax controller1, CANSparkMax controller2, DoubleSolenoid leftSolenoid, DoubleSolenoid rightSolenoid) {
         this.telescopeController1 = controller1;
         this.telescopeController2 = controller2;
         this.leftSolenoid = leftSolenoid;
@@ -47,12 +53,10 @@ public class Arm extends SubsystemBase {
         pidController.setP(kP);
         pidController.setI(kI);
         pidController.setD(kD);
-        pidController.setFF(kF);
         pidController.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 
-        // Limit switches for telescope (other controller is follower)
-        forwardLimit = telescopeController1.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
-        reverseLimit = telescopeController1.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+       telescopeController1.getEncoder().setPosition(0);
+       telescopeController2.getEncoder().setPosition(0);
     }
 
     // Arm piston positions: up, down, neutral
@@ -109,9 +113,28 @@ public class Arm extends SubsystemBase {
     /**
      * Extend/retract telescope
      * 
-     * @param position -1 to 1
+     * @param position (0, 22)
      */
     public void setTelescopePosition(double position) {
-        pidController.setReference(position, ControlType.kPosition);
+        telescopeTargetPosition = position;
+        // soft limits appear to be broken so use code limits for now
+        if (position > MAX_POSITION) {
+           telescopeTargetPosition = MAX_POSITION;
+        } else if (position < MIN_POSITION) {
+            telescopeTargetPosition = MIN_POSITION;
+        }
+        SmartDashboard.putNumber("arm target position", telescopeTargetPosition);
+    }
+
+    @Override
+    public void periodic() {
+        // let arm gravity drop to transport position
+        if (telescopeTargetPosition <= 0 ) {
+            telescopeController1.set(0);
+        } else {
+            telescopeController1.getPIDController().setReference(telescopeTargetPosition, ControlType.kPosition, 0, AFF);
+        }
+
+        SmartDashboard.putNumber("arm position", telescopeController1.getEncoder().getPosition());
     }
 }
