@@ -158,4 +158,8 @@ public class OI {
         return -xboxController.getRightY();
     } ;
     
+    public static DoubleSupplier manualMoveArmSupplier = () -> {
+        return processDriveInput(xboxController.getLeftY());
+    } ;
+    
 }

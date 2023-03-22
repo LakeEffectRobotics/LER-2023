@@ -41,6 +41,7 @@ import frc.robot.subsystems.TargetSelection.Height;
 import frc.robot.commands.GyroCommand;
 import frc.robot.commands.GyroDriveStraightCommand;
 import frc.robot.commands.ManualMoveWristCommand;
+import frc.robot.commands.ManualMoveArmCommand;
 import frc.robot.commands.ShootScoreCommand;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Claw.Position;
@@ -68,6 +69,7 @@ public class RobotContainer {
   // Create robotContainer
   public RobotContainer() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
+    arm.setDefaultCommand(new ManualMoveArmCommand(arm, OI.manualMoveArmSupplier));
     gyro.setDefaultCommand(new GyroCommand(gyro));
     wrist.setDefaultCommand(new ManualMoveWristCommand(wrist, OI.manualMoveWristSupplier));
     lights.setDefaultCommand(new DefaultLightCommand(lights, targetSelection, claw));
