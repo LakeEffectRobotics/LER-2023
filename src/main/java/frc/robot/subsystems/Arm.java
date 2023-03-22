@@ -88,8 +88,14 @@ public class Arm extends SubsystemBase {
     }
 
     public void raiseOnePiston() {
+        // randomize which piston
+        if (Math.random() < 0.5) {
+            leftSolenoid.set(ArmPosition.UP.value); 
+        } else {
+            rightSolenoid.set(ArmPosition.UP.value); 
+        }
+        
         pistonsCurrentPosition = ArmPosition.UP;
-        leftSolenoid.set(ArmPosition.UP.value); 
     }
 
     /**
