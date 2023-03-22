@@ -155,7 +155,7 @@ public class Drivetrain extends SubsystemBase {
      */
     public void arcadeDrive(double speed, double rotation) {
         DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(speed, 0, rotation));
-        velocityTankDrive(wheelSpeeds.leftMetersPerSecond, wheelSpeeds.rightMetersPerSecond);
+        tankDrive(wheelSpeeds.leftMetersPerSecond / 4.4, wheelSpeeds.rightMetersPerSecond / 4.4);
     }
 
     public void stop() {
