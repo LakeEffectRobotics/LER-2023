@@ -26,6 +26,7 @@ import frc.robot.commands.SpinClawCommand.Direction;
 import frc.robot.commands.autonomous.AutoIntakeCommand;
 import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
 import frc.robot.commands.instant.SetClawCommand;
+import frc.robot.commands.instant.SetTelescopeCommand;
 import frc.robot.commands.instant.LowerArmCommand;
 import frc.robot.commands.instant.RaiseArmCommand;
 import frc.robot.commands.instant.ScoringPositionCommand;
@@ -124,7 +125,7 @@ public class RobotContainer {
     OI.spitOutButton.whileTrue(new SpinClawCommand(claw, Direction.OUT, OI.clawOutSpeedSupplier, targetSelection));
     
     // Move arm and wrist into transport position
-    OI.transportButton.onTrue(new LowerArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.TRANSPORT)));
+    OI.transportButton.onTrue((new SetTelescopeCommand(arm, 0)).withTimeout(1.5).andThen(new LowerArmCommand(arm)));
 
     // Loading station position
     OI.loadingStationButton.onTrue(new RaiseArmCommand(arm, true).andThen(new SetWristAngleCommand(wrist, Wrist.LOADING_STATION)));
