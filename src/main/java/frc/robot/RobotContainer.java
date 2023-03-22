@@ -28,6 +28,7 @@ import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
 import frc.robot.commands.instant.SetClawCommand;
 import frc.robot.commands.instant.LowerArmCommand;
 import frc.robot.commands.instant.RaiseArmCommand;
+import frc.robot.commands.instant.ScoringPositionCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.commands.instant.SetWristAngleCommand;
@@ -138,7 +139,7 @@ public class RobotContainer {
     );
     
     // move wrist into scoring forward position, used for scoring mid and high cube
-    OI.scorePositionButton.onTrue(new SetWristAngleCommand(wrist, Wrist.SCORE_CUBE_FORWARD));
+    OI.scorePositionButton.onTrue(new ScoringPositionCommand(arm, wrist, targetSelection));
     OI.shootScoreButton.onTrue(new ShootScoreCommand(targetSelection, claw));
 
     OI.dicoButton.whileTrue(new DiscoCommand(lights));
