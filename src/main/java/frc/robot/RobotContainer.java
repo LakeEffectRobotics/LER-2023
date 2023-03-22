@@ -37,7 +37,6 @@ import frc.robot.subsystems.TargetSelection;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.Arm.ArmPosition;
 import frc.robot.subsystems.Lights.Colour;
-import frc.robot.subsystems.TargetSelection.Height;
 import frc.robot.commands.GyroCommand;
 import frc.robot.commands.GyroDriveStraightCommand;
 import frc.robot.commands.ManualMoveWristCommand;
@@ -100,7 +99,6 @@ public class RobotContainer {
     lights.setBoth(Colour.PURPLE);
 
    // CameraServer.startAutomaticCapture();
-    CameraServer.startAutomaticCapture();
 
     //PathPlannerServer.startServer(5811);
   }
@@ -129,14 +127,14 @@ public class RobotContainer {
     OI.transportButton.onTrue(new LowerArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.TRANSPORT)));
 
     // Loading station position
-    OI.loadingStationButton.onTrue(new RaiseArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.LOADING_STATION)));
+    OI.loadingStationButton.onTrue(new RaiseArmCommand(arm, true).andThen(new SetWristAngleCommand(wrist, Wrist.LOADING_STATION)));
 
     // Move arm and wrist into ground intake position. Only run if arm is already down to avoid smashing things in front of the robot. (Still sets arm to down position for completion sake)
     OI.groundIntakeButton.onTrue(
       new ConditionalCommand(
         new LowerArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.GROUND)),
         Commands.runOnce(() -> System.out.print("Lower arm before going to ground position")), 
-        () -> arm.getArmPosition() == ArmPosition.DOWN
+        () -> arm.getPistonsPosition() == ArmPosition.DOWN
       )
     );
     

@@ -12,15 +12,11 @@ public class Arm extends SubsystemBase {
     CANSparkMax telescopeController1;
     CANSparkMax telescopeController2;
 
-    private SparkMaxLimitSwitch forwardLimit;
-    private SparkMaxLimitSwitch reverseLimit;
-
     DoubleSolenoid leftSolenoid;
     DoubleSolenoid rightSolenoid;
 
-    ArmPosition currentPosition;
+    ArmPosition pistonsCurrentPosition;
 
-    private Double currentAngle = DOWN_ANGLE;
 
     public double telescopeTargetPosition = 0;
 
@@ -61,38 +57,46 @@ public class Arm extends SubsystemBase {
 
     // Arm piston positions: up, down, neutral
     public enum ArmPosition {
-        UP(DoubleSolenoid.Value.kForward),
-        DOWN(DoubleSolenoid.Value.kReverse),
-        NEUTRAL(DoubleSolenoid.Value.kOff);
+        UP(DoubleSolenoid.Value.kForward, 34),
+        DOWN(DoubleSolenoid.Value.kReverse, 0);
 
         private DoubleSolenoid.Value value;
+        private double angle;
 
-        private ArmPosition(DoubleSolenoid.Value value) {
+        private ArmPosition(DoubleSolenoid.Value value, double angle) {
             this.value = value;
+            this.angle = angle;
         }
 
         public DoubleSolenoid.Value getValue() {
             return value;
+        }
+
+        public double getAngle() {
+            return angle;
         }
     }
 
     /**
      * Extend both arm pistons
      */
-    public void raiseArm() {
-        currentPosition = ArmPosition.UP;
-        currentAngle = UP_ANGLE;
+    public void raiseBothPistons() {
+        pistonsCurrentPosition = ArmPosition.UP;
 
         leftSolenoid.set(ArmPosition.UP.value);
         rightSolenoid.set(ArmPosition.UP.value);
+    }
+
+    public void raiseOnePiston() {
+        pistonsCurrentPosition = ArmPosition.UP;
+        leftSolenoid.set(ArmPosition.UP.value); 
     }
 
     /**
      * Release both arm pistons
      */
     public void lowerArm() {
-        currentPosition = ArmPosition.DOWN;
-        currentAngle = DOWN_ANGLE;
+        pistonsCurrentPosition = ArmPosition.DOWN;
 
         leftSolenoid.set(ArmPosition.DOWN.value);
         rightSolenoid.set(ArmPosition.DOWN.value);
@@ -102,12 +106,12 @@ public class Arm extends SubsystemBase {
      * 
      * @return Current arm position (up, down, neutral)
      */
-    public ArmPosition getArmPosition() {
-        return currentPosition;
+    public ArmPosition getPistonsPosition() {
+        return pistonsCurrentPosition;
     }
 
     public double getCurrentAngle() {
-        return currentAngle;
+        return pistonsCurrentPosition.getAngle();
     }
 
     /**
