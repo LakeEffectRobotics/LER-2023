@@ -1,25 +1,15 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.subsystems.TargetSelection.Type.*;
 
-import java.util.Map;
-
 import static frc.robot.subsystems.TargetSelection.Height.*;
 
 public class TargetSelection extends SubsystemBase {
-    private ShuffleboardLayout layout = Shuffleboard.getTab("target").getLayout("target", BuiltInLayouts.kGrid).withSize(3, 3);
-
-    public TargetSelection() {
-
-    }
-
     /**
      * Enum representing the type of game piece scored in the Node
      */
@@ -94,11 +84,13 @@ public class TargetSelection extends SubsystemBase {
      * Raise the selected Node up one height
      */
     public void selectionUp(){
+        // set shuffleboard entry for old selected node to false
         updateEntry(selectedNode.getEntry(), false);
 
         selectedRow = bound(selectedRow + 1, 0, GRID.length-1);
         selectedNode = GRID[selectedRow][selectedCol];
 
+        // then set newly selected node to true after updating selected node
         updateEntry(selectedNode.getEntry(), true);
         SmartDashboard.putString("HEIGHT", selectedNode.height.name());
     }
@@ -173,6 +165,9 @@ public class TargetSelection extends SubsystemBase {
         public Node(Type type, Height height, int column, int row) {
             this.type = type;
             this.height = height;
+
+            // each time a node is created, generate a shuffleboard boolean box for it with given col/row, named after the type/height
+            // cant have duplicate names, so must add column number after it for uniqueness
             entry = Shuffleboard
                 .getTab("target")
                 .getLayout("target", BuiltInLayouts.kGrid)
@@ -197,6 +192,10 @@ public class TargetSelection extends SubsystemBase {
             return height;
         }
 
+        /**
+         * 
+         * @return shuffleboard boolean box for this node
+         */
         public GenericEntry getEntry() {
             return entry;
         }
