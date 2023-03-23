@@ -15,8 +15,7 @@ public class Arm extends SubsystemBase {
     DoubleSolenoid leftSolenoid;
     DoubleSolenoid rightSolenoid;
 
-    ArmPosition pistonsCurrentPosition;
-
+    ArmPosition pistonsCurrentPosition = ArmPosition.UP;
 
     public double telescopeTargetPosition = 0;
 
@@ -30,7 +29,7 @@ public class Arm extends SubsystemBase {
     private static final double MAX_OUTPUT = 0.6;
     private static final double MIN_OUTPUT = -0.05;
 
-    public static final double MAX_POSITION = 22;
+    public static final double MAX_POSITION = 23;
     public static final double MIN_POSITION = 0;
 
     // PLACEHOLDERS for now
