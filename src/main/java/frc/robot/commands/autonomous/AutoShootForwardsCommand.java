@@ -27,7 +27,7 @@ public class AutoShootForwardsCommand extends SequentialCommandGroup {
         new WaitCommand(1),
         
         // Spin the claw to score high cube
-        new ShootScoreCommand(new Node(TargetSelection.Type.CUBE, TargetSelection.Height.HIGH) , claw),
+       // new ShootScoreCommand(new Node(TargetSelection.Type.CUBE, TargetSelection.Height.HIGH) , claw),
         
         // Set arm and wrist to transport position
         new SetWristAngleCommand(wrist, Wrist.TRANSPORT)

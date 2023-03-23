@@ -1,12 +1,25 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.subsystems.TargetSelection.Type.*;
+
+import java.util.Map;
+
 import static frc.robot.subsystems.TargetSelection.Height.*;
 
 public class TargetSelection extends SubsystemBase {
-    
+    private ShuffleboardLayout layout = Shuffleboard.getTab("target").getLayout("target", BuiltInLayouts.kGrid).withSize(3, 3);
+
+    public TargetSelection() {
+
+    }
+
     /**
      * Enum representing the type of game piece scored in the Node
      */
@@ -27,9 +40,9 @@ public class TargetSelection extends SubsystemBase {
      * Currently this is rigged up to just have cone/cube at each height until we have time to develop vision-based scoring
      */
     private static final Node[][] GRID = new Node[][] {
-        { new Node(CONE, HIGH), new Node(CUBE, HIGH) },
-        { new Node(CONE, MID), new Node(CUBE, MID) },
-        { new Node(CONE, LOW), new Node(CUBE, LOW) },
+        { new Node(CONE, HIGH, 0, 0), new Node(CUBE, HIGH, 1, 0), new Node(CONE, HIGH, 2, 0) },
+        { new Node(CONE, MID, 0, 1), new Node(CUBE, MID, 1, 1), new Node(CONE, MID, 2, 1) },
+        { new Node(CONE, LOW, 0, 2), new Node(CUBE, LOW, 1, 2), new Node(CONE, LOW, 2, 2) },
     };
 
     // Actual selection location is stored as x, y locally
@@ -81,8 +94,12 @@ public class TargetSelection extends SubsystemBase {
      * Raise the selected Node up one height
      */
     public void selectionUp(){
+        updateEntry(selectedNode.getEntry(), false);
+
         selectedRow = bound(selectedRow + 1, 0, GRID.length-1);
         selectedNode = GRID[selectedRow][selectedCol];
+
+        updateEntry(selectedNode.getEntry(), true);
         SmartDashboard.putString("HEIGHT", selectedNode.height.name());
     }
     
@@ -90,8 +107,12 @@ public class TargetSelection extends SubsystemBase {
      * Lower the selected Node down one height
      */
     public void selectionDown(){
+        updateEntry(selectedNode.getEntry(), false);
+
         selectedRow = bound(selectedRow - 1, 0, GRID.length-1);
         selectedNode = GRID[selectedRow][selectedCol];
+
+        updateEntry(selectedNode.getEntry(), true);
         SmartDashboard.putString("HEIGHT", selectedNode.height.name());
     }
     
@@ -99,8 +120,12 @@ public class TargetSelection extends SubsystemBase {
      * Move the selected Node left one column
      */
     public void selectionLeft(){
+        updateEntry(selectedNode.getEntry(), false);
+
         selectedCol = bound(selectedCol - 1, 0, GRID[selectedRow].length-1);
         selectedNode = GRID[selectedRow][selectedCol];
+
+        updateEntry(selectedNode.getEntry(), true);
         SmartDashboard.putString("Object Type", selectedNode.type.name());
     }
     
@@ -108,8 +133,12 @@ public class TargetSelection extends SubsystemBase {
      * Move the selected Node right one column
      */
     public void selectionRight(){
+        updateEntry(selectedNode.getEntry(), false);
+
         selectedCol = bound(selectedCol + 1, 0, GRID[selectedRow].length-1);
         selectedNode = GRID[selectedRow][selectedCol];
+
+        updateEntry(selectedNode.getEntry(), true);
         SmartDashboard.putString("Object Type", selectedNode.type.name());
     }
 
@@ -122,6 +151,10 @@ public class TargetSelection extends SubsystemBase {
             return val;
     }
 
+    private void updateEntry(GenericEntry entry, boolean value) {
+        entry.setBoolean(value);
+    }
+
     /**
      * Class representing a node which can be targeted
      */
@@ -129,6 +162,7 @@ public class TargetSelection extends SubsystemBase {
 
         private Type type;
         private Height height;
+        private GenericEntry entry;
 
         /**
          * Create a new Node
@@ -136,9 +170,15 @@ public class TargetSelection extends SubsystemBase {
          * @param type Type of game piece scored on the node
          * @param height Height of the node
          */
-        public Node(Type type, Height height) {
+        public Node(Type type, Height height, int column, int row) {
             this.type = type;
             this.height = height;
+            entry = Shuffleboard
+                .getTab("target")
+                .getLayout("target", BuiltInLayouts.kGrid)
+                .add(height.toString() + " " + type.toString() + " " + column, false)
+                .withPosition(column, row)
+                .getEntry();
         } 
 
         /**
@@ -155,6 +195,10 @@ public class TargetSelection extends SubsystemBase {
          */
         public Height getHeight() {
             return height;
+        }
+
+        public GenericEntry getEntry() {
+            return entry;
         }
     }
 }

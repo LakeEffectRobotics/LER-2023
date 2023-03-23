@@ -155,5 +155,8 @@ public class Drivetrain extends SubsystemBase {
         
         odometry.update(
                 gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition());
+
+                SmartDashboard.putNumber("AHHHHHHHHH", MAX_SPEED);
+
     }
 }
