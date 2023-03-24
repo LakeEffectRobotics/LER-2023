@@ -1,15 +1,13 @@
 package frc.robot.commands.autonomous;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.ShootScoreCommand;
 import frc.robot.commands.instant.SetWristAngleCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
-import frc.robot.subsystems.TargetSelection;
 import frc.robot.subsystems.Wrist;
-import frc.robot.subsystems.TargetSelection.Node;
+import frc.robot.subsystems.TargetSelection.Height;
 
 public class AutoShootForwardsCommand extends SequentialCommandGroup {
   
@@ -27,7 +25,7 @@ public class AutoShootForwardsCommand extends SequentialCommandGroup {
         new WaitCommand(1),
         
         // Spin the claw to score high cube
-        new ShootScoreCommand(new Node(TargetSelection.Type.CUBE, TargetSelection.Height.HIGH) , claw),
+        new ShootScoreCommand(Height.HIGH , claw),
         
         // Set arm and wrist to transport position
         new SetWristAngleCommand(wrist, Wrist.TRANSPORT)

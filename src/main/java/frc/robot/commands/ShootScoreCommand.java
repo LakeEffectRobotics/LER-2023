@@ -4,24 +4,21 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.TargetSelection;
 import frc.robot.subsystems.TargetSelection.Height;
-import frc.robot.subsystems.TargetSelection.Node;
 
 /**
  * spin claw out for time and speed depending on selected target
  */
 public class ShootScoreCommand extends CommandBase {
     Claw claw;
-
+    Height height;
+    TargetSelection targetSelection;
     
     double time = 700;
     double speed;
     double startTime;
-    Height height;
-    Node node;
-    TargetSelection targetSelection;
 
     /**
-     * shoot score 
+     * spin claw power based on target selection height
      * @param targetSelection
      * @param claw
      */
@@ -32,21 +29,18 @@ public class ShootScoreCommand extends CommandBase {
 
     /**
      * shoot score given a specific node, for use in autonomous
-     * @param node
+     * @param height
      * @param claw
      */
-    public ShootScoreCommand(Node node, Claw claw) {
-        this.node = node;
+    public ShootScoreCommand(Height height, Claw claw) {
+        this.height = height;
         this.claw = claw;
     }
 
     @Override
     public void initialize() {
-        // if initalized in auto with a node, height is node height
-        if (node != null) {
-            this.height = node.getHeight();
-        } else {
-            // otherwise, get CURRENT LIVE targetselection height
+        // if height wasnt initialized (used during auto), use LIVE target selection
+        if (height == null) {
             this.height = targetSelection.getSelectedNode().getHeight();
         }
 
