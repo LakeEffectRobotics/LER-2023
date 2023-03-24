@@ -16,6 +16,7 @@ import frc.robot.commands.instant.SetWristAngleCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.TargetSelection;
 import frc.robot.subsystems.Wrist;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -29,7 +30,7 @@ public class AutoIntakeCommand extends SequentialCommandGroup {
   private static final double TIMEOUT = 5;
 
   /** Creates a new AutoIntakeCommand. */
-  public AutoIntakeCommand(Drivetrain drivetrain, Arm arm, Wrist wrist, Claw claw) {
+  public AutoIntakeCommand(Drivetrain drivetrain, Arm arm, Wrist wrist, Claw claw, TargetSelection targetSelection) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -41,7 +42,7 @@ public class AutoIntakeCommand extends SequentialCommandGroup {
       // Spin claw and drive forward until limit switch is pressed
       new ParallelCommandGroup(
        // new DriveCommand(drivetrain, () -> 0.25, () -> 0.25)
-        new SpinClawCommand(claw, Direction.IN, () -> CLAW_SPEED)//, 
+        new SpinClawCommand(claw, Direction.IN, () -> CLAW_SPEED, targetSelection)//, 
       ).until(() -> claw.GetLimitPressed()).withTimeout(TIMEOUT),
 
       // Raise wrist to transport position

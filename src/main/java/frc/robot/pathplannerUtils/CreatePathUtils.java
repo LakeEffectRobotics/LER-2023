@@ -20,6 +20,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.TargetSelection;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Wrist;
 
@@ -30,19 +31,21 @@ public class CreatePathUtils {
     Wrist wrist;
     Claw claw;
     Gyro gyro;
+    TargetSelection targetSelection;
 
     // Create autobuilder which will build any path
     RamseteAutoBuilder autoBuilder;
 
     public static final HashMap<String, Command> eventMap = new HashMap<>();
 
-    public CreatePathUtils(Drivetrain drivetrain, Limelight limelight, Arm arm, Wrist wrist, Claw claw, Gyro gyro) {
+    public CreatePathUtils(Drivetrain drivetrain, Limelight limelight, Arm arm, Wrist wrist, Claw claw, Gyro gyro, TargetSelection targetSelection) {
         this.drivetrain = drivetrain;
         this.limelight = limelight;
         this.arm = arm;
         this.wrist = wrist;
         this.claw = claw;
         this.gyro = gyro;
+        this.targetSelection = targetSelection;
 
         autoBuilder = new RamseteAutoBuilder(drivetrain::getPose, drivetrain::resetPose,
                new RamseteController(), drivetrain.kinematics, drivetrain::velocityTankDrive, eventMap, true, drivetrain);
@@ -51,8 +54,8 @@ public class CreatePathUtils {
         // Add all the predefined events used by paths to the global event map
         eventMap.put("apriltagpose", new ApriltagPoseCommand(limelight, drivetrain));
         
-        eventMap.put("intake cube", new AutoIntakeCommand(drivetrain, arm, wrist, claw));
-        eventMap.put("outtake cube", new AutoShootBackwardsCommand(arm, wrist, claw));
+        eventMap.put("intake cube", new AutoIntakeCommand(drivetrain, arm, wrist, claw, targetSelection));
+        eventMap.put("outtake cube", new AutoShootBackwardsCommand(arm, wrist, claw, targetSelection));
 
         eventMap.put("balance reversed", new AutoBalanceCommand(gyro, drivetrain, true));
         eventMap.put("balance forward", new AutoBalanceCommand(gyro, drivetrain, false));

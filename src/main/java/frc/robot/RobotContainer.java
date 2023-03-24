@@ -26,21 +26,24 @@ import frc.robot.commands.SpinClawCommand.Direction;
 import frc.robot.commands.autonomous.AutoIntakeCommand;
 import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
 import frc.robot.commands.instant.SetClawCommand;
+import frc.robot.commands.instant.SetTelescopeCommand;
 import frc.robot.commands.instant.LowerArmCommand;
 import frc.robot.commands.instant.RaiseArmCommand;
+import frc.robot.commands.instant.ScoringPositionCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.commands.instant.SetWristAngleCommand;
+import frc.robot.commands.instant.TransportPositionCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.TargetSelection;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.Arm.ArmPosition;
 import frc.robot.subsystems.Lights.Colour;
-import frc.robot.subsystems.TargetSelection.Height;
 import frc.robot.commands.GyroCommand;
 import frc.robot.commands.GyroDriveStraightCommand;
 import frc.robot.commands.ManualMoveWristCommand;
+import frc.robot.commands.ManualMoveArmCommand;
 import frc.robot.commands.ShootScoreCommand;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Claw.Position;
@@ -56,11 +59,10 @@ public class RobotContainer {
   public Claw claw = new Claw(RobotMap.rightClawController, RobotMap.leftClawSolenoid, RobotMap.rightClawSolenoid);
   public static final Lights lights = new Lights();
   public final Wrist wrist = new Wrist(RobotMap.wristController, arm);
+  public final TargetSelection targetSelection = new TargetSelection();
 
   // path utils
-  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight, arm, wrist, claw, gyro);
-  
-  private TargetSelection targetSelection = new TargetSelection();
+  CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight, arm, wrist, claw, gyro, targetSelection);
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -68,6 +70,7 @@ public class RobotContainer {
   // Create robotContainer
   public RobotContainer() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
+    arm.setDefaultCommand(new ManualMoveArmCommand(arm, OI.manualMoveArmSupplier));
     gyro.setDefaultCommand(new GyroCommand(gyro));
     wrist.setDefaultCommand(new ManualMoveWristCommand(wrist, OI.manualMoveWristSupplier));
     lights.setDefaultCommand(new DefaultLightCommand(lights, targetSelection, claw));
@@ -80,8 +83,8 @@ public class RobotContainer {
     autoChooser.addOption("balance 1 cube", createPathUtils.createPathCommand("balance 1 cube", 1.5, 1));
     autoChooser.addOption("balance 2 cube", createPathUtils.createPathCommand("balance 2 cube", 1.7, 1));
 
-    autoChooser.addOption("outtake", new AutoShootBackwardsCommand(arm, wrist, claw));
-    autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw));
+    autoChooser.addOption("outtake", new AutoShootBackwardsCommand(arm, wrist, claw, targetSelection));
+    autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw, targetSelection));
 
     // simple autos
     autoChooser.addOption("balance 1 cube mobility", createPathUtils.createPathCommand("balance 1 cube mobility", 1, 1));
@@ -98,7 +101,6 @@ public class RobotContainer {
     lights.setBoth(Colour.PURPLE);
 
    // CameraServer.startAutomaticCapture();
-    CameraServer.startAutomaticCapture();
 
     //PathPlannerServer.startServer(5811);
   }
@@ -120,26 +122,26 @@ public class RobotContainer {
 
     OI.openClawButton.onTrue(new SetClawCommand(claw, Position.OPEN));
     OI.closeClawButton.onTrue(new SetClawCommand(claw, Position.CLOSED));
-    OI.spinInButton.whileTrue(new SpinClawCommand(claw, Direction.IN, OI.clawInSpeedSupplier));
-    OI.spitOutButton.whileTrue(new SpinClawCommand(claw, Direction.OUT, OI.clawOutSpeedSupplier));
+    OI.spinInButton.whileTrue(new SpinClawCommand(claw, Direction.IN, OI.clawInSpeedSupplier, targetSelection));
+    OI.spitOutButton.whileTrue(new SpinClawCommand(claw, Direction.OUT, OI.clawOutSpeedSupplier, targetSelection));
     
     // Move arm and wrist into transport position
-    OI.transportButton.onTrue(new LowerArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.TRANSPORT)));
+    OI.transportButton.onTrue(new TransportPositionCommand(arm, wrist));
 
     // Loading station position
-    OI.loadingStationButton.onTrue(new RaiseArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.LOADING_STATION)));
+    OI.loadingStationButton.onTrue(new RaiseArmCommand(arm, true).andThen(new SetWristAngleCommand(wrist, Wrist.LOADING_STATION)));
 
     // Move arm and wrist into ground intake position. Only run if arm is already down to avoid smashing things in front of the robot. (Still sets arm to down position for completion sake)
     OI.groundIntakeButton.onTrue(
       new ConditionalCommand(
         new LowerArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.GROUND)),
         Commands.runOnce(() -> System.out.print("Lower arm before going to ground position")), 
-        () -> arm.getArmPosition() == ArmPosition.DOWN
+        () -> arm.getPistonsPosition() == ArmPosition.DOWN
       )
     );
     
     // move wrist into scoring forward position, used for scoring mid and high cube
-    OI.scorePositionButton.onTrue(new SetWristAngleCommand(wrist, Wrist.SCORE_CUBE_FORWARD));
+    OI.scorePositionButton.onTrue(new ScoringPositionCommand(arm, wrist, targetSelection));
     OI.shootScoreButton.onTrue(new ShootScoreCommand(targetSelection, claw));
 
     OI.dicoButton.whileTrue(new DiscoCommand(lights));

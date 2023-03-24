@@ -5,13 +5,19 @@ import frc.robot.subsystems.Arm;
 
 public class RaiseArmCommand extends InstantCommand {
     Arm arm;
+    boolean raiseBoth = false;
 
-    public RaiseArmCommand(Arm arm) {
+    public RaiseArmCommand(Arm arm, boolean raiseBoth) {
         this.arm = arm;
+        this.raiseBoth = raiseBoth;
     }
 
     @Override
     public void initialize() {
-        arm.raiseArm();
+        if (raiseBoth) {
+            arm.raiseBothPistons();
+        } else {
+            arm.raiseOnePiston();
+        }
     }
 }

@@ -52,7 +52,7 @@ public class Wrist extends SubsystemBase {
     public static final double LOADING_STATION = 0;
     public static final double GROUND = -48;
     // Placeholder for testing, needs bettter calibration
-    public static final double SCORE_CONE = -15;
+    public static final double SCORE_CONE = 0;
     public static final double SCORE_CUBE_BACKWARDS = 100;
     public static final double SCORE_CUBE_FORWARD = 14;
 

@@ -34,8 +34,8 @@ public class RobotMap {
         private static final int WRIST_CONTROLLER = 8;
 
         // Telescope controllers
-        private static final int TELESCOPE_CONTROLLER_1 = 11;
-        private static final int TELESCOPE_CONTROLLER_2 = 12;
+        private static final int TELESCOPE_CONTROLLER_1 = 12;
+        private static final int TELESCOPE_CONTROLLER_2 = 11;
 
     }
 
@@ -148,7 +148,9 @@ public class RobotMap {
         wristController.setInverted(true);
 
         // Arm motors
-        telescopeController2.follow(telescopeController1);
-        telescopeController1.setInverted(true);
+        telescopeController1.restoreFactoryDefaults();
+        telescopeController2.restoreFactoryDefaults();
+
+        telescopeController2.follow(telescopeController1, true);
     }
 }

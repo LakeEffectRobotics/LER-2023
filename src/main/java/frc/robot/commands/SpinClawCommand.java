@@ -4,6 +4,9 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.TargetSelection;
+import frc.robot.subsystems.Claw.Position;
+import frc.robot.subsystems.TargetSelection.Type;
 
 public class SpinClawCommand extends CommandBase {
     
@@ -32,16 +35,18 @@ public class SpinClawCommand extends CommandBase {
 
     Claw claw;
     DoubleSupplier speedSupplier;
+    TargetSelection targetSelection;
 
     /**
-     * Create a new SpinIntakeCommand
+     * Create a new SpinIntakeCommand, private because we require a direction
      * @param claw Claw subsystem
      * @param speedSupplier Double supplier for intake speed, in %. +ve spins out, -ve spins in
      */
-    public SpinClawCommand(Claw claw, DoubleSupplier speedSupplier) {
+    private SpinClawCommand(Claw claw, DoubleSupplier speedSupplier, TargetSelection targetSelection) {
         addRequirements(claw);
         this.claw = claw;
         this.speedSupplier = speedSupplier;
+        this.targetSelection = targetSelection;
     }
 
     /**
@@ -50,9 +55,9 @@ public class SpinClawCommand extends CommandBase {
      * @param direction Direction for +ve spin
      * @param speedSupplier Double supplier for intake speed, in %. +ve spins specified direction
      */
-    public SpinClawCommand(Claw claw, Direction direction, DoubleSupplier speedSupplier) {
+    public SpinClawCommand(Claw claw, Direction direction, DoubleSupplier speedSupplier, TargetSelection targetSelection) {
         // Call normal constructor, but wrap supplier with multiplication by direction's sign
-        this(claw, () -> speedSupplier.getAsDouble() * direction.sign);
+        this(claw, () -> speedSupplier.getAsDouble() * direction.sign, targetSelection);
     }
 
     @Override
@@ -62,6 +67,19 @@ public class SpinClawCommand extends CommandBase {
     @Override
     public void execute() {
         claw.setSpeed(speedSupplier.getAsDouble());
+
+        if (targetSelection.getSelectedNode().getType() == Type.CUBE) {
+            // if targeting cubes, stop spinning when limit switch pressed
+            // this is already happening with the hardware but might as well add here too
+            if (claw.GetLimitPressed()) {
+                claw.setSpeed(0);
+            }
+        } else if (targetSelection.getSelectedNode().getType() == Type.CONE) {
+            if (claw.GetLimitPressed()) {
+                claw.setSpeed(0);
+                claw.setPosition(Position.CLOSED);
+            }
+        }
     }
 
     @Override
