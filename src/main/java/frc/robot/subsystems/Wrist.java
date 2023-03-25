@@ -13,9 +13,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Wrist extends SubsystemBase {
     public CANSparkMax wristController;
 
-    public SparkMaxLimitSwitch forwardLimit;
-    public SparkMaxLimitSwitch reverseLimit;
-
     private SparkMaxAnalogSensor pot;
 
     private SparkMaxPIDController pidController;
@@ -62,8 +59,6 @@ public class Wrist extends SubsystemBase {
 
     public Wrist(CANSparkMax controller, Arm arm) {
         wristController = controller;
-        forwardLimit = wristController.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
-        reverseLimit = wristController.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
 
         this.arm = arm;
 

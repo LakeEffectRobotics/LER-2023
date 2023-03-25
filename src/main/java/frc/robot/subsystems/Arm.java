@@ -31,7 +31,7 @@ public class Arm extends SubsystemBase {
     public static final double MIN_POSITION = 0;
 
     // PLACEHOLDERS for now
-    public static final double HIGH_CONE = 17;
+    public static final double HIGH_CONE = 20;
     public static final double MID_CONE = 9;
     public static final double DOUBLE_LOADING = 23;
 

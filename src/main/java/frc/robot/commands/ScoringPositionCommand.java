@@ -17,6 +17,8 @@ public class ScoringPositionCommand  extends CommandBase {
     Supplier<Node> targetSupplier;
     double wristAngle;
     double telescopePosition;
+    double startTime;
+    double timeout = 700;
 
     public ScoringPositionCommand(Arm arm, Wrist wrist, TargetSelection targetSelection, Supplier<Node> supplier){
         this.arm = arm;
@@ -27,6 +29,8 @@ public class ScoringPositionCommand  extends CommandBase {
 
     @Override
     public void initialize() {
+        startTime = System.currentTimeMillis();
+
         Type type = targetSupplier.get().getType();
         Height height = targetSupplier.get().getHeight();
 
@@ -79,10 +83,11 @@ public class ScoringPositionCommand  extends CommandBase {
 
     @Override
     public void execute(){
-        // if wrist is still alive:
-        // if wrist is within right position, continue doing stuff
+        // if wrist is alive and moves to the right position, continue doing stuff
+        // otherwise keep waiting until wrist is close or timeout passes
+        // OR, if timeout passes, continue even without wrist in position because something gone wrong
         if (!wrist.isWristDeadAgain) {
-            if (Math.abs(wrist.getCurrentAngle() - wristAngle) < 10) {
+            if (Math.abs(wrist.getCurrentAngle() - wristAngle) < 10  || System.currentTimeMillis() - startTime < timeout) {
                 arm.setTelescopePosition(telescopePosition);
             }
         } else {
@@ -93,12 +98,13 @@ public class ScoringPositionCommand  extends CommandBase {
     @Override
     public boolean isFinished(){
         // if telescope and wrist are pretty much in position, end command
-        // if wrist is dead, ignore the wrist and only look for telescopy
+        // or if timeout passes, end command even if nothing is in position because something gone wrong!
         if (!wrist.isWristDeadAgain) {
-            if (Math.abs(arm.getTelescopePosition() - telescopePosition) < 3 && Math.abs(wrist.getCurrentAngle() - wristAngle) < 10) {
+            if ((Math.abs(arm.getTelescopePosition() - telescopePosition) < 3 && Math.abs(wrist.getCurrentAngle() - wristAngle) < 10)  || System.currentTimeMillis() - startTime < timeout) {
                 return true;
             }
         } else {
+            // if wrist is dead, ignore the wrist and only look for telescopy right position
             if (Math.abs(arm.getTelescopePosition() - telescopePosition) < 3) {
                 return true;
             }
