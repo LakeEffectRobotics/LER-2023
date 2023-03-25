@@ -35,6 +35,7 @@ public class Arm extends SubsystemBase {
     // PLACEHOLDERS for now
     public static final double HIGH_CONE = 18;
     public static final double MID_CONE = 10;
+    public static final double DOUBLE_LOADING = 23;
 
     public Arm(CANSparkMax controller1, CANSparkMax controller2, DoubleSolenoid leftSolenoid, DoubleSolenoid rightSolenoid) {
         this.telescopeController1 = controller1;

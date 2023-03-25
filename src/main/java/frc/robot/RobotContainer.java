@@ -26,13 +26,14 @@ import frc.robot.commands.SpinClawCommand.Direction;
 import frc.robot.commands.autonomous.AutoIntakeCommand;
 import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
 import frc.robot.commands.instant.SetClawCommand;
-import frc.robot.commands.instant.SetTelescopeCommand;
+import frc.robot.commands.instant.DoubleLoadingCommand;
 import frc.robot.commands.instant.LowerArmCommand;
 import frc.robot.commands.instant.RaiseArmCommand;
 import frc.robot.commands.instant.ScoringPositionCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.commands.instant.SetWristAngleCommand;
+import frc.robot.commands.instant.SingleLoadingCommand;
 import frc.robot.commands.instant.TransportPositionCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
@@ -131,7 +132,8 @@ public class RobotContainer {
     OI.transportButton.onTrue(new TransportPositionCommand(arm, wrist));
 
     // Loading station position
-    OI.loadingStationButton.onTrue(new RaiseArmCommand(arm, true).andThen(new SetWristAngleCommand(wrist, Wrist.LOADING_STATION)));
+    OI.singleLoadingButton.onTrue(new SingleLoadingCommand(wrist, arm, targetSelection));
+    OI.doubleLoadingButton.onTrue(new DoubleLoadingCommand(wrist, arm, targetSelection));
 
     // Move arm and wrist into ground intake position. Only run if arm is already down to avoid smashing things in front of the robot. (Still sets arm to down position for completion sake)
     OI.groundIntakeButton.onTrue(
