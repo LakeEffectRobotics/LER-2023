@@ -139,6 +139,10 @@ public class Arm extends SubsystemBase {
         return telescopeController1.getEncoder().getPosition();
     }
 
+    public void zeroTelescope() {
+        telescopeController1.getEncoder().setPosition(0);
+    }
+
     @Override
     public void periodic() {
         // let arm gravity drop to transport position

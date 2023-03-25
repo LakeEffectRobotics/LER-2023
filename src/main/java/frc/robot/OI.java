@@ -38,6 +38,9 @@ public class OI {
 
         private static final int SLOW_BUTTON = 1;
         private static final int DRIVE_STRAIGHT_BUTTON = 2;
+
+        private static final int ZERO_BUTTON = 6;
+        private static final int WRIST_DEAD_BUTTON = 7;
     }
 
     /** Buttons on the operator controller */
@@ -84,6 +87,10 @@ public class OI {
     public static final JoystickButton curtisRightButton = new JoystickButton(rightJoystick,
             DRIVER_MAP.RIGHT_RIGHT_BUTTON);
     public static final JoystickButton dicoButton = new JoystickButton(rightJoystick, DRIVER_MAP.DISO_BUTTON);
+
+    // hidden buttons
+    public static final JoystickButton zeroButton = new JoystickButton(leftJoystick, DRIVER_MAP.ZERO_BUTTON);
+    public static final JoystickButton wristDeadButton = new JoystickButton(leftJoystick, DRIVER_MAP.WRIST_DEAD_BUTTON);
 
     public static final JoystickButton turnButton = new JoystickButton(leftJoystick, DRIVER_MAP.TURN_BUTTON);
     // left joystick

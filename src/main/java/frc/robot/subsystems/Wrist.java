@@ -5,10 +5,10 @@ import com.revrobotics.SparkMaxAnalogSensor;
 import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.Arm.ArmPosition;
 
 public class Wrist extends SubsystemBase {
     public CANSparkMax wristController;
@@ -49,12 +49,15 @@ public class Wrist extends SubsystemBase {
 
     public static final double TRANSPORT = 120;
     //PLACEHOLDER VALUE
-    public static final double LOADING_STATION = 0;
+    public static final double SINGLE_LOADING = 0;
+    public static final double DOUBLE_LOADING = -50;
     public static final double GROUND = -48;
     // Placeholder for testing, needs bettter calibration
     public static final double SCORE_CONE = 0;
     public static final double SCORE_CUBE_BACKWARDS = 100;
     public static final double SCORE_CUBE_FORWARD = 14;
+
+    public boolean isWristDeadAgain = false;
 
     public Wrist(CANSparkMax controller, Arm arm) {
         wristController = controller;
@@ -85,6 +88,7 @@ public class Wrist extends SubsystemBase {
         // TODO: Adjust ramp rate for best performance/jerk tradeoff
         controller.setClosedLoopRampRate(1);
 
+        SmartDashboard.putString("wrist dead?", "not yet!");
     }
 
     /**
@@ -134,6 +138,20 @@ public class Wrist extends SubsystemBase {
         return GRAVITY_COMPENSATION * Math.cos(Math.toRadians(getCurrentAngle()));
     }
 
+    /**
+     * toggle wrist deadness; makes certain things go into wrist dead mode
+     */
+    public void wristDead() {
+        isWristDeadAgain = !isWristDeadAgain;
+        if (isWristDeadAgain) {
+            wristController.setIdleMode(IdleMode.kBrake);
+            SmartDashboard.putString("wrist dead?", "yes :(");
+        } else {
+            wristController.setIdleMode(IdleMode.kCoast);
+            SmartDashboard.putString("wrist dead?", "not yet!");
+        }
+    }
+
     @Override
     public void periodic() {
         SmartDashboard.putNumber("wrist target deg horizontal", targetAngle);
@@ -142,12 +160,15 @@ public class Wrist extends SubsystemBase {
         SmartDashboard.putNumber("wrist current deg horizontal", getCurrentAngle());
         SmartDashboard.putNumber("wrist current pot volts", pot.getPosition());
 
-
+        // if wrist is dead kill motor just in case
+        if (isWristDeadAgain){
+            wristController.set(0);
+        } else if (getCurrentAngle() < -30 && targetAngle < -30) {
         // Let gravity lower arm to ground instead of slamming:
         // Stop pidcontroller if target angle is low, and arm is low enough to fall naturally
-        if (getCurrentAngle() < -30 && targetAngle < -30) {
             wristController.set(0);
         } else if (getCurrentAngle() > 118 && targetAngle > 118) {
+            // also stop pid if its far back enought to fall onto hardstop alone
             wristController.set(0);
         } else if (targetAngle < -30 && getCurrentAngle() < 0) {
             // dont need ff help on way down, but do need it to swing from 120 to past 90 deg

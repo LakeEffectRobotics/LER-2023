@@ -116,6 +116,8 @@ public class RobotContainer {
 
     // left joystick
     OI.slowButton.whileTrue(new DriveSlowCommand(drivetrain));
+    OI.zeroButton.onTrue(Commands.runOnce(() -> arm.zeroTelescope()));
+    OI.wristDeadButton.onTrue(Commands.runOnce(() -> wrist.wristDead()));
 
     // operator
     OI.driveStraightButton.whileTrue(new GyroDriveStraightCommand(drivetrain, gyro, OI.rightDriveSupplier));
