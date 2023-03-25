@@ -30,13 +30,22 @@ public class DoubleLoadingCommand extends SequentialCommandGroup {
         // move wrist to position first, then move telescope
         addCommands(
             new SetWristAngleCommand(wrist, wristAngle),
-            // if wrist is dead, continue; otherwise, wait till wrist is in right spot
-            // if wrist is being stupid and doesnt get within 10deg, just go anyway atfter 1 sec
-            new ConditionalCommand(new WaitCommand(0.1), new WaitUntilCommand(() -> Math.abs(wrist.getCurrentAngle() - wristAngle) < 10), () -> wrist.isWristDeadAgain)
-            .withTimeout(1),
+
+            new ConditionalCommand(
+                // if wrist is dead, continue (only wait for 0.1s)
+                new WaitCommand(0.1),
+
+                // otherwise, wait till wrist is in right spot
+                new WaitUntilCommand(() -> Math.abs(wrist.getCurrentAngle() - wristAngle) < 10),
+
+                // condition is whether wrist is dead
+                () -> wrist.isWristDeadAgain)
+
+                // if wrist is being stupid and doesnt get within 10deg, just go anyway atfter 1 sec
+                .withTimeout(0.5),
 
             new RaiseArmCommand(arm, true),
-            new WaitCommand(0.5),
+            new WaitCommand(0.2),
 
             new SetTelescopeCommand(arm, telescopePosition)
         );
