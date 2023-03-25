@@ -21,13 +21,11 @@ public class Arm extends SubsystemBase {
 
     SparkMaxPIDController pidController;
 
-    // Arbitrary feedforward = (experimentally determined) voltage required to hold arm stationary against constant spring
-    private static final double AFF = 0.1 * 12;
     private static final double kP = 1.5;
     private static final double kI = 0;
     private static final double kD = 0;
-    private static final double MAX_OUTPUT = 0.6;
-    private static final double MIN_OUTPUT = -0.05;
+    private static final double MAX_OUTPUT = 0.8;
+    private static final double MIN_OUTPUT = 0.001;
 
     public static final double MAX_POSITION = 23;
     public static final double MIN_POSITION = 0;
@@ -146,11 +144,14 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // let arm gravity drop to transport position
-        if (telescopeTargetPosition <= 0 ) {
+        if (telescopeController1.getEncoder().getPosition() < 1 && telescopeTargetPosition < 1) {
+            // near bottom, put tiny bit of motor to avoid unspooling string
+            telescopeController1.set(0.003);
+        } else if (telescopeTargetPosition <= 0 ) {
+            // let arm gravity drop to transport position
             telescopeController1.set(0);
         } else {
-            telescopeController1.getPIDController().setReference(telescopeTargetPosition, ControlType.kPosition, 0, AFF);
+            telescopeController1.getPIDController().setReference(telescopeTargetPosition, ControlType.kPosition);
         }
 
         SmartDashboard.putNumber("arm position", telescopeController1.getEncoder().getPosition());

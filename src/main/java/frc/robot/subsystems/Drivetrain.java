@@ -48,7 +48,7 @@ public class Drivetrain extends SubsystemBase {
     SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.16534, 2.3589, 0.47591);
 
     // Max speed in m/s
-    public final double MAX_SPEED = 4;
+    public final double MAX_SPEED = 4.5;
     public double speedMultiplier = 1;
 
     // Robot track width 19"
@@ -155,7 +155,7 @@ public class Drivetrain extends SubsystemBase {
      */
     public void arcadeDrive(double speed, double rotation) {
         DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(speed, 0, rotation));
-        tankDrive(wheelSpeeds.leftMetersPerSecond / 4.4, wheelSpeeds.rightMetersPerSecond / 4.4);
+        tankDrive(wheelSpeeds.leftMetersPerSecond / MAX_SPEED, wheelSpeeds.rightMetersPerSecond / MAX_SPEED);
     }
 
     public void stop() {
