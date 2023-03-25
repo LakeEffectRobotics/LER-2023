@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.Map;
+
 import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -14,6 +16,7 @@ import frc.robot.commands.ApriltagAimCommand;
 import frc.robot.commands.ApriltagPoseCommand;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.SelectCommand;
 import frc.robot.commands.CurtisDriveCommand;
 import frc.robot.commands.DefaultLightCommand;
 import frc.robot.commands.DiscoCommand;
@@ -28,7 +31,6 @@ import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
 import frc.robot.commands.instant.SetClawCommand;
 import frc.robot.commands.instant.DoubleLoadingCommand;
 import frc.robot.commands.instant.LowerArmCommand;
-import frc.robot.commands.instant.ScoringPositionCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.commands.instant.SetWristAngleCommand;
@@ -43,6 +45,7 @@ import frc.robot.subsystems.Lights.Colour;
 import frc.robot.commands.GyroCommand;
 import frc.robot.commands.GyroDriveStraightCommand;
 import frc.robot.commands.ManualMoveWristCommand;
+import frc.robot.commands.ScoringPositionCommand;
 import frc.robot.commands.ManualMoveArmCommand;
 import frc.robot.commands.ShootScoreCommand;
 import frc.robot.subsystems.Gyro;
@@ -79,13 +82,13 @@ public class RobotContainer {
     autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
     
     autoChooser.addOption("flat 2 cube", createPathUtils.createPathCommand("flat 2 cube", 1.7, 1));
-    autoChooser.addOption("bump 2 cube turn", createPathUtils.createPathCommand("bump 2 cube turn", 1.7, 1));
+    autoChooser.addOption("bump 2 cube turn", createPathUtils.createPathCommand("bump 2 cube turn", 1.5, 1));
     autoChooser.addOption("balance 1 cube", createPathUtils.createPathCommand("balance 1 cube", 1.5, 1));
     autoChooser.addOption("balance 2 cube", createPathUtils.createPathCommand("balance 2 cube", 1.7, 1));
 
     autoChooser.addOption("outtake", new AutoShootBackwardsCommand(arm, wrist, claw, targetSelection));
     autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw, targetSelection));
-
+    autoChooser.addOption("move wrist", Commands.runOnce(() -> wrist.setMotors(0.1)));
     // simple autos
     autoChooser.addOption("balance 1 cube mobility", createPathUtils.createPathCommand("balance 1 cube mobility", 1, 1));
   

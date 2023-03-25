@@ -1,6 +1,5 @@
 package frc.robot.commands.autonomous;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
@@ -9,9 +8,9 @@ public class AutoBalanceCommand extends CommandBase {
     Gyro gyro;
     Drivetrain drivetrain;
     double currentSpeed = 0.1;
-    double multiplier = 0.75;
+    double multiplier = 0.89;
     double currentSign = 1;
-    double minSpeed = 0.05;
+    double minSpeed = 0.06;
     boolean isBackwards = false;
 
     public AutoBalanceCommand(Gyro g, Drivetrain d, boolean isReversed) {

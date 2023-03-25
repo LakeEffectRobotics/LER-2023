@@ -30,7 +30,20 @@ public class ManualMoveWristCommand extends CommandBase {
             inc = incrementSupplier.getAsDouble();
         }
 
-        // increase wrist target by joystick inc
-        wrist.setTargetAngle( wrist.getTargetAngle() + inc);
+        // if wrist is still alive
+        if (!wrist.isWristDeadAgain) {
+            // increase wrist target by joystick inc
+            wrist.setTargetAngle( wrist.getTargetAngle() + inc);
+        } else {
+            // if wrist pot is dead, set to constant motor of the joystick cuz maybe motors are still alive
+            wrist.setMotors(inc);
+        }
+    }
+
+    @Override
+    public void end(boolean isInterrupted) {
+        if (wrist.isWristDeadAgain) {
+            wrist.setMotors(0);
+        }
     }
 }

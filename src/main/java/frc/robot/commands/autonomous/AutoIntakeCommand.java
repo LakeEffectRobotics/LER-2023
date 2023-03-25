@@ -18,16 +18,16 @@ import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.TargetSelection;
 import frc.robot.subsystems.Wrist;
+import frc.robot.subsystems.TargetSelection.Type;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoIntakeCommand extends SequentialCommandGroup {
   
-  // Note that the claw subsystem applies it's own scaling, so 100% should be the optimal speed
-  private static final double CLAW_SPEED = 1;
+  private static final double CLAW_SPEED = 0.8;
 
-  private static final double TIMEOUT = 5;
+  private static final double TIMEOUT = 8;
 
   /** Creates a new AutoIntakeCommand. */
   public AutoIntakeCommand(Drivetrain drivetrain, Arm arm, Wrist wrist, Claw claw, TargetSelection targetSelection) {
@@ -37,12 +37,12 @@ public class AutoIntakeCommand extends SequentialCommandGroup {
       // Lower the wrist and arm, 
       new LowerArmCommand(arm),
       new SetWristAngleCommand(wrist, Wrist.GROUND),
-      new WaitCommand(0.5),
+      new WaitCommand(0.1),
 
       // Spin claw and drive forward until limit switch is pressed
       new ParallelCommandGroup(
        // new DriveCommand(drivetrain, () -> 0.25, () -> 0.25)
-        new SpinClawCommand(claw, Direction.IN, () -> CLAW_SPEED, targetSelection)//, 
+        new SpinClawCommand(claw, Direction.IN, () -> CLAW_SPEED, Type.CUBE)//, 
       ).until(() -> claw.GetLimitPressed()).withTimeout(TIMEOUT),
 
       // Raise wrist to transport position

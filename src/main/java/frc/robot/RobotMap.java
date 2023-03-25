@@ -139,6 +139,8 @@ public class RobotMap {
         rightController1.setOpenLoopRampRate(0.15);
 
         // Claw motors
+        rightClawController.restoreFactoryDefaults();
+        
         rightClawController.setIdleMode(IdleMode.kBrake);
         leftClawController.setIdleMode(IdleMode.kBrake);
         leftClawController.follow(rightClawController, true);

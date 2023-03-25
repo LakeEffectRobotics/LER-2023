@@ -51,8 +51,8 @@ public class DriveCommand extends CommandBase {
         final double speed = leftSupplier.getAsDouble() * drivetrain.MAX_SPEED;
         final double radians = Math.toRadians(360 * rightSupplier.getAsDouble());
        
-        SmartDashboard.putNumber("leftspeed target", speed);
-        SmartDashboard.putNumber("rightspeed target", radians);
+     //   SmartDashboard.putNumber("leftspeed target", speed);
+      //  SmartDashboard.putNumber("rightspeed target", radians);
 
         drivetrain.arcadeDrive(speed, radians);
     }

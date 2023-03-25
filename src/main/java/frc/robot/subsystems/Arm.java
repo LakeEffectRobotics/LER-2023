@@ -24,15 +24,15 @@ public class Arm extends SubsystemBase {
     private static final double kP = 1.5;
     private static final double kI = 0;
     private static final double kD = 0;
-    private static final double MAX_OUTPUT = 0.8;
+    private static final double MAX_OUTPUT = 0.6;
     private static final double MIN_OUTPUT = 0.001;
 
     public static final double MAX_POSITION = 23;
     public static final double MIN_POSITION = 0;
 
     // PLACEHOLDERS for now
-    public static final double HIGH_CONE = 18;
-    public static final double MID_CONE = 10;
+    public static final double HIGH_CONE = 17;
+    public static final double MID_CONE = 9;
     public static final double DOUBLE_LOADING = 23;
 
     public Arm(CANSparkMax controller1, CANSparkMax controller2, DoubleSolenoid leftSolenoid, DoubleSolenoid rightSolenoid) {
@@ -83,6 +83,7 @@ public class Arm extends SubsystemBase {
 
         leftSolenoid.set(ArmPosition.UP.value);
         rightSolenoid.set(ArmPosition.UP.value);
+        SmartDashboard.putString("arm up?", "YES!");
     }
 
     public void raiseOnePiston() {
@@ -92,7 +93,7 @@ public class Arm extends SubsystemBase {
         } else {
             rightSolenoid.set(ArmPosition.UP.value); 
         }
-        
+        SmartDashboard.putString("arm up?", "YES!");
         pistonsCurrentPosition = ArmPosition.UP;
     }
 
@@ -104,6 +105,7 @@ public class Arm extends SubsystemBase {
 
         leftSolenoid.set(ArmPosition.DOWN.value);
         rightSolenoid.set(ArmPosition.DOWN.value);
+        SmartDashboard.putString("arm up?", "NO!");
     }
 
     /**

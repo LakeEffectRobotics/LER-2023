@@ -167,8 +167,8 @@ public class Drivetrain extends SubsystemBase {
     @Override
     public void periodic() {
      //   field.setRobotPose(getPose());
-        SmartDashboard.putNumber("Right velocity", rightEncoder.getVelocity());
-        SmartDashboard.putNumber("Left velocity", leftEncoder.getVelocity());
+      //  SmartDashboard.putNumber("Right velocity", rightEncoder.getVelocity());
+       // SmartDashboard.putNumber("Left velocity", leftEncoder.getVelocity());
         
         odometry.update(
                 gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition());

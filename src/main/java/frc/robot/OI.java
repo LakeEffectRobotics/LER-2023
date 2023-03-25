@@ -154,14 +154,14 @@ public class OI {
      * Operator-supplied intake spin speed
      */
     public static DoubleSupplier clawInSpeedSupplier = () -> {
-        return Math.pow(xboxController.getRawAxis(OPERATOR_MAP.SPIN_IN_TRIGGER), 3) * 0.7;
+        return Math.pow(xboxController.getRawAxis(OPERATOR_MAP.SPIN_IN_TRIGGER), 2) * 0.6;
     };
 
     /**
      * Operator-supplied outtake spin speed
      */
     public static DoubleSupplier clawOutSpeedSupplier = () -> {
-        return xboxController.getRawAxis(OPERATOR_MAP.SPIT_OUT_TRIGGER);
+        return Math.pow(xboxController.getRawAxis(OPERATOR_MAP.SPIT_OUT_TRIGGER), 2);
     };
 
     public static DoubleSupplier manualMoveWristSupplier = () -> {
