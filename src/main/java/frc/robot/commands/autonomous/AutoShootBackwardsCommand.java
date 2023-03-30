@@ -25,7 +25,7 @@ import frc.robot.subsystems.TargetSelection.Type;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoShootBackwardsCommand extends SequentialCommandGroup {
   
-  private static final double CLAW_SPEED = 0.7;
+  private static final double CLAW_SPEED = 0.8;
   
   /** Creates a new AutoShootBackwardsCommand. */
   public AutoShootBackwardsCommand(Arm arm, Wrist wrist, Claw claw, TargetSelection targetSelection) {
@@ -34,6 +34,8 @@ public class AutoShootBackwardsCommand extends SequentialCommandGroup {
     addCommands(
       // Raise arm and set wrist to correct angle
       new RaiseArmCommand(arm, true),
+    //  new LowerArmCommand(arm),
+
       new SetWristAngleCommand(wrist, Wrist.SCORE_CUBE_BACKWARDS),
       
       // Wait 1 second for arm + wrist to be in position

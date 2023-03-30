@@ -2,8 +2,6 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.hal.simulation.RoboRioDataJNI;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
@@ -48,7 +46,7 @@ public class DriveCommand extends CommandBase {
     @Override
     public void execute() {
         // Drive with joystick % as % of maxspeed (m/s)
-        final double speed = leftSupplier.getAsDouble() * drivetrain.MAX_SPEED;
+        final double speed = leftSupplier.getAsDouble() * drivetrain.MAX_SPEED * drivetrain.speedMultiplier;
         final double radians = Math.toRadians(360 * rightSupplier.getAsDouble());
        
      //   SmartDashboard.putNumber("leftspeed target", speed);

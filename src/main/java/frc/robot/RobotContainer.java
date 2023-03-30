@@ -27,6 +27,7 @@ import frc.robot.commands.SpinClawCommand;
 import frc.robot.commands.TurnToAngleCommand;
 import frc.robot.commands.SpinClawCommand.Direction;
 import frc.robot.commands.autonomous.AutoIntakeCommand;
+import frc.robot.commands.autonomous.AutoMidCubeBackwardsCommand;
 import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
 import frc.robot.commands.instant.SetClawCommand;
 import frc.robot.commands.instant.DoubleLoadingCommand;
@@ -87,8 +88,9 @@ public class RobotContainer {
     autoChooser.addOption("balance 2 cube", createPathUtils.createPathCommand("balance 2 cube", 1.7, 1));
 
     autoChooser.addOption("outtake", new AutoShootBackwardsCommand(arm, wrist, claw, targetSelection));
+    autoChooser.addOption("outtake mid", new AutoMidCubeBackwardsCommand(arm, wrist, claw));
     autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw, targetSelection));
-    autoChooser.addOption("move wrist", Commands.runOnce(() -> wrist.setMotors(0.1)));
+    autoChooser.addOption("move wrist", Commands.runOnce(() -> wrist.setMotors(0.04)));
     // simple autos
     autoChooser.addOption("balance 1 cube mobility", createPathUtils.createPathCommand("balance 1 cube mobility", 1, 1));
   
@@ -145,9 +147,9 @@ public class RobotContainer {
         () -> arm.getPistonsPosition() == ArmPosition.DOWN
       )
     );
-    
+
     // move wrist into scoring forward position, used for scoring mid and high cube
-    OI.scorePositionButton.onTrue(new ScoringPositionCommand(arm, wrist, targetSelection, () -> targetSelection.getSelectedNode()));
+    OI.scorePositionButton.onTrue(new ScoringPositionCommand(arm, wrist, targetSelection));
     OI.shootScoreButton.onTrue(new ShootScoreCommand(targetSelection, claw));
 
     OI.dicoButton.whileTrue(new DiscoCommand(lights));

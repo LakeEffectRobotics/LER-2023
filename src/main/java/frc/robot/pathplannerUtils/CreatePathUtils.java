@@ -15,6 +15,7 @@ import frc.robot.commands.TurnToAngleCommand;
 import frc.robot.commands.autonomous.AutoBalanceCommand;
 import frc.robot.commands.autonomous.AutoBumpBackCommand;
 import frc.robot.commands.autonomous.AutoIntakeCommand;
+import frc.robot.commands.autonomous.AutoMidCubeBackwardsCommand;
 import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
@@ -56,11 +57,12 @@ public class CreatePathUtils {
         
         eventMap.put("intake cube", new AutoIntakeCommand(drivetrain, arm, wrist, claw, targetSelection));
         eventMap.put("outtake cube", new AutoShootBackwardsCommand(arm, wrist, claw, targetSelection));
+        eventMap.put("outtake mid cube", new AutoMidCubeBackwardsCommand(arm, wrist, claw));
 
         eventMap.put("balance reversed", new AutoBalanceCommand(gyro, drivetrain, true));
         eventMap.put("balance forward", new AutoBalanceCommand(gyro, drivetrain, false));
 
-        eventMap.put("turn right", (new TurnToAngleCommand(gyro, drivetrain, 0)).withTimeout(0.7));
+        eventMap.put("turn right", (new TurnToAngleCommand(gyro, drivetrain, 0)).withTimeout(0.5));
         eventMap.put("bump back", new AutoBumpBackCommand(70, drivetrain));
     }
 

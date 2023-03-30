@@ -51,12 +51,12 @@
     },
     {
       "anchorPoint": {
-        "x": 2.1771403162758833,
-        "y": 4.407988768471599
+        "x": 2.1,
+        "y": 4.5
       },
       "prevControl": {
-        "x": 2.7732896651318533,
-        "y": 4.407988768471599
+        "x": 4.353589164252535,
+        "y": 4.5
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -66,9 +66,10 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "outtake cube"
+          "bump back",
+          "outtake mid cube"
         ],
-        "executionBehavior": "parallel",
+        "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
       }

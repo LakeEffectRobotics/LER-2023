@@ -48,14 +48,25 @@ public class AutoBalanceCommand extends CommandBase {
             currentSign *= -1; 
         }
 
+        // TRY 
+        // if bot is very angled and it doesnt match the current sign, flip sign
+        if (gyro.getPitch() > 10 && currentSign == -1) {
+            currentSign = 1;
+        } else if (gyro.getPitch() < -10 && currentSign == 1) {
+            currentSign = -1;
+        }
+
         // TODO: figure out proper stopping condition
         // this logic would run true everytime the robot passes 0deg? for now it works regardless
         // needs to be small number or else it stops at not quite engaged :(
         if (Math.abs(gyro.getPitch()) < 3) {
             drivetrain.stop();
+            System.out.println("STOP!" + " " + gyro.getPitch());
         } else {
             drivetrain.tankDrive(currentSpeed, currentSpeed);
         }
+
+        System.out.println(gyro.getPitch()  + " " + " " + currentSpeed + " " + currentSign);
     }   
 
     public void end() {

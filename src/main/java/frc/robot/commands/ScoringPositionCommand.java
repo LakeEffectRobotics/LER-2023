@@ -14,28 +14,48 @@ public class ScoringPositionCommand  extends CommandBase {
     Arm arm;
     Wrist wrist;
     TargetSelection targetSelection;
-    Supplier<Node> targetSupplier;
+    boolean auto;
     double wristAngle;
     double telescopePosition;
     double startTime;
     double timeout = 700;
+    Type type;
+    Height height;
 
-    public ScoringPositionCommand(Arm arm, Wrist wrist, TargetSelection targetSelection, Supplier<Node> supplier){
+    /**
+     * for use in tele, with live targetselection
+     * @param arm
+     * @param wrist
+     * @param targetSelection
+     */
+    public ScoringPositionCommand(Arm arm, Wrist wrist, TargetSelection targetSelection){
         this.arm = arm;
         this.wrist = wrist;
         this.targetSelection = targetSelection;
-        this.targetSupplier = supplier;
+    }
+
+    /**
+     * for use in tele, with live targetselection
+     * @param arm
+     * @param wrist
+     * @param targetSelection
+     */
+    public ScoringPositionCommand(Arm arm, Wrist wrist, Height height, Type type){
+        this.arm = arm;
+        this.wrist = wrist;
+        this.type = type;
+        this.height = height;
     }
 
     @Override
     public void initialize() {
         startTime = System.currentTimeMillis();
 
-        Type type = targetSupplier.get().getType();
-        Height height = targetSupplier.get().getHeight();
+        if (!auto) {
+            height = targetSelection.getSelectedNode().getHeight();
+            type = targetSelection.getSelectedNode().getType();
+        }
 
-        System.out.println("score position cmd " + type + " " + height);
-        
         if (type == Type.CONE) {
             wristAngle = Wrist.SCORE_CONE;
             // move wrist for cone
@@ -58,25 +78,16 @@ public class ScoringPositionCommand  extends CommandBase {
             // lower arm for cubes in case its raised for some reason
             telescopePosition = 0;
           
-          //  arm.setTelescopePosition(0);
-           // arm.lowerArm();
-
             // move wrist to scoring position accordingly
             if (height == Height.HIGH) {
                 wristAngle = Wrist.SCORE_CUBE_FORWARD;
-                //  wrist.setTargetAngle(Wrist.SCORE_CUBE_FORWARD);
             } else if (height == Height.MID) {
                 wristAngle = Wrist.SCORE_CUBE_FORWARD;
-
-             //   wrist.setTargetAngle(Wrist.SCORE_CUBE_FORWARD);
             } else if (height == Height.LOW) {
-                wristAngle = Wrist.TRANSPORT;
                 // transport position is conveniently also good for low cube backwards
-               // wrist.setTargetAngle(Wrist.TRANSPORT);
+                wristAngle = Wrist.TRANSPORT;
             } 
         }
-
-        System.out.println("score position cmd 2" + wristAngle + " " + telescopePosition);
 
         wrist.setTargetAngle(wristAngle);
     }
