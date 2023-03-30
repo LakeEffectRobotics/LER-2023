@@ -4,10 +4,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.ControlType;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
@@ -41,6 +44,8 @@ public class Drivetrain extends SubsystemBase {
     private static final double kP = 0.096;
     private static final double kI = 0;
     private static final double kD = 0;
+
+    SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.16534, 2.3589, 0.47591);
 
     // Max speed in m/s
     public final double MAX_SPEED = 4;
@@ -123,8 +128,10 @@ public class Drivetrain extends SubsystemBase {
      * @param rightSpeed right wheel velocity (m/s)
      */
     public void velocityTankDrive(double leftSpeed, double rightSpeed) {
-        leftLeadController.getPIDController().setReference(leftSpeed, ControlType.kVelocity);
-        rightLeadController.getPIDController().setReference(rightSpeed, ControlType.kVelocity);
+        leftLeadController.setVoltage(ff.calculate(leftSpeed));
+        rightLeadController.setVoltage(ff.calculate(rightSpeed));
+        //leftLeadController.getPIDController().setReference(leftSpeed, ControlType.kVelocity);
+        //rightLeadController.getPIDController().setReference(rightSpeed, ControlType.kVelocity);
     }
 
     // Percent tank drive for regular joystik driving
@@ -139,6 +146,16 @@ public class Drivetrain extends SubsystemBase {
      */
     public void setSpeedMultiplier(double multiplier) {
         speedMultiplier = multiplier;
+    }
+    
+    // Arcade drive
+    /**
+     * @param speed    linear velocity (m/s)
+     * @param rotation angular velocity (rad/s)
+     */
+    public void arcadeDrive(double speed, double rotation) {
+        DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(speed, 0, rotation));
+        tankDrive(wheelSpeeds.leftMetersPerSecond / 4.4, wheelSpeeds.rightMetersPerSecond / 4.4);
     }
 
     public void stop() {

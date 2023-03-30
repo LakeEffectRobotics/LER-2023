@@ -132,8 +132,8 @@ public class RobotMap {
         rightController3.setIdleMode(IdleMode.kBrake);
         leftController3.setIdleMode(IdleMode.kBrake);
 
-        leftController1.setClosedLoopRampRate(0.15);
-        rightController1.setClosedLoopRampRate(0.15);
+    //    leftController1.setClosedLoopRampRate(0.15);
+      //  rightController1.setClosedLoopRampRate(0.15);
 
         leftController1.setOpenLoopRampRate(0.15);
         rightController1.setOpenLoopRampRate(0.15);

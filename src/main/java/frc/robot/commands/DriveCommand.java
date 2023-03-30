@@ -26,7 +26,8 @@ public class DriveCommand extends CommandBase {
         drivetrain.stop();
     }
 
-    @Override
+   /* 
+   @Override
     public void execute() {
         // Drive with joystick % as % of maxspeed (m/s);
         double leftInput = leftSupplier.getAsDouble(); //-0.05;
@@ -41,6 +42,19 @@ public class DriveCommand extends CommandBase {
 
       //  drivetrain.velocityTankDrive(leftSpeed, rightSpeed);
       drivetrain.tankDrive(leftInput, rightInput);
+    }
+    */ 
+
+    @Override
+    public void execute() {
+        // Drive with joystick % as % of maxspeed (m/s)
+        final double speed = leftSupplier.getAsDouble() * drivetrain.MAX_SPEED;
+        final double radians = Math.toRadians(360 * rightSupplier.getAsDouble());
+       
+        SmartDashboard.putNumber("leftspeed target", speed);
+        SmartDashboard.putNumber("rightspeed target", radians);
+
+        drivetrain.arcadeDrive(speed, radians);
     }
 
     @Override
