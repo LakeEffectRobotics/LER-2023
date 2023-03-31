@@ -36,50 +36,66 @@ public class SpinClawCommand extends CommandBase {
     Claw claw;
     DoubleSupplier speedSupplier;
     TargetSelection targetSelection;
+    Type type;
+    boolean auto;
+    Direction direction;
 
     /**
-     * Create a new SpinIntakeCommand, private because we require a direction
-     * @param claw Claw subsystem
-     * @param speedSupplier Double supplier for intake speed, in %. +ve spins out, -ve spins in
-     */
-    private SpinClawCommand(Claw claw, DoubleSupplier speedSupplier, TargetSelection targetSelection) {
-        addRequirements(claw);
-        this.claw = claw;
-        this.speedSupplier = speedSupplier;
-        this.targetSelection = targetSelection;
-    }
-
-    /**
-     * Create a new SpinIntakeCommand
+     * Create a new SpinIntakeCommand using live target selection
      * @param claw Claw subsystem
      * @param direction Direction for +ve spin
      * @param speedSupplier Double supplier for intake speed, in %. +ve spins specified direction
      */
     public SpinClawCommand(Claw claw, Direction direction, DoubleSupplier speedSupplier, TargetSelection targetSelection) {
-        // Call normal constructor, but wrap supplier with multiplication by direction's sign
-        this(claw, () -> speedSupplier.getAsDouble() * direction.sign, targetSelection);
+        this.claw = claw;
+        this.speedSupplier = () -> speedSupplier.getAsDouble() * direction.sign;
+        this.targetSelection = targetSelection;
+        this.auto = false;
+        this.direction = direction;
     }
+
+    /**
+     * Create a new SpinIntakeCommand for auto usage, passing in a type
+     * @param claw Claw subsystem
+     * @param direction Direction for +ve spin
+     * @param speedSupplier Double supplier for intake speed, in %. +ve spins specified direction
+     */
+    public SpinClawCommand(Claw claw, Direction direction, DoubleSupplier speedSupplier, Type type) {
+        this.claw = claw;
+        this.speedSupplier = () -> speedSupplier.getAsDouble() * direction.sign;
+        this.auto = true;
+        this.type = type;
+        this.direction = direction;
+    }
+
 
     @Override
     public void initialize() {
+        if (!auto) {
+            this.type = targetSelection.getSelectedNode().getType();
+        }
     }
 
     @Override
     public void execute() {
         claw.setSpeed(speedSupplier.getAsDouble());
 
-        if (targetSelection.getSelectedNode().getType() == Type.CUBE) {
-            // if targeting cubes, stop spinning when limit switch pressed
-            // this is already happening with the hardware but might as well add here too
-            if (claw.GetLimitPressed()) {
-                claw.setSpeed(0);
-            }
-        } else if (targetSelection.getSelectedNode().getType() == Type.CONE) {
-            if (claw.GetLimitPressed()) {
-                claw.setSpeed(0);
-                claw.setPosition(Position.CLOSED);
+        // if direction is intaking, care about limit switch stuff
+        if (direction == Direction.IN) {
+            if (type == Type.CUBE) {
+                // if targeting cubes, stop spinning when limit switch pressed
+                // this is already happening with the hardware but might as well add here too
+                if (claw.GetLimitPressed()) {
+                    claw.setSpeed(0);
+                }
+            } else if (type == Type.CONE) {
+                if (claw.GetLimitPressed()) {
+                    claw.setSpeed(0);
+                    claw.setPosition(Position.CLOSED);
+                }
             }
         }
+
     }
 
     @Override

@@ -11,6 +11,7 @@ public class AutoBalanceCommand extends CommandBase {
     PIDController pidController = new PIDController(0.005, 0, 0);
     double currentSpeed;
 
+
     public AutoBalanceCommand(Gyro gyro, Drivetrain drivetrain) {
         this.gyro = gyro;
         this.drivetrain = drivetrain;
@@ -28,6 +29,7 @@ public class AutoBalanceCommand extends CommandBase {
         // A CHARGE STATION is considered LEVEL if it is within approximately 2½° of parallel to FIELD carpet
         if (Math.abs(gyro.getPitch()) < 2.5) {
             drivetrain.stop();
+            System.out.println("STOP!" + " " + gyro.getPitch());
         } else {
             // otherwise, pid towards 0 deg
             currentSpeed = pidController.calculate(gyro.getPitch());

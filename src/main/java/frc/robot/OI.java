@@ -28,7 +28,7 @@ public class OI {
 
     /** Buttons on the driver sticks/controller */
     private static class DRIVER_MAP {
-        private static final int AIM_BUTTON = 7;
+        private static final int AIM_BUTTON = 8;
         private static final int RIGHT_TRIGGER = 1;
         private static final int RIGHT_LEFT_BUTTON = 5;
         private static final int RIGHT_RIGHT_BUTTON = 4;
@@ -38,12 +38,16 @@ public class OI {
 
         private static final int SLOW_BUTTON = 1;
         private static final int DRIVE_STRAIGHT_BUTTON = 2;
+
+        private static final int ZERO_BUTTON = 6;
+        private static final int WRIST_DEAD_BUTTON = 7;
     }
 
     /** Buttons on the operator controller */
     private static class OPERATOR_MAP {
         private static final int GROUND_BUTTON = XboxController.Button.kA.value;
-        private static final int LOADING_STATION_BUTTON = XboxController.Button.kB.value;
+        private static final int SINGLE_LOADING_BUTTON = XboxController.Button.kB.value;
+        private static final int DOUBLE_LOADING_BUTTON = XboxController.Button.kBack.value;
         private static final int SCORE_POSITION_BUTTON = XboxController.Button.kX.value;
         private static final int TRANSPORT_BUTTON = XboxController.Button.kY.value;
 
@@ -85,6 +89,10 @@ public class OI {
             DRIVER_MAP.RIGHT_RIGHT_BUTTON);
     public static final JoystickButton dicoButton = new JoystickButton(rightJoystick, DRIVER_MAP.DISO_BUTTON);
 
+    // hidden buttons
+    public static final JoystickButton zeroButton = new JoystickButton(leftJoystick, DRIVER_MAP.ZERO_BUTTON);
+    public static final JoystickButton wristDeadButton = new JoystickButton(leftJoystick, DRIVER_MAP.WRIST_DEAD_BUTTON);
+
     public static final JoystickButton turnButton = new JoystickButton(leftJoystick, DRIVER_MAP.TURN_BUTTON);
     // left joystick
     public static final Trigger slowButton = new JoystickButton(leftJoystick, DRIVER_MAP.SLOW_BUTTON);
@@ -92,9 +100,10 @@ public class OI {
 
     // Operator xbox controller
     public static final Trigger transportButton = new JoystickButton(xboxController, OPERATOR_MAP.TRANSPORT_BUTTON);
-    public static final Trigger loadingStationButton = new JoystickButton(xboxController, OPERATOR_MAP.LOADING_STATION_BUTTON);
+    public static final Trigger singleLoadingButton = new JoystickButton(xboxController, OPERATOR_MAP.SINGLE_LOADING_BUTTON);
     public static final Trigger scorePositionButton = new JoystickButton(xboxController, OPERATOR_MAP.SCORE_POSITION_BUTTON);
     public static final Trigger groundIntakeButton = new JoystickButton(xboxController, OPERATOR_MAP.GROUND_BUTTON);
+    public static final Trigger doubleLoadingButton = new JoystickButton(xboxController, OPERATOR_MAP.DOUBLE_LOADING_BUTTON);
 
     // Custom trigger used to bind a command to the xbox controller's trgger.
     public static final Trigger spitOutButton = new Trigger(() -> xboxController.getRawAxis(OPERATOR_MAP.SPIT_OUT_TRIGGER) >= XBOX_TRIGGER_THRESHOLD);
@@ -145,14 +154,14 @@ public class OI {
      * Operator-supplied intake spin speed
      */
     public static DoubleSupplier clawInSpeedSupplier = () -> {
-        return xboxController.getRawAxis(OPERATOR_MAP.SPIN_IN_TRIGGER);
+        return Math.pow(xboxController.getRawAxis(OPERATOR_MAP.SPIN_IN_TRIGGER), 2) * 0.6;
     };
 
     /**
      * Operator-supplied outtake spin speed
      */
     public static DoubleSupplier clawOutSpeedSupplier = () -> {
-        return xboxController.getRawAxis(OPERATOR_MAP.SPIT_OUT_TRIGGER);
+        return Math.pow(xboxController.getRawAxis(OPERATOR_MAP.SPIT_OUT_TRIGGER), 2);
     };
 
     public static DoubleSupplier manualMoveWristSupplier = () -> {
