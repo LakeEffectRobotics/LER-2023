@@ -1,6 +1,6 @@
 package frc.robot.commands.autonomous;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
@@ -8,56 +8,38 @@ import frc.robot.subsystems.Gyro;
 public class AutoBalanceCommand extends CommandBase {
     Gyro gyro;
     Drivetrain drivetrain;
-    double currentSpeed = 0.1;
-    double multiplier = 0.75;
-    double currentSign = 1;
-    double minSpeed = 0.05;
-    boolean isBackwards = false;
+    PIDController pidController = new PIDController(0.005, 0, 0);
+    double currentSpeed;
 
-    public AutoBalanceCommand(Gyro g, Drivetrain d, boolean isReversed) {
-        this.gyro = g;
-        this.drivetrain = d;
-        this.isBackwards = isReversed;
+    public AutoBalanceCommand(Gyro gyro, Drivetrain drivetrain) {
+        this.gyro = gyro;
+        this.drivetrain = drivetrain;
     }
 
     
     @Override
     public void initialize() {
-        // if bot driving backwards onto charge station
-        if (isBackwards) {
-            currentSpeed *= -1;
-            currentSign = -1;
-        }
+        pidController.setSetpoint(0);
     }
 
     @Override
     public void execute() {
-        // if bot gets within 10deg horizontal
-        if ((currentSign < 0 && gyro.getPitch() > -7) 
-         || (currentSign > 0 && gyro.getPitch() < 7)) {
-            // change direction and slow speed by multiplier
-            currentSpeed *= -multiplier;
-
-            // make sure speed doesnt slow past minimum
-            if (currentSpeed < minSpeed && currentSpeed > 0) {
-                currentSpeed = minSpeed;
-            } else if (currentSpeed > -minSpeed && currentSpeed < 0) {
-                currentSpeed = -minSpeed;
-            }
-
-            // update current direction
-            currentSign *= -1; 
-        }
-
-        // TODO: figure out proper stopping condition
-        // this logic would run true everytime the robot passes 0deg? for now it works regardless
-        // needs to be small number or else it stops at not quite engaged :(
-        if (Math.abs(gyro.getPitch()) < 3) {
+        // if we are level, stop moving!!!
+        // A CHARGE STATION is considered LEVEL if it is within approximately 2½° of parallel to FIELD carpet
+        if (Math.abs(gyro.getPitch()) < 2.5) {
             drivetrain.stop();
         } else {
-            drivetrain.tankDrive(currentSpeed, currentSpeed);
+            // otherwise, pid towards 0 deg
+            currentSpeed = pidController.calculate(gyro.getPitch());
+
+            drivetrain.tankDrive(-currentSpeed, -currentSpeed);    
         }
     }   
+
+    // TODO: proper end condition, or not because auto times out anyway and we never do anything after balancing
+    public boolean isFinished() {
+        return false;
+    }
 
     public void end() {
         drivetrain.stop();
