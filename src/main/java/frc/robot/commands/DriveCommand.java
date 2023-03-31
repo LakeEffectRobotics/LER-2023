@@ -48,9 +48,6 @@ public class DriveCommand extends CommandBase {
         // Drive with joystick % as % of maxspeed (m/s)
         final double speed = leftSupplier.getAsDouble() * drivetrain.MAX_SPEED * drivetrain.speedMultiplier;
         final double radians = Math.toRadians(360 * rightSupplier.getAsDouble());
-       
-     //   SmartDashboard.putNumber("leftspeed target", speed);
-      //  SmartDashboard.putNumber("rightspeed target", radians);
 
         drivetrain.arcadeDrive(speed, radians);
     }

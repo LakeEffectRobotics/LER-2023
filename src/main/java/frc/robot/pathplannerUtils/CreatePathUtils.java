@@ -59,8 +59,8 @@ public class CreatePathUtils {
         eventMap.put("outtake cube", new AutoShootBackwardsCommand(arm, wrist, claw, targetSelection));
         eventMap.put("outtake mid cube", new AutoMidCubeBackwardsCommand(arm, wrist, claw));
 
-        eventMap.put("balance reversed", new AutoBalanceCommand(gyro, drivetrain, true));
-        eventMap.put("balance forward", new AutoBalanceCommand(gyro, drivetrain, false));
+        eventMap.put("balance reversed", new AutoBalanceCommand(gyro, drivetrain));
+        eventMap.put("balance forward", new AutoBalanceCommand(gyro, drivetrain));
 
         eventMap.put("turn right", (new TurnToAngleCommand(gyro, drivetrain, 0)).withTimeout(0.5));
         eventMap.put("bump back", new AutoBumpBackCommand(70, drivetrain));

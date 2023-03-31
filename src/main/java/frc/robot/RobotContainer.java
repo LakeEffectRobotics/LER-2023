@@ -84,15 +84,15 @@ public class RobotContainer {
     
     autoChooser.addOption("flat 2 cube", createPathUtils.createPathCommand("flat 2 cube", 1.7, 1));
     autoChooser.addOption("bump 2 cube turn", createPathUtils.createPathCommand("bump 2 cube turn", 1.5, 1));
-    autoChooser.addOption("balance 1 cube", createPathUtils.createPathCommand("balance 1 cube", 1.5, 1));
-    autoChooser.addOption("balance 2 cube", createPathUtils.createPathCommand("balance 2 cube", 1.7, 1));
+    autoChooser.addOption("balance 1 cube", createPathUtils.createPathCommand("balance 1 cube", 1, 0.5));
+    autoChooser.addOption("balance 2 cube", createPathUtils.createPathCommand("balance 2 cube", 1.5, 1));
 
     autoChooser.addOption("outtake", new AutoShootBackwardsCommand(arm, wrist, claw, targetSelection));
     autoChooser.addOption("outtake mid", new AutoMidCubeBackwardsCommand(arm, wrist, claw));
     autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw, targetSelection));
     autoChooser.addOption("move wrist", Commands.runOnce(() -> wrist.setMotors(0.04)));
     // simple autos
-    autoChooser.addOption("balance 1 cube mobility", createPathUtils.createPathCommand("balance 1 cube mobility", 1, 1));
+    autoChooser.addOption("balance 1 cube mobility", createPathUtils.createPathCommand("balance 1 cube mobility", 1, 0.5));
   
     autoChooser.addOption("bump 1 cube mobility", createPathUtils.createPathCommand("bump 1 cube mobility", 1.65, 1));
     autoChooser.addOption("bump 2 cube simple", createPathUtils.createPathCommand("bump 2 cube simple", 1.65, 1));
