@@ -32,10 +32,11 @@ public class ScoringPositionCommand  extends CommandBase {
         this.arm = arm;
         this.wrist = wrist;
         this.targetSelection = targetSelection;
+        this.auto = false;
     }
 
     /**
-     * for use in tele, with live targetselection
+     * for use in auto using a given node type/height
      * @param arm
      * @param wrist
      * @param targetSelection
@@ -45,6 +46,7 @@ public class ScoringPositionCommand  extends CommandBase {
         this.wrist = wrist;
         this.type = type;
         this.height = height;
+        this.auto = true;
     }
 
     @Override
@@ -58,37 +60,55 @@ public class ScoringPositionCommand  extends CommandBase {
 
         if (type == Type.CONE) {
             wristAngle = Wrist.SCORE_CONE;
-            // move wrist for cone
-        //    wrist.setTargetAngle(Wrist.SCORE_CONE);
 
             // extend telescope based on target selection height
             // raise one or both pistons according to height as mid doesnt need 2
-            if (height == Height.HIGH) {
-                telescopePosition = Arm.HIGH_CONE;
-                arm.raiseBothPistons();
-               // arm.setTelescopePosition(Arm.HIGH_CONE);
-            } else if (height == Height.MID) {
-                telescopePosition = Arm.MID_CONE;
-                  arm.raiseBothPistons();
-                //arm.setTelescopePosition(Arm.MID_CONE);
-            } else if (height == Height.LOW) {
-                telescopePosition = 0;
+            switch(height){
+                case HIGH:
+                    telescopePosition = Arm.HIGH_CONE;
+                    arm.raiseBothPistons();
+                    break;
+                case MID:
+                    telescopePosition = Arm.MID_CONE;
+                    arm.raiseBothPistons();
+                    break;
+                case LOW:
+                    telescopePosition = 0;
+                    break;
             }
         } else if (type == Type.CUBE) {
-            // lower arm for cubes in case its raised for some reason
-            telescopePosition = 0;
-          
-            // move wrist to scoring position accordingly
-            if (height == Height.HIGH) {
-                wristAngle = Wrist.SCORE_CUBE_FORWARD;
-            } else if (height == Height.MID) {
-                wristAngle = Wrist.SCORE_CUBE_FORWARD;
-            } else if (height == Height.LOW) {
-                // transport position is conveniently also good for low cube backwards
-                wristAngle = Wrist.TRANSPORT;
-            } 
-        }
+            // if wrist is ALIVE, dont need to use telescope (? unless it turns out to be useful ? ??)
+            // so, just move wrist
+            if (!wrist.isWristDeadAgain) {
+                telescopePosition = 0;
 
+                switch(height){
+                    case HIGH:
+                        wristAngle = Wrist.SCORE_CUBE_FORWARD;
+                        break;
+                    case MID:
+                        wristAngle = Wrist.SCORE_CUBE_FORWARD;
+                        break;
+                    case LOW:
+                        // transport position is conveniently also good for low cube backwards
+                        wristAngle = Wrist.TRANSPORT;
+                        break;
+                }
+            } else {
+                // if wrist is dead, just move telescope
+                switch(height){
+                    case HIGH:
+                        telescopePosition = Arm.HIGH_CUBE_DEAD;
+                        break;
+                    case MID:
+                        telescopePosition = Arm.MID_CUBE_DEAD;
+                        break;
+                    case LOW:
+                        telescopePosition = 0;
+                        break;
+                }
+            }
+        }
         wrist.setTargetAngle(wristAngle);
     }
 
