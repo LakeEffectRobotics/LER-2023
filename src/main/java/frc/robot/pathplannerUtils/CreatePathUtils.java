@@ -83,6 +83,23 @@ public class CreatePathUtils {
         return autoFollowPathCommand;
     }
 
+        /**
+     * 
+     * @param pathName        Name of the path file (without the ".path")
+     * @param maxVelocity     (m/s)
+     * @param maxAcceleration (m/s)
+     * @return command that automatically follows the path with support for reversal
+     */
+    public Command createPathCommand(String pathName, double maxVelocity, double maxAcceleration, boolean reversed) {
+
+        // Load the path from the .path file created by pathplanner
+        PathPlannerTrajectory path = PathPlanner.loadPath(pathName, new PathConstraints(maxVelocity, maxAcceleration), reversed);
+
+        // Build and return path command
+        Command autoFollowPathCommand = autoBuilder.fullAuto(path);
+        return autoFollowPathCommand;
+    }
+
     /**
      * Create follow path command to move from current bot pose to a target pose
      * * @return

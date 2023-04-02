@@ -30,6 +30,7 @@ import frc.robot.commands.SpinClawCommand.Direction;
 import frc.robot.commands.autonomous.AutoIntakeCommand;
 import frc.robot.commands.autonomous.AutoMidCubeBackwardsCommand;
 import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
+import frc.robot.commands.autonomous.TwoPieceAutoCommand;
 import frc.robot.commands.instant.SetClawCommand;
 import frc.robot.commands.instant.DoubleLoadingCommand;
 import frc.robot.commands.instant.LowerArmCommand;
@@ -100,6 +101,8 @@ public class RobotContainer {
   
     autoChooser.addOption("flat 1 cube mobility", createPathUtils.createPathCommand("flat 1 cube mobility", 1.65, 1));
     autoChooser.addOption("flat 2 cube simple", createPathUtils.createPathCommand("flat 2 cube simple", 1.65, 1));
+
+    autoChooser.addOption("test turning auto", new TwoPieceAutoCommand(createPathUtils, gyro, drivetrain));
 
     Shuffleboard.getTab("my favourite tab")
       .add(autoChooser)
