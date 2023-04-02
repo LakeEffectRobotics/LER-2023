@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -44,6 +45,8 @@ public class Drivetrain extends SubsystemBase {
     private static final double kP = 0.096;
     private static final double kI = 0;
     private static final double kD = 0;
+
+    private final PIDController pid2 = new PIDController(5, 0, 0);
 
     SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.16534, 2.3589, 0.47591);
 
@@ -128,8 +131,9 @@ public class Drivetrain extends SubsystemBase {
      * @param rightSpeed right wheel velocity (m/s)
      */
     public void velocityTankDrive(double leftSpeed, double rightSpeed) {
-        leftLeadController.setVoltage(ff.calculate(leftSpeed));
-        rightLeadController.setVoltage(ff.calculate(rightSpeed));
+        leftLeadController.setVoltage(ff.calculate(leftSpeed) + pid2.calculate(leftEncoder.getVelocity(), leftSpeed));
+        rightLeadController.setVoltage(ff.calculate(rightSpeed) + pid2.calculate(rightEncoder.getVelocity(), rightSpeed));
+
         //leftLeadController.getPIDController().setReference(leftSpeed, ControlType.kVelocity);
         //rightLeadController.getPIDController().setReference(rightSpeed, ControlType.kVelocity);
     }
