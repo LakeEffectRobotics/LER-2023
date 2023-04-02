@@ -96,7 +96,7 @@ public class Wrist extends SubsystemBase {
         targetAngle = getCurrentAngle();
         targetVolts = convertAngleToVolts(targetAngle);
 
-        controller.setSmartCurrentLimit(15, 35, 0);
+        controller.setSmartCurrentLimit(15, 35, 10);
         // TODO: Adjust ramp rate for best performance/jerk tradeoff
         controller.setClosedLoopRampRate(1);
 
