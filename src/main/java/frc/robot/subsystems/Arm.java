@@ -30,9 +30,16 @@ public class Arm extends SubsystemBase {
     public static final double MAX_POSITION = 23;
     public static final double MIN_POSITION = 0;
 
-    // PLACEHOLDERS for now
     public static final double HIGH_CONE = 20;
     public static final double MID_CONE = 9;
+
+    // FOR WRIST DEAD MODE
+    public static final double HIGH_CUBE_DEAD = 21;
+    public static final double MID_CUBE_DEAD = 15;
+
+    // TODO: calibrate value, then see if using telescope for all mid/high cubes is effective
+    public static final double ALL_CUBE = 15;
+
     public static final double DOUBLE_LOADING = 23;
 
     public Arm(CANSparkMax controller1, CANSparkMax controller2, DoubleSolenoid leftSolenoid, DoubleSolenoid rightSolenoid) {
