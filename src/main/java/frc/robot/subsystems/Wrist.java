@@ -2,11 +2,13 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxAnalogSensor;
-import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -58,6 +60,19 @@ public class Wrist extends SubsystemBase {
 
     public boolean isWristDeadAgain = false;
 
+    private ShuffleboardTab tab = Shuffleboard.getTab("my favourite tab");
+    private GenericEntry wristDeadShuffle = tab
+        .add("wrist dead?", "not yet!")
+        .withPosition(6, 0)
+        .getEntry();
+
+    private GenericEntry targetAngleShuffle;
+    private GenericEntry targetPotShuffle;
+
+    private GenericEntry currentAngleShuffle;
+    private GenericEntry currentPotShuffle;
+    
+
     public Wrist(CANSparkMax controller, Arm arm) {
         wristController = controller;
 
@@ -85,7 +100,25 @@ public class Wrist extends SubsystemBase {
         // TODO: Adjust ramp rate for best performance/jerk tradeoff
         controller.setClosedLoopRampRate(1);
 
-        SmartDashboard.putString("wrist dead?", "not yet!");
+        targetAngleShuffle = tab
+            .add("wrist target angle", targetAngle)
+            .withPosition(3, 0)
+            .getEntry();
+
+        targetPotShuffle = tab
+            .add("wrist target pot volts", targetVolts)
+            .withPosition(4, 0)
+            .getEntry();
+
+        currentAngleShuffle = tab
+            .add("wrist current angle", getCurrentAngle())
+            .withPosition(3, 1)
+            .getEntry();
+
+        currentPotShuffle = tab
+            .add("wrist current pot volts", pot.getPosition())
+            .withPosition(4, 1)
+            .getEntry();
     }
 
     /**
@@ -142,10 +175,10 @@ public class Wrist extends SubsystemBase {
         isWristDeadAgain = !isWristDeadAgain;
         if (isWristDeadAgain) {
             wristController.setIdleMode(IdleMode.kCoast);
-            SmartDashboard.putString("wrist dead?", "yes :(");
+            wristDeadShuffle.setString("yes :(");
         } else {
             wristController.setIdleMode(IdleMode.kBrake);
-            SmartDashboard.putString("wrist dead?", "not yet!");
+            wristDeadShuffle.setString("not yet!");
         }
     }
 
@@ -155,11 +188,11 @@ public class Wrist extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("wrist target deg horizontal", targetAngle);
-        SmartDashboard.putNumber("wrist target pot volts", targetVolts);
+        currentAngleShuffle.setDouble(getCurrentAngle());
+        currentPotShuffle.setDouble(pot.getPosition());
 
-        SmartDashboard.putNumber("wrist current deg horizontal", getCurrentAngle());
-        SmartDashboard.putNumber("wrist current pot volts", pot.getPosition());
+        targetAngleShuffle.setDouble(targetAngle);
+        targetPotShuffle.setDouble(targetVolts);
 
         // if wrist is dead kill motor just in case
         if (isWristDeadAgain){

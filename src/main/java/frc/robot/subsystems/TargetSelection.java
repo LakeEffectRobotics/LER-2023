@@ -169,8 +169,9 @@ public class TargetSelection extends SubsystemBase {
             // each time a node is created, generate a shuffleboard boolean box for it with given col/row, named after the type/height
             // cant have duplicate names, so must add column number after it for uniqueness
             entry = Shuffleboard
-                .getTab("target")
+                .getTab("my favourite tab")
                 .getLayout("target", BuiltInLayouts.kGrid)
+                .withSize(2, 2)
                 .add(height.toString() + " " + type.toString() + " " + column, false)
                 .withPosition(column, row)
                 .getEntry();
