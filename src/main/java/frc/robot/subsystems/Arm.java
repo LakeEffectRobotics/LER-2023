@@ -4,7 +4,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -34,6 +37,23 @@ public class Arm extends SubsystemBase {
     public static final double HIGH_CONE = 20;
     public static final double MID_CONE = 9;
     public static final double DOUBLE_LOADING = 23;
+
+    private ShuffleboardTab tab = Shuffleboard.getTab("my favourite tab");
+
+    private GenericEntry armPositionShuffle = tab
+        .add("arm position", 0)
+        .withPosition(0, 2)
+        .getEntry();
+
+    private GenericEntry armTargetShuffle = tab
+        .add("arm target", 0)
+        .withPosition(1, 2)
+        .getEntry();
+
+    private GenericEntry armUpShuffle = tab
+        .add("arm up?", "YES!")
+        .withPosition(6, 1)
+        .getEntry();
 
     public Arm(CANSparkMax controller1, CANSparkMax controller2, DoubleSolenoid leftSolenoid, DoubleSolenoid rightSolenoid) {
         this.telescopeController1 = controller1;
@@ -83,7 +103,8 @@ public class Arm extends SubsystemBase {
 
         leftSolenoid.set(ArmPosition.UP.value);
         rightSolenoid.set(ArmPosition.UP.value);
-        SmartDashboard.putString("arm up?", "YES!");
+
+        armUpShuffle.setString("YES!");
     }
 
     public void raiseOnePiston() {
@@ -93,7 +114,8 @@ public class Arm extends SubsystemBase {
         } else {
             rightSolenoid.set(ArmPosition.UP.value); 
         }
-        SmartDashboard.putString("arm up?", "YES!");
+        
+        armUpShuffle.setString("YES!");
         pistonsCurrentPosition = ArmPosition.UP;
     }
 
@@ -105,7 +127,7 @@ public class Arm extends SubsystemBase {
 
         leftSolenoid.set(ArmPosition.DOWN.value);
         rightSolenoid.set(ArmPosition.DOWN.value);
-        SmartDashboard.putString("arm up?", "NO!");
+        armUpShuffle.setString("NO!");
     }
 
     /**
@@ -133,7 +155,9 @@ public class Arm extends SubsystemBase {
         } else if (position < MIN_POSITION) {
             telescopeTargetPosition = MIN_POSITION;
         }
-        SmartDashboard.putNumber("arm target position", telescopeTargetPosition);
+
+        armPositionShuffle.setDouble(telescopeTargetPosition);
+        // SmartDashboard.putNumber("arm target position", telescopeTargetPosition);
     }
 
     public double getTelescopePosition() {
@@ -156,6 +180,7 @@ public class Arm extends SubsystemBase {
             telescopeController1.getPIDController().setReference(telescopeTargetPosition, ControlType.kPosition);
         }
 
-        SmartDashboard.putNumber("arm position", telescopeController1.getEncoder().getPosition());
+        armPositionShuffle.setDouble(telescopeController1.getEncoder().getPosition());
+       // SmartDashboard.putNumber("arm position", telescopeController1.getEncoder().getPosition());
     }
 }

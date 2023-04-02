@@ -9,6 +9,7 @@ import java.util.Map;
 import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -100,7 +101,12 @@ public class RobotContainer {
     autoChooser.addOption("flat 1 cube mobility", createPathUtils.createPathCommand("flat 1 cube mobility", 1.65, 1));
     autoChooser.addOption("flat 2 cube simple", createPathUtils.createPathCommand("flat 2 cube simple", 1.65, 1));
 
-    SmartDashboard.putData(autoChooser);
+    Shuffleboard.getTab("my favourite tab")
+      .add(autoChooser)
+      .withPosition(3, 3)
+      .withSize(2, 1);
+
+    //SmartDashboard.putData(autoChooser);
     configureBindings();
 
     lights.setBoth(Colour.PURPLE);
