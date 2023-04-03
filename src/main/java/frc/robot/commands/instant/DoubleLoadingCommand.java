@@ -21,7 +21,7 @@ public class DoubleLoadingCommand extends SequentialCommandGroup {
     double wristAngle;
 
     public DoubleLoadingCommand(Wrist wrist, Arm arm, TargetSelection targetSelection) {
-        // if targetting double substation, set telescope/wrist targets accordingly
+        // if targeting double substation, set telescope/wrist targets accordingly
         // otherwise set for single station
             telescopePosition = Arm.DOUBLE_LOADING;
             wristAngle = Wrist.DOUBLE_LOADING;
