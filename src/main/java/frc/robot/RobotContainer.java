@@ -158,7 +158,7 @@ public class RobotContainer {
     OI.scorePositionButton.onTrue(new ScoringPositionCommand(arm, wrist, targetSelection));
     OI.shootScoreButton.onTrue(new ShootScoreCommand(targetSelection, claw));
 
-    OI.dicoButton.whileTrue(new DiscoCommand(lights));
+    OI.discoButton.whileTrue(new DiscoCommand(lights));
 
     OI.upSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionUp()));
     OI.rightSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionRight()));
