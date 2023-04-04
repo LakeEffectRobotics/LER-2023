@@ -33,7 +33,7 @@ public class Arm extends SubsystemBase {
     public static final double MAX_POSITION = 23;
     public static final double MIN_POSITION = 0;
 
-    public static final double HIGH_CONE = 18.7;
+    public static final double HIGH_CONE = 20;
     public static final double MID_CONE = 8.2;
 
     // FOR WRIST DEAD MODE

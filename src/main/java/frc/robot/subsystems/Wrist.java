@@ -54,7 +54,7 @@ public class Wrist extends SubsystemBase {
     // lower than actually needed so P drives it down faster
     public static final double GROUND = -70;
     // Placeholder for testing, needs bettter calibration
-    public static final double SCORE_CONE = 0;
+    public static final double SCORE_CONE = -15;
     public static final double SCORE_CUBE_BACKWARDS = 100;
     public static final double SCORE_CUBE_FORWARD = 14;
 
