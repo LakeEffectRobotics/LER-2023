@@ -58,7 +58,7 @@ public class TurnToAngleCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if (Math.abs(heading_error) < 3) {
+        if (Math.abs(heading_error) < 20) {
             return true;
         }
         return false;

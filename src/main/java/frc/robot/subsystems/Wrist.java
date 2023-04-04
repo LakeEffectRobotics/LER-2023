@@ -47,7 +47,7 @@ public class Wrist extends SubsystemBase {
     private double targetAngle;
     private double targetVolts;
 
-    public static final double TRANSPORT = 100;
+    public static final double TRANSPORT = 120;
     //PLACEHOLDER VALUE
     public static final double SINGLE_LOADING = -12;
     public static final double DOUBLE_LOADING = -60;
