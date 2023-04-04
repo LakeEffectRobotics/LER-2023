@@ -25,10 +25,10 @@ public class AutoShootForwardsCommand extends SequentialCommandGroup {
         new WaitCommand(1),
         
         // Spin the claw to score high cube
-        new ShootScoreCommand(Height.HIGH , claw),
+        new ShootScoreCommand(Height.HIGH , claw)//,
         
         // Set arm and wrist to transport position
-        new SetWristAngleCommand(wrist, Wrist.TRANSPORT)
+       // new SetWristAngleCommand(wrist, Wrist.TRANSPORT)
       );
     }
 }

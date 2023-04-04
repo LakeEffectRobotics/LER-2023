@@ -103,6 +103,7 @@ public class RobotContainer {
     autoChooser.addOption("flat 2 cube simple", createPathUtils.createPathCommand("flat 2 cube simple", 1.65, 1));
 
     autoChooser.addOption("test turning auto", new TwoPieceAutoCommand(createPathUtils, gyro, drivetrain));
+    autoChooser.addOption("test 2 pice auto", createPathUtils.createPathCommand("flat 1 cone 1 cube", 1, 1, true));
 
     Shuffleboard.getTab("my favourite tab")
       .add(autoChooser)
@@ -116,7 +117,7 @@ public class RobotContainer {
 
    // CameraServer.startAutomaticCapture();
 
-    //PathPlannerServer.startServer(5811);
+    PathPlannerServer.startServer(5811);
   }
 
   // Create button bindings
