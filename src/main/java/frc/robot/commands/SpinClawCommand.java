@@ -2,6 +2,9 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.TargetSelection;
@@ -94,6 +97,13 @@ public class SpinClawCommand extends CommandBase {
                     claw.setPosition(Position.CLOSED);
                 }
             }
+        }
+
+        // show on shuffleboard if limit switch pressed
+        if (claw.GetLimitPressed()) {
+            claw.limitswitchShuffle.setBoolean(true);
+        } else {
+            claw.limitswitchShuffle.setBoolean(false);
         }
 
     }
