@@ -104,8 +104,10 @@ public class RobotContainer {
     autoChooser.addOption("flat 2 cube simple", createPathUtils.createPathCommand("flat 2 cube simple", 1.65, 1));
 
     autoChooser.addOption("test turning auto", new TwoPieceAutoCommand(createPathUtils, gyro, drivetrain));
-    autoChooser.addOption("test 2 pice auto", createPathUtils.createPathCommand("flat 1 cone 1 cube", 1, 1, true));
 
+    autoChooser.addOption("test hi", (createPathUtils.createPathCommand("hi pt1", 1, 1, true).andThen(new TurnToAngleCommand(gyro, drivetrain, 180)).andThen(createPathUtils.createPathCommand("hi pt2", 1, 1, false))));
+    autoChooser.addOption("test 2 pice auto", createPathUtils.createPathCommand("flat 1 cone 1 cube", 1, 1, true));
+    autoChooser.addOption("HI", new TwoPieceAutoCommand(createPathUtils, gyro, drivetrain));
     autoChooser.addOption("score cone", new AutoScoreConeCommand(arm, wrist, claw));
     
     Shuffleboard.getTab("my favourite tab")

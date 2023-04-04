@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    //robotContainer.gyro.reset();
+    robotContainer.gyro.reset();
     robotContainer.limelight.useApriltagPipeline();
 
     m_autonomousCommand = robotContainer.getAutonomousCommand();

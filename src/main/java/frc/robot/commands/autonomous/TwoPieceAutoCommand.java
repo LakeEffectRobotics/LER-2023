@@ -9,9 +9,9 @@ import frc.robot.subsystems.Gyro;
 public class TwoPieceAutoCommand extends SequentialCommandGroup {
     public TwoPieceAutoCommand(CreatePathUtils pathUtils, Gyro gyro, Drivetrain drivetrain) {
         addCommands(
-            pathUtils.createPathCommand("test 1", 1, 1, true),
+            pathUtils.createPathCommand("hi pt1", 1, 1, true),
             new TurnToAngleCommand(gyro, drivetrain, 180).withTimeout(1),
-            pathUtils.createPathCommand("test 2", 1, 1)
+            pathUtils.createPathCommand("hi pt2", 1, 1)
         );
     }
 }

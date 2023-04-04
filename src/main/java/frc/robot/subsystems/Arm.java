@@ -186,7 +186,7 @@ public class Arm extends SubsystemBase {
         } else {
             telescopeController1.getPIDController().setReference(telescopeTargetPosition, ControlType.kPosition);
         }
-
+        armTargetShuffle.setDouble(telescopeTargetPosition);
         armPositionShuffle.setDouble(telescopeController1.getEncoder().getPosition());
        // SmartDashboard.putNumber("arm position", telescopeController1.getEncoder().getPosition());
     }
