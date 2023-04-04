@@ -16,7 +16,7 @@ public class AutoScoreConeCommand extends SequentialCommandGroup {
         addCommands(
             new ScoringPositionCommand(arm, wrist, Height.HIGH, Type.CONE),
             
-            new WaitCommand(1),
+            new WaitCommand(2),
 
             new SetClawCommand(claw, Position.OPEN)
         );
