@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.ScoringPositionCommand;
 import frc.robot.commands.instant.SetClawCommand;
+import frc.robot.commands.instant.TransportPositionCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Wrist;
@@ -16,9 +17,12 @@ public class AutoScoreConeCommand extends SequentialCommandGroup {
         addCommands(
             new ScoringPositionCommand(arm, wrist, Height.HIGH, Type.CONE),
             
-            new WaitCommand(1),
+            new WaitCommand(0.5),
 
-            new SetClawCommand(claw, Position.OPEN)
+            new SetClawCommand(claw, Position.OPEN),
+            new WaitCommand(0.5),
+
+            new TransportPositionCommand(arm, wrist)
         );
     }
 }
