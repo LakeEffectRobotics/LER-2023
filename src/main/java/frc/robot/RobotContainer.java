@@ -29,6 +29,7 @@ import frc.robot.commands.TurnToAngleCommand;
 import frc.robot.commands.SpinClawCommand.Direction;
 import frc.robot.commands.autonomous.AutoIntakeCommand;
 import frc.robot.commands.autonomous.AutoMidCubeBackwardsCommand;
+import frc.robot.commands.autonomous.AutoScoreConeCommand;
 import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
 import frc.robot.commands.instant.SetClawCommand;
 import frc.robot.commands.instant.DoubleLoadingCommand;
@@ -101,6 +102,8 @@ public class RobotContainer {
     autoChooser.addOption("flat 1 cube mobility", createPathUtils.createPathCommand("flat 1 cube mobility", 1.65, 1));
     autoChooser.addOption("flat 2 cube simple", createPathUtils.createPathCommand("flat 2 cube simple", 1.65, 1));
 
+    autoChooser.addOption("score cone", new AutoScoreConeCommand(arm, wrist, claw));
+    
     Shuffleboard.getTab("my favourite tab")
       .add(autoChooser)
       .withPosition(3, 3)
