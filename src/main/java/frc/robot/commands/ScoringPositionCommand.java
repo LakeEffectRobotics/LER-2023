@@ -18,7 +18,7 @@ public class ScoringPositionCommand  extends CommandBase {
     double wristAngle;
     double telescopePosition;
     double startTime;
-    double timeout = 700;
+    double timeout = 2000;
     Type type;
     Height height;
 
