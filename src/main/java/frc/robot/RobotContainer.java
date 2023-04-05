@@ -105,7 +105,7 @@ public class RobotContainer {
     autoChooser.addOption("score cone", new AutoScoreConeCommand(arm, wrist, claw));
     
     // CONES!!
-    autoChooser.addOption("flat 1 cone 1 cube", createPathUtils.createPathCommand("flat 1 cone 1 cube", 1.7, 1));
+    autoChooser.addOption("flat 1 cone 1 cube", createPathUtils.createPathCommand("flat 1 cone 1 cube", 1.4, 1, true));
 
     Shuffleboard.getTab("my favourite tab")
       .add(autoChooser)
