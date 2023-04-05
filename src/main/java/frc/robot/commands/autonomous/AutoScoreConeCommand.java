@@ -17,10 +17,10 @@ public class AutoScoreConeCommand extends SequentialCommandGroup {
         addCommands(
             new ScoringPositionCommand(arm, wrist, Height.HIGH, Type.CONE),
             
-            new WaitCommand(0.5),
+            new WaitCommand(1.7),
 
             new SetClawCommand(claw, Position.OPEN),
-            new WaitCommand(0.5),
+            new WaitCommand(0.3),
 
             new TransportPositionCommand(arm, wrist)
         );
