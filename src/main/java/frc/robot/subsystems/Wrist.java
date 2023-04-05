@@ -25,8 +25,8 @@ public class Wrist extends SubsystemBase {
     private static final double kP = 0.7;
     private static final double kI = 0.0000;
 
-    private static final double kD = 0.1;
-    private static final double MAX_OUTPUT = 0.26;
+    private static final double kD = 0.5;
+    private static final double MAX_OUTPUT = 0.5;
     private static final double MIN_OUTPUT = -0.2;
 
     private static final double MIN_ANGLE = -70;
@@ -47,16 +47,19 @@ public class Wrist extends SubsystemBase {
     private double targetAngle;
     private double targetVolts;
 
-    public static final double TRANSPORT = 100;
+    public static final double TRANSPORT = 120;
     //PLACEHOLDER VALUE
     public static final double SINGLE_LOADING = -12;
     public static final double DOUBLE_LOADING = -60;
     // lower than actually needed so P drives it down faster
     public static final double GROUND = -70;
     // Placeholder for testing, needs bettter calibration
-    public static final double SCORE_CONE = -15;
-    public static final double SCORE_CUBE_BACKWARDS = 100;
-    public static final double SCORE_CUBE_FORWARD = 14;
+    public static final double SCORE_HIGH_CONE = 0;
+    public static final double SCORE_MID_CONE = -10;
+
+    public static final double SCORE_CUBE_BACKWARDS = 100;    
+    public static final double SCORE_MID_CUBE_FORWARD = -25;
+    public static final double SCORE_HIGH_CUBE_FORWARD = 20;
 
     public boolean isWristDeadAgain = false;
 
@@ -96,7 +99,7 @@ public class Wrist extends SubsystemBase {
         targetAngle = getCurrentAngle();
         targetVolts = convertAngleToVolts(targetAngle);
 
-        controller.setSmartCurrentLimit(15, 35, 10);
+        controller.setSmartCurrentLimit(24, 40, 5);
         // TODO: Adjust ramp rate for best performance/jerk tradeoff
         controller.setClosedLoopRampRate(1);
 
@@ -188,6 +191,11 @@ public class Wrist extends SubsystemBase {
 
     @Override
     public void periodic() {
+      //  SmartDashboard.putNumber("Current", wristController.getOutputCurrent());
+        //SmartDashboard.putNumber("Output", wristController.getAppliedOutput());
+       // SmartDashboard.putNumber("Position", getCurrentAngle());
+        //SmartDashboard.putNumber("Target", targetAngle);
+
         currentAngleShuffle.setDouble(getCurrentAngle());
         currentPotShuffle.setDouble(pot.getPosition());
 
@@ -197,25 +205,35 @@ public class Wrist extends SubsystemBase {
         // if wrist is dead kill motor just in case
         if (isWristDeadAgain){
             wristController.set(0);
-        } else if (arm.getCurrentAngle() > 10 && getCurrentAngle() > 90)  {
+        } else if (arm.getCurrentAngle() > 10 && getCurrentAngle() > 90 && targetAngle < 150)  {
+            //System.out.println("1");
             // if its past vertical, spring pulls against so make AFF a tad more downward to help
             // since arm is up, it needs even more help
-            pidController.setReference(targetVolts, ControlType.kPosition, 0, getArbitraryFeedforward() - 1.3);
+            pidController.setOutputRange(-0.9, MAX_OUTPUT, 0);
+            pidController.setReference(targetVolts, ControlType.kPosition, 0, getArbitraryFeedforward() - 0.5);
         } else if (getCurrentAngle() > 90 && targetAngle > 100) {
+            //System.out.println("12");
+
             // also stop pid if its far back enought to fall onto hardstop alone
             // try adding back pid cuz slam
             wristController.setVoltage(getArbitraryFeedforward());
-        } else if (getCurrentAngle() > 90 && targetAngle < -40) {
-            // if its past vertical, spring pulls against so make AFF a tad more downward to help
+        } else if (getCurrentAngle() > 90 && targetAngle < 100) {
+
+            // if its past vertical and we want to go down, spring pulls against so make AFF a tad more downward to help
             pidController.setReference(targetVolts, ControlType.kPosition, 0, getArbitraryFeedforward() - 0.5);
         }  else if (getCurrentAngle() < -55 && targetAngle < -50) {
+           // System.out.println("14");
+
         // Let gravity lower arm to ground instead of slamming:
         // Stop pidcontroller if target angle is low, and arm is low enough to fall naturally
             wristController.setVoltage(0);
         }  else if (getCurrentAngle() < 90 && targetAngle < -40) {
+           // System.out.println("16");
+
             // no ff on the way down
-            pidController.setReference(targetVolts, ControlType.kPosition, 0);
+            pidController.setReference(targetVolts, ControlType.kPosition, 0, getArbitraryFeedforward());
         } else {
+           // System.out.println("15");
             // Otherwise, continuously set wrist pid to target angle (must be continuous to update feedforward as angle changes)
             pidController.setReference(targetVolts, ControlType.kPosition, 0, getArbitraryFeedforward());
         }

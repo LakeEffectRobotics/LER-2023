@@ -16,7 +16,7 @@ public class AutoShootForwardsCommand extends SequentialCommandGroup {
     public AutoShootForwardsCommand(Arm arm, Wrist wrist, Claw claw) {
       addCommands(
         // Raise arm and set wrist to correct angle
-        new SetWristAngleCommand(wrist, Wrist.SCORE_CUBE_FORWARD),
+        new SetWristAngleCommand(wrist, Wrist.SCORE_HIGH_CUBE_FORWARD),
         
         // Wait 1 second for arm + wrist to be in position
         new WaitCommand(1),

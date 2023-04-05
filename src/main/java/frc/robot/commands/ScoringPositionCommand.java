@@ -61,7 +61,7 @@ public class ScoringPositionCommand  extends CommandBase {
         }
 
         if (type == Type.CONE) {
-            wristAngle = Wrist.SCORE_CONE;
+            wristAngle = Wrist.SCORE_HIGH_CONE;
 
             // extend telescope based on target selection height
             // raise one or both pistons according to height as mid doesnt need 2
@@ -82,17 +82,20 @@ public class ScoringPositionCommand  extends CommandBase {
             // if wrist is ALIVE, dont need to use telescope (? unless it turns out to be useful ? ??)
             // so, just move wrist
             if (!wrist.isWristDeadAgain) {
-                telescopePosition = 0;
-
                 switch(height){
                     case HIGH:
-                        wristAngle = Wrist.SCORE_CUBE_FORWARD;
+                        telescopePosition = Arm.ALL_CUBE;
+                        wristAngle = Wrist.SCORE_HIGH_CUBE_FORWARD;
+                        arm.raiseBothPistons();
                         break;
                     case MID:
-                        wristAngle = Wrist.SCORE_CUBE_FORWARD;
+                        telescopePosition = Arm.ALL_CUBE;
+                        wristAngle = Wrist.SCORE_MID_CUBE_FORWARD;
+                        arm.raiseBothPistons();
                         break;
                     case LOW:
                         // transport position is conveniently also good for low cube backwards
+                        telescopePosition = 0;
                         wristAngle = Wrist.TRANSPORT;
                         break;
                 }
@@ -101,9 +104,11 @@ public class ScoringPositionCommand  extends CommandBase {
                 switch(height){
                     case HIGH:
                         telescopePosition = Arm.HIGH_CUBE_DEAD;
+                        arm.raiseBothPistons();
                         break;
                     case MID:
                         telescopePosition = Arm.MID_CUBE_DEAD;
+                        arm.raiseBothPistons();
                         break;
                     case LOW:
                         telescopePosition = 0;
@@ -112,6 +117,12 @@ public class ScoringPositionCommand  extends CommandBase {
             }
         }
         wrist.setTargetAngle(wristAngle);
+
+        // help wrist get to position when it starts way back with arm up
+        // probably temporary until motor alives more?
+        if (auto) {
+            wrist.setMotors(-1);
+        }
     }
 
     @Override
@@ -120,7 +131,7 @@ public class ScoringPositionCommand  extends CommandBase {
         // otherwise keep waiting until wrist is close or timeout passes
         // OR, if timeout passes, continue even without wrist in position because something gone wrong
         if (!wrist.isWristDeadAgain) {
-            if (Math.abs(wrist.getCurrentAngle() - wristAngle) < 10  || System.currentTimeMillis() - startTime < timeout) {
+            if (Math.abs(wrist.getCurrentAngle() - wristAngle) < 10  || System.currentTimeMillis() - startTime > timeout) {
                 arm.setTelescopePosition(telescopePosition);
             }
         } else {
@@ -133,7 +144,7 @@ public class ScoringPositionCommand  extends CommandBase {
         // if telescope and wrist are pretty much in position, end command
         // or if timeout passes, end command even if nothing is in position because something gone wrong!
         if (!wrist.isWristDeadAgain) {
-            if ((Math.abs(arm.getTelescopePosition() - telescopePosition) < 3 && Math.abs(wrist.getCurrentAngle() - wristAngle) < 10)  || System.currentTimeMillis() - startTime < timeout) {
+            if ((Math.abs(arm.getTelescopePosition() - telescopePosition) < 3 && Math.abs(wrist.getCurrentAngle() - wristAngle) < 10)  || System.currentTimeMillis() - startTime > timeout) {
                 return true;
             }
         } else {
