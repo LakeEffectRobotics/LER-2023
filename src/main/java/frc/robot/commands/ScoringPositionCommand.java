@@ -29,6 +29,7 @@ public class ScoringPositionCommand  extends CommandBase {
      * @param targetSelection
      */
     public ScoringPositionCommand(Arm arm, Wrist wrist, TargetSelection targetSelection){
+        addRequirements(arm);
         this.arm = arm;
         this.wrist = wrist;
         this.targetSelection = targetSelection;
@@ -42,6 +43,7 @@ public class ScoringPositionCommand  extends CommandBase {
      * @param targetSelection
      */
     public ScoringPositionCommand(Arm arm, Wrist wrist, Height height, Type type){
+        addRequirements(arm);
         this.arm = arm;
         this.wrist = wrist;
         this.type = type;

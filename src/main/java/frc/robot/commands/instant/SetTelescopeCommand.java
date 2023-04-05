@@ -13,6 +13,7 @@ public class SetTelescopeCommand extends CommandBase {
      * @param position extension distance (0, 22)
      */
     public SetTelescopeCommand(Arm arm, double position) {
+        addRequirements(arm);
         this.arm = arm;
         this.position = position;
     }
