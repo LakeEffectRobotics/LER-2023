@@ -75,7 +75,16 @@ public class Claw extends SubsystemBase {
     public Position getPosition() {
         return currentPosition;
     }
-
+    @Override
+    public void periodic() {
+        // show on shuffleboard if limit switch pressed
+        if (GetLimitPressed()) {
+            limitswitchShuffle.setBoolean(true);
+        } else {
+            limitswitchShuffle.setBoolean(false);
+        }
+    } 
+    
     public boolean GetLimitPressed() {
         return clawLimitSwitch.isPressed();
     }

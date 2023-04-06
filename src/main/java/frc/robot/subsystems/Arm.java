@@ -34,7 +34,7 @@ public class Arm extends SubsystemBase {
     public static final double MIN_POSITION = 0;
 
     public static final double HIGH_CONE = 20;
-    public static final double MID_CONE = 8.2;
+    public static final double MID_CONE = 9;
 
     // FOR WRIST DEAD MODE
     public static final double HIGH_CUBE_DEAD = 21;
@@ -163,7 +163,7 @@ public class Arm extends SubsystemBase {
             telescopeTargetPosition = MIN_POSITION;
         }
 
-        armPositionShuffle.setDouble(telescopeTargetPosition);
+        armTargetShuffle.setDouble(telescopeTargetPosition);
         // SmartDashboard.putNumber("arm target position", telescopeTargetPosition);
     }
 
@@ -180,7 +180,7 @@ public class Arm extends SubsystemBase {
         if (telescopeController1.getEncoder().getPosition() < 1 && telescopeTargetPosition < 1) {
             // near bottom, put tiny bit of motor to avoid unspooling string
             telescopeController1.set(0.003);
-        } else if (telescopeTargetPosition <= 0 ) {
+        } else if (telescopeTargetPosition <= 0) {
             // let arm gravity drop to transport position
             telescopeController1.set(0);
         } else {

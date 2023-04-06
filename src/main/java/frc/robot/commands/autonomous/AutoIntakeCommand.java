@@ -27,7 +27,7 @@ public class AutoIntakeCommand extends SequentialCommandGroup {
   
   private static final double CLAW_SPEED = 0.8;
 
-  private static final double TIMEOUT = 8;
+  private static final double TIMEOUT = 5;
 
   /** Creates a new AutoIntakeCommand. */
   public AutoIntakeCommand(Drivetrain drivetrain, Arm arm, Wrist wrist, Claw claw, TargetSelection targetSelection) {

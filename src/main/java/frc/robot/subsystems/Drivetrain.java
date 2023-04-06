@@ -46,7 +46,7 @@ public class Drivetrain extends SubsystemBase {
     private static final double kI = 0;
     private static final double kD = 0;
 
-    private final PIDController pid2 = new PIDController(10, 0, 0);
+    private final PIDController pid2 = new PIDController(2, 0, 0);
 
     SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.16534, 2.3589, 0.47591);
 

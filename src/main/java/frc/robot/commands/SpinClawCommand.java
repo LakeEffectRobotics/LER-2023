@@ -98,14 +98,6 @@ public class SpinClawCommand extends CommandBase {
                 }
             }
         }
-
-        // show on shuffleboard if limit switch pressed
-        if (claw.GetLimitPressed()) {
-            claw.limitswitchShuffle.setBoolean(true);
-        } else {
-            claw.limitswitchShuffle.setBoolean(false);
-        }
-
     }
 
     @Override

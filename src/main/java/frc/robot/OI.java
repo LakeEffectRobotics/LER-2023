@@ -140,7 +140,7 @@ public class OI {
 
     private static double processDriveInput(double raw) {
         // TODO: Configure input processing to suit your liking
-        if (Math.abs(raw) < 0.05) {
+        if (Math.abs(raw) < 0.1) {
             raw = 0;
         }
         

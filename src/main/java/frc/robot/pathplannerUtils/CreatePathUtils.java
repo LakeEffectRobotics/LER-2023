@@ -16,7 +16,9 @@ import frc.robot.commands.autonomous.AutoBalanceCommand;
 import frc.robot.commands.autonomous.AutoBumpBackCommand;
 import frc.robot.commands.autonomous.AutoIntakeCommand;
 import frc.robot.commands.autonomous.AutoMidCubeBackwardsCommand;
+import frc.robot.commands.autonomous.AutoScoreConeCommand;
 import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
+import frc.robot.commands.autonomous.AutoShootForwardsCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
@@ -64,6 +66,9 @@ public class CreatePathUtils {
 
         eventMap.put("turn right", (new TurnToAngleCommand(gyro, drivetrain, 0)).withTimeout(0.5));
         eventMap.put("bump back", new AutoBumpBackCommand(70, drivetrain));
+
+        eventMap.put("score cone", new AutoScoreConeCommand(arm, wrist, claw));
+        eventMap.put("outtake cube forward", new AutoShootForwardsCommand(arm, wrist, claw));
     }
 
     /**
@@ -83,6 +88,25 @@ public class CreatePathUtils {
         return autoFollowPathCommand;
     }
 
+    
+    /**
+     * 
+     * @param pathName        Name of the path file (without the ".path")
+     * @param maxVelocity     (m/s)
+     * @param maxAcceleration (m/s)
+     * @return command that automatically follows the path
+     */
+    public Command createPathCommand(String pathName, double maxVelocity, double maxAcceleration, boolean reversed) {
+
+        // Load the path from the .path file created by pathplanner
+        PathPlannerTrajectory path = PathPlanner.loadPath(pathName, new PathConstraints(maxVelocity, maxAcceleration), reversed);
+
+        // Build and return path command
+        Command autoFollowPathCommand = autoBuilder.fullAuto(path);
+        return autoFollowPathCommand;
+    }
+
+    
     /**
      * Create follow path command to move from current bot pose to a target pose
      * * @return

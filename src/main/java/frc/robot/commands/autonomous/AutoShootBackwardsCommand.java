@@ -13,6 +13,7 @@ import frc.robot.commands.SpinClawCommand.Direction;
 import frc.robot.commands.instant.LowerArmCommand;
 import frc.robot.commands.instant.RaiseArmCommand;
 import frc.robot.commands.instant.SetWristAngleCommand;
+import frc.robot.commands.instant.TransportPositionCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.TargetSelection;
@@ -25,16 +26,16 @@ import frc.robot.subsystems.TargetSelection.Type;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoShootBackwardsCommand extends SequentialCommandGroup {
   
-  private static final double CLAW_SPEED = 0.8;
+  // AIMING FOR MID CUBE FOR NOW
+  private static final double CLAW_SPEED = 0.45;
   
   /** Creates a new AutoShootBackwardsCommand. */
   public AutoShootBackwardsCommand(Arm arm, Wrist wrist, Claw claw, TargetSelection targetSelection) {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       // Raise arm and set wrist to correct angle
       new RaiseArmCommand(arm, true),
-    //  new LowerArmCommand(arm),
+      // help wrist move to position?
+      Commands.runOnce(() -> wrist.setMotors(-0.5)),
 
       new SetWristAngleCommand(wrist, Wrist.SCORE_CUBE_BACKWARDS),
       
@@ -45,8 +46,7 @@ public class AutoShootBackwardsCommand extends SequentialCommandGroup {
       new SpinClawCommand(claw, Direction.OUT, () -> CLAW_SPEED, Type.CUBE).withTimeout(0.2),
       
       // Set arm and wrist to transport position
-      new SetWristAngleCommand(wrist, Wrist.TRANSPORT),
-      new LowerArmCommand(arm)
+      new TransportPositionCommand(arm, wrist)
     );
   }
 }
