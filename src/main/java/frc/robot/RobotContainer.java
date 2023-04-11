@@ -193,6 +193,6 @@ public class RobotContainer {
 
   // Set autonomous command from dashboard choice
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();//.andThen(new DiscoCommand(lights));
+    return autoChooser.getSelected().andThen(new DiscoCommand(lights));
   }
 }
