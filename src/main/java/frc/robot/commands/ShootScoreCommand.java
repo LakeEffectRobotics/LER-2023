@@ -49,9 +49,9 @@ public class ShootScoreCommand extends CommandBase {
 
         // set for score mid/high cube forwards
         if (height == Height.HIGH) {
-            speed = 0.75;
+            speed = 0.35;
         } else if (height == Height.MID) {
-            speed = 0.50;
+            speed = 0.25;
         } else if (height == Height.LOW) {
             // set for scoring low cube BACKWARDS
             speed = 0.35;

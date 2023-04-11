@@ -42,6 +42,12 @@ public class Robot extends TimedRobot {
     robotContainer.gyro.reset();
     robotContainer.limelight.useApriltagPipeline();
 
+    // initialize wrist deadness
+    if (robotContainer.wristDeadChooser.getSelected()) {
+      robotContainer.wrist.wristDead();
+    }
+
+    // get selected auto
     m_autonomousCommand = robotContainer.getAutonomousCommand();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

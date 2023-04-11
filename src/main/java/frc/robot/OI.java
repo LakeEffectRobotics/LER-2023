@@ -41,6 +41,7 @@ public class OI {
 
         private static final int ZERO_BUTTON = 6;
         private static final int WRIST_DEAD_BUTTON = 7;
+        private static final int ARM_DEAD_BUTTON = 8;
     }
 
     /** Buttons on the operator controller */
@@ -92,6 +93,7 @@ public class OI {
     // hidden buttons
     public static final JoystickButton zeroButton = new JoystickButton(leftJoystick, DRIVER_MAP.ZERO_BUTTON);
     public static final JoystickButton wristDeadButton = new JoystickButton(leftJoystick, DRIVER_MAP.WRIST_DEAD_BUTTON);
+    public static final JoystickButton armDeadButton = new JoystickButton(leftJoystick, DRIVER_MAP.ARM_DEAD_BUTTON);
 
     public static final JoystickButton turnButton = new JoystickButton(leftJoystick, DRIVER_MAP.TURN_BUTTON);
     // left joystick
@@ -169,7 +171,7 @@ public class OI {
     } ;
     
     public static DoubleSupplier manualMoveArmSupplier = () -> {
-        return processDriveInput(xboxController.getLeftY());
+        return processDriveInput(xboxController.getLeftY()) * 0.5;
     } ;
     
 }

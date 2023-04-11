@@ -18,7 +18,7 @@ public class ScoringPositionCommand  extends CommandBase {
     double wristAngle;
     double telescopePosition;
     double startTime;
-    double timeout = 1500;
+    double timeout = 1000;
     Type type;
     Height height;
 
@@ -84,12 +84,12 @@ public class ScoringPositionCommand  extends CommandBase {
             if (!wrist.isWristDeadAgain) {
                 switch(height){
                     case HIGH:
-                        telescopePosition = Arm.ALL_CUBE;
+                        telescopePosition = Arm.HIGH_CUBE;
                         wristAngle = Wrist.SCORE_HIGH_CUBE_FORWARD;
                         arm.raiseBothPistons();
                         break;
                     case MID:
-                        telescopePosition = Arm.ALL_CUBE;
+                        telescopePosition = 0;
                         wristAngle = Wrist.SCORE_MID_CUBE_FORWARD;
                         arm.raiseBothPistons();
                         break;
@@ -119,9 +119,9 @@ public class ScoringPositionCommand  extends CommandBase {
         wrist.setTargetAngle(wristAngle);
 
         // help wrist get to position when it starts way back with arm up
-        // probably temporary until motor alives more?
-        if (auto) {
-            wrist.setMotors(-1);
+        // probably temporary until motor alives?
+        if (arm.getCurrentAngle() > 10 && wrist.getCurrentAngle() > 120 && wristAngle < 120) {
+            wrist.setMotors(-0.7);
         }
     }
 

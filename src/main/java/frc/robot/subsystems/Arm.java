@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
-    CANSparkMax telescopeController1;
+    public CANSparkMax telescopeController1;
     CANSparkMax telescopeController2;
 
     DoubleSolenoid leftSolenoid;
@@ -28,22 +28,24 @@ public class Arm extends SubsystemBase {
     private static final double kI = 0;
     private static final double kD = 0;
     private static final double MAX_OUTPUT = 0.6;
-    private static final double MIN_OUTPUT = 0.001;
+    private static final double MIN_OUTPUT = 0.0003;
 
     public static final double MAX_POSITION = 23;
     public static final double MIN_POSITION = 0;
 
     public static final double HIGH_CONE = 20;
-    public static final double MID_CONE = 9;
+    public static final double MID_CONE = 10.8;
 
     // FOR WRIST DEAD MODE
     public static final double HIGH_CUBE_DEAD = 21;
     public static final double MID_CUBE_DEAD = 15;
 
     // TODO: calibrate value, then see if using telescope for all mid/high cubes is effective
-    public static final double ALL_CUBE = 15;
+    public static final double HIGH_CUBE = 10;
 
     public static final double DOUBLE_LOADING = 23;
+
+    public boolean isArmDead = false;
 
     private ShuffleboardTab tab = Shuffleboard.getTab("my favourite tab");
 
@@ -60,6 +62,11 @@ public class Arm extends SubsystemBase {
     private GenericEntry armUpShuffle = tab
         .add("arm up?", "YES!")
         .withPosition(6, 1)
+        .getEntry();
+
+    private GenericEntry armDeadShuffle = tab
+        .add("arm dead?", "NO!")
+        .withPosition(2, 2)
         .getEntry();
 
     public Arm(CANSparkMax controller1, CANSparkMax controller2, DoubleSolenoid leftSolenoid, DoubleSolenoid rightSolenoid) {
@@ -175,11 +182,26 @@ public class Arm extends SubsystemBase {
         telescopeController1.getEncoder().setPosition(0);
     }
 
+    /**
+     * toggle wrist deadness; makes certain things go into wrist dead mode
+     */
+    public void armDead() {
+        isArmDead = !isArmDead;
+        if (isArmDead) {
+            armDeadShuffle.setString("yes :(");
+            zeroTelescope();
+        } else {
+            armDeadShuffle.setString("not yet!");
+        }
+    }
+
     @Override
     public void periodic() {
-        if (telescopeController1.getEncoder().getPosition() < 1 && telescopeTargetPosition < 1) {
+        if (isArmDead) {
+            telescopeController1.set(0);
+        } else if (telescopeController1.getEncoder().getPosition() < 1 && telescopeTargetPosition < 1) {
             // near bottom, put tiny bit of motor to avoid unspooling string
-            telescopeController1.set(0.003);
+            telescopeController1.set(0.009);
         } else if (telescopeTargetPosition <= 0) {
             // let arm gravity drop to transport position
             telescopeController1.set(0);
