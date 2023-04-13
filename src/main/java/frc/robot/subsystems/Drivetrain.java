@@ -8,6 +8,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.PIDController;
@@ -46,6 +47,7 @@ public class Drivetrain extends SubsystemBase {
     private static final double kP = 0.096;
     private static final double kI = 0;
     private static final double kD = 0;
+    DifferentialDrive differentialDrive;
 
     private final PIDController pid2 = new PIDController(2, 0, 0);
 
@@ -93,6 +95,8 @@ public class Drivetrain extends SubsystemBase {
 
         resetPose(new Pose2d(0, 0, new Rotation2d(0)));
         gyro.reset();
+
+        differentialDrive = new DifferentialDrive(leftLeadController, rightLeadController);
     }
 
     // Odometry methods
@@ -137,6 +141,10 @@ public class Drivetrain extends SubsystemBase {
 
         //leftLeadController.getPIDController().setReference(leftSpeed, ControlType.kVelocity);
         //rightLeadController.getPIDController().setReference(rightSpeed, ControlType.kVelocity);
+    }
+    
+    public void curvyDrive(double speed, double rotation) {
+        differentialDrive.curvatureDrive(speed, rotation, false);
     }
 
     // Percent tank drive for regular joystik driving

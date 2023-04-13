@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
@@ -49,7 +50,8 @@ public class DriveCommand extends CommandBase {
         final double speed = leftSupplier.getAsDouble() * drivetrain.MAX_SPEED * drivetrain.speedMultiplier;
         final double radians = Math.toRadians(360 * rightSupplier.getAsDouble());
 
-        drivetrain.arcadeDrive(speed, radians);
+       // drivetrain.arcadeDrive(speed, radians);
+       drivetrain.curvyDrive(leftSupplier.getAsDouble(), rightSupplier.getAsDouble());
     }
 
     @Override
