@@ -22,9 +22,9 @@ public class DiscoCommand extends CommandBase {
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
-    RobotContainer.lights.setColour(Lights.LEFT, (leftColour & RED) == RED, (leftColour & GREEN) == GREEN,
+    lights.setColour(Lights.LEFT, (leftColour & RED) == RED, (leftColour & GREEN) == GREEN,
         (leftColour & BLUE) == BLUE);
-    RobotContainer.lights.setColour(Lights.RIGHT, (rightColour & RED) == RED, (rightColour & GREEN) == GREEN,
+    lights.setColour(Lights.RIGHT, (rightColour & RED) == RED, (rightColour & GREEN) == GREEN,
         (rightColour & BLUE) == BLUE);
   }
 
@@ -43,9 +43,9 @@ public class DiscoCommand extends CommandBase {
     if (rightColour == 0b000)
       rightColour = 0b111;
 
-    RobotContainer.lights.setColour(Lights.LEFT, (leftColour & RED) == RED, (leftColour & GREEN) == GREEN,
+    lights.setColour(Lights.LEFT, (leftColour & RED) == RED, (leftColour & GREEN) == GREEN,
         (leftColour & BLUE) == BLUE);
-    RobotContainer.lights.setColour(Lights.RIGHT, (rightColour & RED) == RED, (rightColour & GREEN) == GREEN,
+    lights.setColour(Lights.RIGHT, (rightColour & RED) == RED, (rightColour & GREEN) == GREEN,
         (rightColour & BLUE) == BLUE);
   }
 

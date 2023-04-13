@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.ApriltagAimCommand;
 import frc.robot.commands.ApriltagPoseCommand;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -66,7 +67,7 @@ public class RobotContainer {
   public Gyro gyro = new Gyro();
   public final Arm arm = new Arm(RobotMap.telescopeController1, RobotMap.telescopeController2, RobotMap.leftArmSolenoid, RobotMap.rightArmSolenoid);
   public Claw claw = new Claw(RobotMap.rightClawController, RobotMap.leftClawSolenoid, RobotMap.rightClawSolenoid);
-  public static final Lights lights = new Lights();
+  public final Lights lights = new Lights();
   public final Wrist wrist = new Wrist(RobotMap.wristController, arm);
   public final TargetSelection targetSelection = new TargetSelection();
 
