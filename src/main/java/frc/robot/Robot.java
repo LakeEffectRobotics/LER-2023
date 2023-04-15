@@ -60,6 +60,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousExit() {
+
+    // and attempt to fix who knows D:
+    // i also still dont know what im doing.
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
   }
 
   @Override
