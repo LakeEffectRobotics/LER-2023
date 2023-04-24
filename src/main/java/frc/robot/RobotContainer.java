@@ -10,6 +10,7 @@ import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,6 +19,7 @@ import frc.robot.commands.ApriltagPoseCommand;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.CurtisDriveCommand;
 import frc.robot.commands.DefaultLightCommand;
 import frc.robot.commands.DiscoCommand;
@@ -28,7 +30,8 @@ import frc.robot.commands.SpinClawCommand;
 import frc.robot.commands.TurnToAngleCommand;
 import frc.robot.commands.SpinClawCommand.Direction;
 import frc.robot.commands.autonomous.AutoIntakeCommand;
-import frc.robot.commands.autonomous.AutoMidCubeBackwardsCommand;
+import frc.robot.commands.autonomous.AutoLowCubeBackwardsCommand;
+import frc.robot.commands.autonomous.AutoMidCubeBackwards;
 import frc.robot.commands.autonomous.AutoScoreConeCommand;
 import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
 import frc.robot.commands.instant.SetClawCommand;
@@ -72,6 +75,7 @@ public class RobotContainer {
 
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
+  public final SendableChooser<Boolean> wristDeadChooser = new SendableChooser<Boolean>();
 
   // Create robotContainer
   public RobotContainer() {
@@ -82,7 +86,7 @@ public class RobotContainer {
     lights.setDefaultCommand(new DefaultLightCommand(lights, targetSelection, claw));
 
     // Put autonomous chooser on dashboard
-    autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
+    //autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
     
     autoChooser.addOption("flat 2 cube", createPathUtils.createPathCommand("flat 2 cube", 1.7, 1));
     autoChooser.addOption("bump 2 cube turn", createPathUtils.createPathCommand("bump 2 cube turn", 1.5, 1));
@@ -90,9 +94,9 @@ public class RobotContainer {
     autoChooser.addOption("balance 2 cube", createPathUtils.createPathCommand("balance 2 cube", 1.5, 1));
 
     autoChooser.addOption("outtake", new AutoShootBackwardsCommand(arm, wrist, claw, targetSelection));
-    autoChooser.addOption("outtake mid", new AutoMidCubeBackwardsCommand(arm, wrist, claw));
-    autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw, targetSelection));
-    autoChooser.addOption("move wrist", Commands.runOnce(() -> wrist.setMotors(0.04)));
+    autoChooser.addOption("outtake mid", new AutoMidCubeBackwards(arm, wrist, claw));
+    //autoChooser.addOption("intake", new AutoIntakeCommand(drivetrain, arm, wrist, claw, targetSelection));
+    //autoChooser.addOption("move wrist", Commands.runOnce(() -> wrist.setMotors(0.04)));
     // simple autos
     autoChooser.addOption("balance 1 cube mobility", createPathUtils.createPathCommand("balance 1 cube mobility", 1, 0.5));
   
@@ -105,12 +109,26 @@ public class RobotContainer {
     autoChooser.addOption("score cone", new AutoScoreConeCommand(arm, wrist, claw));
     
     // CONES!!
-    autoChooser.addOption("flat 1 cone 1 cube", createPathUtils.createPathCommand("flat 1 cone 1 cube", 1.4, 1, true));
+    autoChooser.addOption("flat 1 cone 1 cube", createPathUtils.createPathCommand("flat 1 cone 1 cube", 1.8, 2, true));
+    autoChooser.addOption("bump 1 cone 1 cube", createPathUtils.createPathCommand("bump 1 cone 1 cube", 1.8, 2, true));
+    autoChooser.addOption("balance 1 cone mobility", createPathUtils.createPathCommand("balance 1 cone mobility", 1, 1, true));
+    autoChooser.addOption("balance 1 cone", createPathUtils.createPathCommand("balance 1 cone", 1, 1, true));
 
-    Shuffleboard.getTab("my favourite tab")
-      .add(autoChooser)
-      .withPosition(3, 3)
-      .withSize(2, 1);
+    autoChooser.addOption("do nothing!", new WaitCommand(5));
+    
+    ShuffleboardTab tab = Shuffleboard.getTab("my favourite tab");
+
+    // autonomous chooser
+    tab.add(autoChooser)
+    .withPosition(3, 3)
+    .withSize(2, 1);
+
+    wristDeadChooser.addOption("DEAAAAAAD", true);
+    wristDeadChooser.addOption("ALIVE YAY!!!!!!!!", false);
+
+    // wrist dead chooser for auto
+    tab.add(wristDeadChooser)
+    .withPosition(5, 3);
 
     //SmartDashboard.putData(autoChooser);
     configureBindings();
@@ -135,6 +153,7 @@ public class RobotContainer {
     OI.slowButton.whileTrue(new DriveSlowCommand(drivetrain));
     OI.zeroButton.onTrue(Commands.runOnce(() -> arm.zeroTelescope()));
     OI.wristDeadButton.onTrue(Commands.runOnce(() -> wrist.wristDead()));
+    OI.armDeadButton.onTrue(Commands.runOnce(() -> arm.armDead()));
 
     // operator
     OI.driveStraightButton.whileTrue(new GyroDriveStraightCommand(drivetrain, gyro, OI.rightDriveSupplier));
@@ -154,7 +173,7 @@ public class RobotContainer {
     // Move arm and wrist into ground intake position. Only run if arm is already down to avoid smashing things in front of the robot. (Still sets arm to down position for completion sake)
     OI.groundIntakeButton.onTrue(
       new ConditionalCommand(
-        new LowerArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.GROUND)),
+        new LowerArmCommand(arm).andThen(Commands.runOnce(() -> wrist.setMotors(-0.6))).andThen(new SetWristAngleCommand(wrist, Wrist.GROUND)),
         Commands.runOnce(() -> System.out.print("Lower arm before going to ground position")), 
         () -> arm.getPistonsPosition() == ArmPosition.DOWN
       )

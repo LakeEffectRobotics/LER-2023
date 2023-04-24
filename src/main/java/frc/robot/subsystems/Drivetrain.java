@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotMap;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -176,5 +177,28 @@ public class Drivetrain extends SubsystemBase {
         
         odometry.update(
                 gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition());
+
+        // Extra diagnositcs, breaks best practices alot but I need the data
+        // mfw we kill 1/3 of the left drive motors and dont realize until 2 comps later :facepalm:
+        //SmartDashboard.putNumber("Left 1 Applied", RobotMap.leftController1.getAppliedOutput());
+        //SmartDashboard.putNumber("Left 2 Applied", RobotMap.leftController2.getAppliedOutput());
+        //SmartDashboard.putNumber("Left 3 Applied", RobotMap.leftController3.getAppliedOutput());
+        //SmartDashboard.putNumber("Right 1 Applied", RobotMap.rightController1.getAppliedOutput());
+        //SmartDashboard.putNumber("Right 2 Applied", RobotMap.rightController2.getAppliedOutput());
+        //SmartDashboard.putNumber("Right 3 Applied", RobotMap.rightController3.getAppliedOutput());
+        //
+        //SmartDashboard.putNumber("Left 1 Bus", RobotMap.leftController1.getBusVoltage());
+        //SmartDashboard.putNumber("Left 2 Bus", RobotMap.leftController2.getBusVoltage());
+        //SmartDashboard.putNumber("Left 3 Bus", RobotMap.leftController3.getBusVoltage());
+        //SmartDashboard.putNumber("Right 1 Bus", RobotMap.rightController1.getBusVoltage());
+        //SmartDashboard.putNumber("Right 2 Bus", RobotMap.rightController2.getBusVoltage());
+        //SmartDashboard.putNumber("Right 3 Bus", RobotMap.rightController3.getBusVoltage());
+        //
+        //SmartDashboard.putNumber("Left 1 Current", RobotMap.leftController1.getOutputCurrent());
+        //SmartDashboard.putNumber("Left 2 Current", RobotMap.leftController2.getOutputCurrent());
+        //SmartDashboard.putNumber("Left 3 Current", RobotMap.leftController3.getOutputCurrent());
+        //SmartDashboard.putNumber("Right 1 Current", RobotMap.rightController1.getOutputCurrent());
+        //SmartDashboard.putNumber("Right 2 Current", RobotMap.rightController2.getOutputCurrent());
+        //SmartDashboard.putNumber("Right 3 Current", RobotMap.rightController3.getOutputCurrent());
     }
 }

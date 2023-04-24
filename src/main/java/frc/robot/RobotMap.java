@@ -153,6 +153,8 @@ public class RobotMap {
         telescopeController1.restoreFactoryDefaults();
         telescopeController2.restoreFactoryDefaults();
 
+        telescopeController1.setClosedLoopRampRate(0.25);
+
         telescopeController2.follow(telescopeController1, true);
     }
 }
