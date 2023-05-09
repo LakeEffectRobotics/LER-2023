@@ -75,10 +75,17 @@ public class RobotContainer {
 
   // Create robotContainer
   public RobotContainer() {
-    drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
-    arm.setDefaultCommand(new ManualMoveArmCommand(arm, OI.manualMoveArmSupplier));
+    //TODO fix this to not override normal driving
+    //drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
+    //arm.setDefaultCommand(new ManualMoveArmCommand(arm, OI.manualMoveArmSupplier));
+    //wrist.setDefaultCommand(new ManualMoveWristCommand(wrist, OI.manualMoveWristSupplier));
+    
+    // Gonna make a toggle for demo mode in shuffleboard but lazy
+    drivetrain.setDefaultCommand(new DriveCommand(drivetrain, DemoOI.leftDriveSupplier, DemoOI.rightDriveSupplier));
+    arm.setDefaultCommand(new ManualMoveArmCommand(arm, DemoOI.manualMoveArmSupplier));
+    wrist.setDefaultCommand(new ManualMoveWristCommand(wrist, DemoOI.manualMoveWristSupplier));
+
     gyro.setDefaultCommand(new GyroCommand(gyro));
-    wrist.setDefaultCommand(new ManualMoveWristCommand(wrist, OI.manualMoveWristSupplier));
     lights.setDefaultCommand(new DefaultLightCommand(lights, targetSelection, claw));
 
     // Put autonomous chooser on dashboard
@@ -170,6 +177,20 @@ public class RobotContainer {
     OI.rightSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionRight()));
     OI.downSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionDown()));
     OI.leftSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionLeft()));
+
+    // DEMO
+    DemoOI.disableButton.onTrue(Commands.runOnce(() -> System.exit(1) /* if this doesnt disable the roborio just crash it ig */));
+    DemoOI.disableButton.whileTrue(new DiscoCommand(lights));
+    DemoOI.openClawButton.onTrue(new SetClawCommand(claw, Position.OPEN));
+    DemoOI.closeClawButton.onTrue(new SetClawCommand(claw, Position.CLOSED));
+    // change target selection to something else (or keep it cone) im too lazy to change it rn
+    DemoOI.spinInButton.whileTrue(new SpinClawCommand(claw, Direction.IN, DemoOI.clawInSpeedSupplier, targetSelection));
+    DemoOI.spitOutButton.whileTrue(new SpinClawCommand(claw, Direction.OUT, DemoOI.clawOutSpeedSupplier, targetSelection));
+
+    DemoOI.upSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionUp()));
+    DemoOI.rightSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionRight()));
+    DemoOI.downSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionDown()));
+    DemoOI.leftSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionLeft()));
   }
 
   // Set autonomous command from dashboard choice
