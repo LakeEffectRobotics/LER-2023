@@ -53,6 +53,7 @@ public class Drivetrain extends SubsystemBase {
     // Max speed in m/s
     public final double MAX_SPEED = 4.5;
     public double speedMultiplier = 1;
+    public double demoSpeedMultiplier = 0.3;
 
     // Robot track width 19"
     public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(19));
@@ -126,7 +127,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     /**
-     * 
+     *
      * @param leftSpeed  left wheel velocity (m/s)
      * @param rightSpeed right wheel velocity (m/s)
      */
@@ -151,7 +152,7 @@ public class Drivetrain extends SubsystemBase {
     public void setSpeedMultiplier(double multiplier) {
         speedMultiplier = multiplier;
     }
-    
+
     // Arcade drive
     /**
      * @param speed    linear velocity (m/s)
@@ -173,7 +174,7 @@ public class Drivetrain extends SubsystemBase {
      //   field.setRobotPose(getPose());
       //  SmartDashboard.putNumber("Right velocity", rightEncoder.getVelocity());
        // SmartDashboard.putNumber("Left velocity", leftEncoder.getVelocity());
-        
+
         odometry.update(
                 gyro.getRotation2d(), leftEncoder.getPosition(), rightEncoder.getPosition());
     }

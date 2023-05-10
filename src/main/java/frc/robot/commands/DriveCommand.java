@@ -3,6 +3,7 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveCommand extends CommandBase {
@@ -46,7 +47,9 @@ public class DriveCommand extends CommandBase {
     @Override
     public void execute() {
         // Drive with joystick % as % of maxspeed (m/s)
-        final double speed = leftSupplier.getAsDouble() * drivetrain.MAX_SPEED * drivetrain.speedMultiplier;
+        double speed = leftSupplier.getAsDouble() * drivetrain.MAX_SPEED * drivetrain.speedMultiplier;
+        // TODO make sure this works
+        if (RobotContainer.demoMode.getBoolean(false)) speed = leftSupplier.getAsDouble() * drivetrain.MAX_SPEED * drivetrain.demoSpeedMultiplier;
         final double radians = Math.toRadians(360 * rightSupplier.getAsDouble());
 
         drivetrain.arcadeDrive(speed, radians);

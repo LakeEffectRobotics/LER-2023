@@ -179,7 +179,7 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         if (telescopeController1.getEncoder().getPosition() < 1 && telescopeTargetPosition < 1) {
             // near bottom, put tiny bit of motor to avoid unspooling string
-            telescopeController1.set(0.003);
+            telescopeController1.set(0.003); // TODO maybe lower the speed of this in demo mode but not lower then 50% current speed (0.003)
         } else if (telescopeTargetPosition <= 0) {
             // let arm gravity drop to transport position
             telescopeController1.set(0);

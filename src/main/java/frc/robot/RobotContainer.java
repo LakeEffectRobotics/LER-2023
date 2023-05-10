@@ -9,6 +9,7 @@ import java.util.Map;
 import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -70,27 +71,31 @@ public class RobotContainer {
   // path utils
   CreatePathUtils createPathUtils = new CreatePathUtils(drivetrain, limelight, arm, wrist, claw, gyro, targetSelection);
 
+  // Demo mode
+  public static GenericEntry demoMode = Shuffleboard.getTab("my favourite tab").add("Demo Mode?", false).getEntry();
+
   // Dashboard autonomous chooser
   public final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   // Create robotContainer
   public RobotContainer() {
-    //TODO fix this to not override normal driving
-    //drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
-    //arm.setDefaultCommand(new ManualMoveArmCommand(arm, OI.manualMoveArmSupplier));
-    //wrist.setDefaultCommand(new ManualMoveWristCommand(wrist, OI.manualMoveWristSupplier));
-    
-    // Gonna make a toggle for demo mode in shuffleboard but lazy
-    drivetrain.setDefaultCommand(new DriveCommand(drivetrain, DemoOI.leftDriveSupplier, DemoOI.rightDriveSupplier));
-    arm.setDefaultCommand(new ManualMoveArmCommand(arm, DemoOI.manualMoveArmSupplier));
-    wrist.setDefaultCommand(new ManualMoveWristCommand(wrist, DemoOI.manualMoveWristSupplier));
+    // TODO Test if this works
+    if (demoMode.getBoolean(false)) {
+      drivetrain.setDefaultCommand(new DriveCommand(drivetrain, DemoOI.leftDriveSupplier, DemoOI.rightDriveSupplier));
+      arm.setDefaultCommand(new ManualMoveArmCommand(arm, DemoOI.manualMoveArmSupplier));
+      wrist.setDefaultCommand(new ManualMoveWristCommand(wrist, DemoOI.manualMoveWristSupplier));
+    } else {
+      drivetrain.setDefaultCommand(new DriveCommand(drivetrain, OI.leftDriveSupplier, OI.rightDriveSupplier));
+      arm.setDefaultCommand(new ManualMoveArmCommand(arm, OI.manualMoveArmSupplier));
+      wrist.setDefaultCommand(new ManualMoveWristCommand(wrist, OI.manualMoveWristSupplier));
+    }
 
     gyro.setDefaultCommand(new GyroCommand(gyro));
     lights.setDefaultCommand(new DefaultLightCommand(lights, targetSelection, claw));
 
     // Put autonomous chooser on dashboard
     autoChooser.addOption("arm angle", new SetWristAngleCommand(wrist, 0));
-    
+
     autoChooser.addOption("flat 2 cube", createPathUtils.createPathCommand("flat 2 cube", 1.7, 1));
     autoChooser.addOption("bump 2 cube turn", createPathUtils.createPathCommand("bump 2 cube turn", 1.5, 1));
     autoChooser.addOption("balance 1 cube", createPathUtils.createPathCommand("balance 1 cube", 1, 0.5));
@@ -102,15 +107,15 @@ public class RobotContainer {
     autoChooser.addOption("move wrist", Commands.runOnce(() -> wrist.setMotors(0.04)));
     // simple autos
     autoChooser.addOption("balance 1 cube mobility", createPathUtils.createPathCommand("balance 1 cube mobility", 1, 0.5));
-  
+
     autoChooser.addOption("bump 1 cube mobility", createPathUtils.createPathCommand("bump 1 cube mobility", 1.65, 1));
     autoChooser.addOption("bump 2 cube simple", createPathUtils.createPathCommand("bump 2 cube simple", 1.65, 1));
-  
+
     autoChooser.addOption("flat 1 cube mobility", createPathUtils.createPathCommand("flat 1 cube mobility", 1.65, 1));
     autoChooser.addOption("flat 2 cube simple", createPathUtils.createPathCommand("flat 2 cube simple", 1.65, 1));
 
     autoChooser.addOption("score cone", new AutoScoreConeCommand(arm, wrist, claw));
-    
+
     // CONES!!
     autoChooser.addOption("flat 1 cone 1 cube", createPathUtils.createPathCommand("flat 1 cone 1 cube", 1.4, 1, true));
 
@@ -134,7 +139,7 @@ public class RobotContainer {
     // right joystick
     OI.aimButton.whileTrue(new ApriltagAimCommand(limelight, drivetrain));
     OI.resetPoseButton.whileTrue(new ApriltagPoseCommand(limelight, drivetrain));
-    
+
     OI.turnButton.whileTrue(new TurnToAngleCommand(gyro, drivetrain, 0));
     OI.curtisStraightButton.whileTrue(new CurtisDriveCommand(drivetrain));
 
@@ -150,7 +155,7 @@ public class RobotContainer {
     OI.closeClawButton.onTrue(new SetClawCommand(claw, Position.CLOSED));
     OI.spinInButton.whileTrue(new SpinClawCommand(claw, Direction.IN, OI.clawInSpeedSupplier, targetSelection));
     OI.spitOutButton.whileTrue(new SpinClawCommand(claw, Direction.OUT, OI.clawOutSpeedSupplier, targetSelection));
-    
+
     // Move arm and wrist into transport position
     OI.transportButton.onTrue(new TransportPositionCommand(arm, wrist));
 
@@ -162,7 +167,7 @@ public class RobotContainer {
     OI.groundIntakeButton.onTrue(
       new ConditionalCommand(
         new LowerArmCommand(arm).andThen(new SetWristAngleCommand(wrist, Wrist.GROUND)),
-        Commands.runOnce(() -> System.out.print("Lower arm before going to ground position")), 
+        Commands.runOnce(() -> System.out.print("Lower arm before going to ground position")),
         () -> arm.getPistonsPosition() == ArmPosition.DOWN
       )
     );
