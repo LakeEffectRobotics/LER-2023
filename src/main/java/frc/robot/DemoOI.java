@@ -18,14 +18,22 @@ public class DemoOI {
         private static final int CLOSE_CLAW_BUTTON = XboxController.Button.kRightBumper.value;
 
         // NOTE: This is expected to be an axis. If it is changed to a button, then modify the stuff acordingly
-        private static final int SPIN_IN_TRIGGER = XboxController.Axis.kLeftTrigger.value;
-        private static final int SPIT_OUT_TRIGGER = XboxController.Axis.kRightTrigger.value;
+        private static final int SPIT_OUT_TRIGGER = XboxController.Axis.kLeftTrigger.value;
+        private static final int SPIN_IN_TRIGGER = XboxController.Axis.kRightTrigger.value;
 
         // XBoxController DPAD Buttons
         private static final int UP_SELECTION_BUTTON = 180;
         private static final int RIGHT_SELECTION_BUTTON = 90;
         private static final int DOWN_SELECTION_BUTTON = 0;
         private static final int LEFT_SELECTION_BUTTON = 270;
+
+        // Arm Elevation
+        private static final int ARM_UP_BUTTON = XboxController.Button.kY.value;
+        private static final int ARM_DOWN_BUTTON = XboxController.Button.kA.value;
+
+        // Wrist Angle the squal
+        private static final int WRIST_GROUND_BUTTON = XboxController.Button.kX.value;
+        private static final int WRIST_SHOOT_BUTTON = XboxController.Button.kB.value;
     }
 
     private static final XboxController demoController = new XboxController(DEMO_CONTROLLER);
@@ -47,6 +55,12 @@ public class DemoOI {
     public static final Trigger rightSelectionButton = new POVButton(demoController, DEMO_MAP.RIGHT_SELECTION_BUTTON);
     public static final Trigger downSelectionButton = new POVButton(demoController, DEMO_MAP.DOWN_SELECTION_BUTTON);
     public static final Trigger leftSelectionButton = new POVButton(demoController, DEMO_MAP.LEFT_SELECTION_BUTTON);
+
+    public static final Trigger armUpButton = new JoystickButton(demoController, DEMO_MAP.ARM_UP_BUTTON);
+    public static final Trigger armDownButton = new JoystickButton(demoController, DEMO_MAP.ARM_DOWN_BUTTON);
+
+    public static final Trigger wristGroundButton = new JoystickButton(demoController, DEMO_MAP.WRIST_GROUND_BUTTON);
+    public static final Trigger wristShootButton = new JoystickButton(demoController, DEMO_MAP.WRIST_SHOOT_BUTTON);
 
 
     public static DoubleSupplier leftDriveSupplier = () -> {

@@ -35,6 +35,7 @@ import frc.robot.commands.autonomous.AutoShootBackwardsCommand;
 import frc.robot.commands.instant.SetClawCommand;
 import frc.robot.commands.instant.DoubleLoadingCommand;
 import frc.robot.commands.instant.LowerArmCommand;
+import frc.robot.commands.instant.RaiseArmCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.commands.instant.SetWristAngleCommand;
@@ -196,6 +197,12 @@ public class RobotContainer {
     DemoOI.rightSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionRight()));
     DemoOI.downSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionDown()));
     DemoOI.leftSelectionButton.onTrue(Commands.runOnce(() -> targetSelection.selectionLeft()));
+
+    DemoOI.armUpButton.onTrue(new LowerArmCommand(arm));
+    DemoOI.armDownButton.onTrue(new RaiseArmCommand(arm, true));
+
+    DemoOI.wristGroundButton.onTrue(new SetWristAngleCommand(wrist, Wrist.GROUND));
+    DemoOI.wristShootButton.onTrue(new SetWristAngleCommand(wrist, Wrist.SCORE_HIGH_CONE));
   }
 
   // Set autonomous command from dashboard choice
