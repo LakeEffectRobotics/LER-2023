@@ -60,7 +60,7 @@ public class Claw extends SubsystemBase {
     public void setSpeed(double speed) {
         if (speed < 0) {
             // half speed intake direction 
-            speed = speed / 2;
+            speed = speed * 0.75;
         }
         leadController.set(speed);
     }
