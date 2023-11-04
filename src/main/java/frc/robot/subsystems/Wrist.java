@@ -22,7 +22,7 @@ public class Wrist extends SubsystemBase {
     private Arm arm; 
 
     private static final double kF = 0;
-    private static final double kP = 0.25;
+    private static final double kP = 0.4;
     private static final double kI = 0;
 
     private static final double kD = 0.5;
