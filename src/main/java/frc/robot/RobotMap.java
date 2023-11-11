@@ -132,6 +132,12 @@ public class RobotMap {
         rightController3.setIdleMode(IdleMode.kBrake);
         leftController3.setIdleMode(IdleMode.kBrake);
 
+        leftController2.setSmartCurrentLimit(60);
+        leftController3.setSmartCurrentLimit(60);
+        rightController2.setSmartCurrentLimit(60);
+        rightController3.setSmartCurrentLimit(60);
+
+
     //    leftController1.setClosedLoopRampRate(0.15);
       //  rightController1.setClosedLoopRampRate(0.15);
 
