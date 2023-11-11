@@ -66,6 +66,9 @@ public class Drivetrain extends SubsystemBase {
         this.leftEncoder = leftLeadController.getEncoder();
         this.rightEncoder = rightLeadController.getEncoder();
 
+        this.leftLeadController.setSmartCurrentLimit(60);
+        this.rightLeadController.setSmartCurrentLimit(60);
+
         resetEncoderPosition();
 
         odometry = new DifferentialDriveOdometry(
